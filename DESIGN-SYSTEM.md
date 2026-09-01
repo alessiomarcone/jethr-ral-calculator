@@ -1,40 +1,55 @@
 # Design system
 
-Un motore di calcolo, due interfacce. Entrambe parlano il linguaggio visivo di
-Jet HR: cambia quanto radicale è la traduzione del manifesto.
+Un motore di calcolo, due interfacce, due posture opposte: A è uno strumento
+senza colore, B è la traduzione visiva del manifesto Jet HR.
 
-| | Variante A — sobria | Variante B — manifesto |
+| | Variante A — tech minimal | Variante B — manifesto |
 |---|---|---|
 | File | `src/design-system.css` + `src/page.html` | `src/ds-b.css` + `src/page-b.html` |
 | Build | `index.html` | `index-b.html` |
-| Riferimento | sito jethr.com | prodotto Jet HR (dashboard, card documenti, grafico costo del personale) |
-| Postura | documento professionale, cedolino leggibile | strumento, zero attrito |
+| Colore | nessuno: rampa di grigi caldi | palette prodotto Jet HR |
+| Postura | strumento: hero + donut, il resto sotto la piega | manifesto: nessun modulo, nessun bottone |
 
-## Token comuni, estratti dal sito
+## Cosa condividono
 
-Rilevati dal DOM di jethr.com, non a occhio: inchiostro near-black con virata
-oliva `#11150A`, superfici bianche su fondi sage `#F1F4F1` / `#E0E6DC`, raggi
-8/16 e pill a raggio pieno (100px), CTA nera piena, impaginazione ariosa ad alto
-contrasto. La famiglia del sito (Wix Made for Display) non è distribuibile: al
-suo posto **Manrope** in A e **Plus Jakarta Sans** in B, entrambe grottesche
-umanistiche con la stessa impostazione geometrica.
+Scala 4/8, raggi 6/10/16 e pill a raggio pieno, CTA nera piena, impaginazione
+ariosa ad alto contrasto: l'impostazione arriva dal DOM di jethr.com, rilevata e
+non stimata a occhio. La famiglia del sito (Wix Made for Display) non è
+distribuibile: al suo posto **Manrope** in A e **Plus Jakarta Sans** in B.
+Da lì le due varianti divergono — A butta via la palette e tiene solo la
+struttura, B tiene tutto.
 
-## Variante A — sobria
+## Variante A — tech minimal, grigi caldi
 
-Scala 4/8, container 1080px, griglia 5/7 sopra e 7/5 sotto, così le due fasce si
-bilanciano invece di inseguirsi. Superfici bianche su fondo sage, hairline
-`#E3E7DE`, ombra quasi assente. Il colore compare **solo** nella barra di
-ripartizione: quattro serie di una palette categoriale validata con lo script
-della skill dataviz (sei check superati in entrambi i temi). Tutto il resto è
-inchiostro e grigi.
+Nessun colore: una sola rampa di grigi caldi (virata sabbia, mai neutra fredda),
+inchiostro e superficie. La gerarchia la fanno peso, spazio e passi di
+luminosita'. Mono (IBM Plex Mono) per etichette, unita' e importi; grottesca
+(Manrope) per numeri e titoli.
 
-I tre campi di contesto — regione, contratto, agevolazioni — sono tendine vere,
-popolate dagli stessi oggetti che il motore usa per calcolare: 21 regioni,
-5 contratti, 4 agevolazioni. Sotto ognuna, una riga in grigio dice cosa quella
-scelta sposta davvero — la norma regionale e la data di pubblicazione, l'aliquota
-contributiva, la quota di reddito esente — così il campo non è solo un filtro ma
-spiega il proprio effetto. Il bottone *Calcola* resta, ma le tendine ricalcolano
-già al cambio: chi lo preme conferma, non sblocca.
+**L'hero e' una schermata sola.** A sinistra i quattro input, a destra il
+risultato. Tutto cio' che prima era un paragrafo esplicativo e' diventato un
+tooltip: la norma regionale e la data di pubblicazione, l'aliquota contributiva
+del contratto, la quota esente dell'agevolazione, le ipotesi del calcolo. Il
+testo non e' sparito, ha smesso di occupare spazio finche' non serve.
+
+**Il conto per esteso vive al primo scroll:** sei tile con i totali, il cedolino
+riga per riga con la formula di ogni voce, e tre pieghe — semplificazioni, fonti,
+cosa il prototipo non fa.
+
+### Il donut
+
+Parte-tutto a colpo d'occhio, tre segmenti (resta in mano / imposte /
+contributi), valori lontani fra loro: e' il caso in cui il cerchio regge.
+
+- rampa **sequenziale**, non categoriale: piu' scuro = la quota che conta.
+  I passi sono validati con lo script della skill dataviz — separazione CVD
+  >= 17 e contrasto >= 3:1 sulla superficie, in chiaro e in scuro;
+- **4px di gap in superficie** fra due archi, mai un bordo attorno al segmento;
+- l'identita' non e' mai affidata al solo grigio: ogni segmento ha la sua riga in
+  legenda con importo e percentuale, e la tabella completa sta sotto;
+- **il tooltip del grafico e' il centro del donut.** Passando su un segmento il
+  numero grande diventa quel segmento, invece di aprire un popover dove l'occhio
+  non sta guardando. Sul touch un tap fuori riporta al netto.
 
 ## Variante B — manifesto
 

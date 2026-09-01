@@ -5,9 +5,11 @@ fiscale**, **tipologia di contratto** e **agevolazione**, premi *Calcola*:
 ottieni il netto annuo e mensile e il dettaglio riga per riga di tutto ciò che
 viene trattenuto sul lordo, con la formula usata per ogni voce.
 
-Due interfacce sullo stesso motore: `index.html` (sobria, con il bottone
-*Calcola*) e `index-b.html` (traduzione del manifesto Jet HR, si aggiorna mentre
-scegli). Vedi `DESIGN-SYSTEM.md`.
+L'hero sta in una schermata: input a sinistra, donut e legenda a destra, con le
+note di legge nei tooltip. Il conto riga per riga, le ipotesi e le fonti stanno
+al primo scroll. Due interfacce sullo stesso motore: `index.html` (tech minimal,
+grigi caldi, bottone *Calcola*) e `index-b.html` (manifesto Jet HR, si aggiorna
+mentre scegli). Vedi `DESIGN-SYSTEM.md`.
 
 - **Pagine live:** vedi i link nella mail di consegna
 - **Uso in locale:** apri `index.html` o `index-b.html`, non serve nessun server
@@ -18,7 +20,7 @@ scegli). Vedi `DESIGN-SYSTEM.md`.
 | File | Cosa contiene |
 |---|---|
 | `src/tax-engine.js` | il motore di calcolo e **tutti** i parametri normativi: `PARAMS`, `REGIONI` (21), `CONTRATTI` (5), `AGEVOLAZIONI` (4) |
-| `src/page.html` + `src/design-system.css` | variante A, sobria |
+| `src/page.html` + `src/design-system.css` | variante A, tech minimal in grigi caldi |
 | `src/page-b.html` + `src/ds-b.css` | variante B, manifesto |
 | `test/tax-engine.test.mjs` | 22 test sul motore |
 | `build.mjs` | inlina design system e motore in ogni variante e genera le pagine standalone |
