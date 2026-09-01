@@ -1,7 +1,74 @@
 # Prompt per Lovable
 
-Copia il blocco **Prompt principale** in Lovable. I due blocchi successivi sono
-follow-up da mandare dopo, uno alla volta.
+Due versioni. La **breve** lascia a Lovable le scelte di impaginazione: usala se
+vuoi vedere cosa propone. La **lunga**, più sotto, fissa anche layout e token.
+
+---
+
+## Versione breve
+
+```
+Crea una web app che calcola quanto resta in busta a un dipendente italiano
+partendo dalla RAL: inserisci la retribuzione annua lorda e ottieni il netto
+annuo, il netto mensile e il dettaglio di tutto ciò che viene trattenuto.
+
+Caso coperto: impiegato a tempo indeterminato, full time, anno intero, residente
+a Milano, senza familiari a carico né agevolazioni. Anno d'imposta 2026.
+
+Tieni la logica fiscale in un modulo separato dalla UI, con tutti i parametri
+normativi raccolti in un unico oggetto di configurazione: quando cambia la legge
+di bilancio si deve poter aggiornare un solo punto.
+
+Regole di calcolo, in quest'ordine:
+1. Contributi INPS a carico del dipendente: 9,19% della RAL, più un 1% aggiuntivo
+   sulla quota che supera 56.224 €, con massimale contributivo a 122.295 €.
+2. I contributi sono deducibili: l'imponibile fiscale è RAL meno contributi.
+   L'IRPEF non si calcola mai sulla RAL.
+3. IRPEF a scaglioni progressivi: 23% fino a 28.000, 33% da 28.000 a 50.000,
+   43% oltre.
+4. Detrazione per lavoro dipendente: 1.955 € fino a 15.000 € di reddito;
+   1.910 + 1.190 × (28.000 − R)/13.000 tra 15.000 e 28.000;
+   1.910 × (50.000 − R)/22.000 tra 28.000 e 50.000; zero oltre.
+   Più 65 € se il reddito sta tra 25.000 e 35.000.
+5. Taglio del cuneo: per redditi fino a 20.000 una somma non imponibile pari al
+   7,1% / 5,3% / 4,8% del reddito da lavoro (soglie a 8.500 e 15.000); tra 20.000
+   e 40.000 una detrazione di 1.000 €, piena fino a 32.000 e poi decrescente fino
+   ad azzerarsi a 40.000.
+6. Trattamento integrativo fino a 1.200 € per i redditi bassi, subordinato alla
+   capienza dell'imposta.
+7. Le detrazioni si sottraggono dall'imposta, non dal reddito, e non sono
+   rimborsabili: se superano l'IRPEF lorda l'imposta va a zero e basta.
+8. Addizionale regionale Lombardia a scaglioni sull'imponibile: 1,23% fino a
+   15.000, 1,58% fino a 28.000, 1,72% fino a 50.000, 1,73% oltre.
+9. Addizionale comunale Milano 0,80% sull'imponibile, con esenzione fino a
+   23.000 €. È una soglia, non una franchigia: un euro sopra si paga tutto. Non
+   trasformarla in franchigia per rendere la curva liscia, è corretta così.
+10. Netto annuo = RAL − contributi − IRPEF netta − addizionali + integrazioni.
+    Netto mensile = netto annuo diviso per le mensilità scelte (12, 13 o 14).
+Mostra a parte il TFR maturato (RAL / 13,5 meno lo 0,50% al Fondo di garanzia):
+è accantonato, non arriva in busta.
+
+Interfaccia: una pagina sola, il risultato sempre visibile e aggiornato in tempo
+reale mentre si digita, senza bottone "Calcola". Sopra il numero grande del netto
+mensile, poi la ripartizione tra quello che resta e quello che se ne va, poi il
+dettaglio voce per voce dove ogni riga può mostrare la formula con cui è stata
+calcolata. Rendi visibili anche le ipotesi fissate (contratto, comune, assenza di
+agevolazioni) come informazioni bloccate, non nasconderle.
+Aspetto pulito e professionale, importi con cifre tabulari, formattazione in
+italiano, funzionante da mobile a desktop e con dark mode.
+
+Verifica: con RAL 30.000 e 13 mensilità il netto deve venire 23.426 € l'anno e
+1.802 € al mese, con 2.757 € di contributi, 3.222 € di IRPEF netta e 596 € di
+addizionali. Con RAL 80.000, 3.641 € al mese. Se non tornano, il problema è nella
+catena di calcolo.
+```
+
+---
+
+## Versione lunga
+
+Copia il blocco **Prompt principale**. I due blocchi successivi sono follow-up da
+mandare dopo, uno alla volta.
 
 ---
 
