@@ -5,112 +5,153 @@
 
 <style>
 /**
- * Design system — variante A, "tech minimal, warm grayscale".
+ * Design system — variante A: base monocromatica piatta, colore solo dove
+ * significa qualcosa.
  *
- * Nessun colore: una sola rampa di grigi caldi (virata sabbia, mai neutra
- * fredda) piu' inchiostro e superficie. La gerarchia la fanno il peso, la
- * spaziatura e i passi di luminosita', non la tinta.
+ * Tre soli usi del colore, tutti semantici:
+ *   primario   emerald  → l'azione (Calcola) e la quota che resta in mano
+ *   secondario sky      → i controlli di secondo livello (mensilità)
+ *   serie      emerald / violet / amber → i tre pezzi del grafico
+ * Tutto il resto è una rampa di pietra calda.
  *
- * Tema in tre stati:
- *   :root                                        chiaro
- *   @media (prefers-color-scheme: dark) + guardia scuro di sistema
- *   :root[data-theme="dark"]                     scuro forzato dal toggle
+ * Contrasto: ogni coppia testo/fondo è verificata AAA (>= 7:1), comprese le
+ * etichette piccole in mono e il testo sui fondi pieni dei bottoni.
+ *
+ * Superfici: niente reticolo di bordi da 1px. Le card sono vetro — velo
+ * traslucido, sfocatura, un filo di luce sul bordo alto e un'ombra bassa e
+ * larga. Le righe di separazione restano solo dove servono a leggere una
+ * colonna di numeri.
  */
 
 :root {
-  /* rampa grigi caldi: unico asse di colore del sistema */
-  --g-950: #14120E;
-  --g-900: #1C1A15;
-  --g-800: #2B2822;
-  --g-700: #46423A;
-  --g-600: #5E594F;
-  --g-500: #7B7568;
-  --g-400: #9A9386;
-  --g-300: #B9B2A4;
-  --g-250: #C9C2B4;
-  --g-200: #DAD4C7;
-  --g-150: #E6E1D6;
-  --g-100: #EFEBE3;
-  --g-50: #F7F4EE;
-  --g-0: #FFFDF9;
+  color-scheme: light dark;
+
+  /* pietra calda: la base monocromatica */
+  --st-950: #14120E;
+  --st-900: #1C1917;
+  --st-800: #292524;
+  --st-700: #44403C;
+  --st-600: #4E4A44;
+  --st-400: #A8A29E;
+  --st-300: #D6D3D1;
+  --st-200: #E7E2DA;
+  --st-100: #F0EDE7;
+  --st-50: #F5F2ED;
+  --st-0: #FBFAF8;
 
   /* ruoli */
-  --ds-bg: var(--g-50);
-  --ds-surface: var(--g-0);
-  --ds-surface-2: var(--g-100);
-  --ds-ink: var(--g-950);
-  --ds-ink-2: var(--g-600);
-  --ds-ink-3: var(--g-500);
-  --ds-line: var(--g-150);
-  --ds-line-2: var(--g-250);
-  --ds-inverse: var(--g-0);
+  --ds-bg: var(--st-50);
+  --ds-solid: var(--st-0);
+  --ds-ink: var(--st-900);
+  --ds-ink-2: var(--st-700);
+  --ds-ink-3: var(--st-600);
 
-  /* serie del grafico: una rampa sequenziale, non quattro tinte */
-  /* passi validati con scripts/validate_palette.js: separazione CVD >= 17 e
-     contrasto >= 3:1 sulla superficie, in entrambi i temi */
-  --ds-s1: #1C1A15; /* netto: la quota che racconta la storia */
-  --ds-s2: #5E594F; /* imposte */
-  --ds-s3: #948D80; /* contributi */
-  --ds-track: var(--g-150);
+  --ds-glass: rgba(255, 255, 255, .66);
+  --ds-glass-2: rgba(255, 255, 255, .42);
+  --ds-sheen: rgba(255, 255, 255, .9);
+  --ds-shadow: 0 18px 48px -22px rgba(28, 25, 23, .34), 0 2px 8px -4px rgba(28, 25, 23, .16);
+  --ds-hair: rgba(28, 25, 23, .09);
+  --ds-hair-2: rgba(28, 25, 23, .16);
 
-  /* scala 4/8 */
+  /* azione */
+  --ds-primary: #065F46;        /* emerald 800 — testo bianco a 7,7:1 */
+  --ds-primary-ink: #FFFFFF;
+  --ds-primary-soft: rgba(6, 95, 70, .1);
+  --ds-secondary: #075985;      /* sky 800 — testo bianco a 7,6:1 */
+  --ds-secondary-ink: #FFFFFF;
+  --ds-secondary-soft: rgba(7, 89, 133, .1);
+  --ds-link: #065F46;
+
+  /* serie del grafico: passi validati con scripts/validate_palette.js */
+  --ds-s1: #059669; /* emerald 600 — resta in mano */
+  --ds-s2: #7C3AED; /* violet 600  — imposte */
+  --ds-s3: #D97706; /* amber 600   — contributi */
+  --ds-track: rgba(28, 25, 23, .07);
+
   --ds-1: 4px;
   --ds-2: 8px;
   --ds-3: 12px;
   --ds-4: 20px;
-  --ds-5: 32px;
-  --ds-6: 52px;
-  --ds-7: 84px;
+  --ds-5: 30px;
+  --ds-6: 48px;
+  --ds-7: 76px;
 
-  --ds-r-sm: 6px;
-  --ds-r-md: 10px;
-  --ds-r-lg: 16px;
+  --ds-r-sm: 10px;
+  --ds-r-md: 14px;
+  --ds-r-lg: 22px;
 
   --ds-sans: "Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --ds-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --ds-ease: cubic-bezier(.22, .68, .28, 1);
 }
 
 @media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { color-scheme: dark; }
   :root:not([data-theme="light"]) {
-    --ds-bg: var(--g-950);
-    --ds-surface: #1A1813;
-    --ds-surface-2: #23201A;
-    --ds-ink: var(--g-50);
-    --ds-ink-2: var(--g-300);
-    --ds-ink-3: var(--g-400);
-    --ds-line: #2E2A23;
-    --ds-line-2: #3D382F;
-    --ds-inverse: var(--g-950);
+    --ds-bg: #0C0A09;
+    --ds-solid: #1A1815;
+    --ds-ink: #FAFAF9;
+    --ds-ink-2: var(--st-300);
+    --ds-ink-3: #BFBAB4;
 
-    --ds-s1: #EFEBE3;
-    --ds-s2: #A8A192;
-    --ds-s3: #6B6558;
-    --ds-track: #2E2A23;
+    --ds-glass: rgba(41, 37, 36, .58);
+    --ds-glass-2: rgba(41, 37, 36, .38);
+    --ds-sheen: rgba(255, 255, 255, .12);
+    --ds-shadow: 0 22px 54px -26px rgba(0, 0, 0, .78), 0 2px 10px -5px rgba(0, 0, 0, .5);
+    --ds-hair: rgba(250, 250, 249, .1);
+    --ds-hair-2: rgba(250, 250, 249, .18);
+
+    --ds-primary: #34D399;
+    --ds-primary-ink: #0C0A09;
+    --ds-primary-soft: rgba(52, 211, 153, .16);
+    --ds-secondary: #38BDF8;
+    --ds-secondary-ink: #0C0A09;
+    --ds-secondary-soft: rgba(56, 189, 248, .16);
+    --ds-link: #6EE7B7;
+
+    --ds-s1: #34D399;
+    --ds-s2: #A78BFA;
+    --ds-s3: #FBBF24;
+    --ds-track: rgba(250, 250, 249, .1);
   }
 }
 
 :root[data-theme="dark"] {
-  --ds-bg: var(--g-950);
-  --ds-surface: #1A1813;
-  --ds-surface-2: #23201A;
-  --ds-ink: var(--g-50);
-  --ds-ink-2: var(--g-300);
-  --ds-ink-3: var(--g-400);
-  --ds-line: #2E2A23;
-  --ds-line-2: #3D382F;
-  --ds-inverse: var(--g-950);
+  color-scheme: dark;
+  --ds-bg: #0C0A09;
+  --ds-solid: #1A1815;
+  --ds-ink: #FAFAF9;
+  --ds-ink-2: var(--st-300);
+  --ds-ink-3: #BFBAB4;
 
-  --ds-s1: #EFEBE3;
-  --ds-s2: #A8A192;
-  --ds-s3: #6B6558;
-  --ds-track: #2E2A23;
+  --ds-glass: rgba(41, 37, 36, .58);
+  --ds-glass-2: rgba(41, 37, 36, .38);
+  --ds-sheen: rgba(255, 255, 255, .12);
+  --ds-shadow: 0 22px 54px -26px rgba(0, 0, 0, .78), 0 2px 10px -5px rgba(0, 0, 0, .5);
+  --ds-hair: rgba(250, 250, 249, .1);
+  --ds-hair-2: rgba(250, 250, 249, .18);
+
+  --ds-primary: #34D399;
+  --ds-primary-ink: #0C0A09;
+  --ds-primary-soft: rgba(52, 211, 153, .16);
+  --ds-secondary: #38BDF8;
+  --ds-secondary-ink: #0C0A09;
+  --ds-secondary-soft: rgba(56, 189, 248, .16);
+  --ds-link: #6EE7B7;
+
+  --ds-s1: #34D399;
+  --ds-s2: #A78BFA;
+  --ds-s3: #FBBF24;
+  --ds-track: rgba(250, 250, 249, .1);
 }
 
-/* ---------- reset minimo ---------- */
+/* ---------- reset ---------- */
 *, *::before, *::after { box-sizing: border-box; }
 
 body {
   margin: 0;
+  min-height: 100vh;
   background: var(--ds-bg);
   color: var(--ds-ink);
   font-family: var(--ds-sans);
@@ -120,25 +161,31 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+/* Il vetro ha bisogno di qualcosa dietro: tre aloni bassissimi, presi dalle
+   tre tinte delle serie, così la sfocatura ha un colore da rifrangere. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(52vw 42vw at 12% -6%, color-mix(in srgb, var(--ds-s1) 10%, transparent), transparent 68%),
+    radial-gradient(46vw 40vw at 92% 4%, color-mix(in srgb, var(--ds-s2) 8%, transparent), transparent 66%),
+    radial-gradient(58vw 46vw at 76% 92%, color-mix(in srgb, var(--ds-s3) 7%, transparent), transparent 70%);
+}
+
 h1, h2, h3, p, figure { margin: 0; }
 button, input, select { font: inherit; color: inherit; }
 
 :where(a, button, input, select, summary):focus-visible {
   outline: 2px solid var(--ds-ink);
-  outline-offset: 2px;
+  outline-offset: 3px;
   border-radius: var(--ds-r-sm);
 }
 
 /* ---------- tipografia ---------- */
-.h1 {
-  font-size: clamp(30px, 4.2vw, 46px);
-  line-height: 1.04;
-  letter-spacing: -.03em;
-  font-weight: 800;
-}
-
 .h2 { font-size: 19px; letter-spacing: -.015em; font-weight: 700; }
-.h3 { font-size: 15px; letter-spacing: -.01em; font-weight: 700; }
 
 .eyebrow {
   font-family: var(--ds-mono);
@@ -150,31 +197,47 @@ button, input, select { font: inherit; color: inherit; }
 
 .small { font-size: 13.5px; line-height: 1.55; color: var(--ds-ink-2); }
 .mono { font-family: var(--ds-mono); font-variant-numeric: tabular-nums; }
+.num { font-variant-numeric: tabular-nums; letter-spacing: -.035em; font-weight: 800; }
 
-.num {
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -.035em;
-  font-weight: 800;
-}
-
-.num-xl { font-size: clamp(38px, 5.2vw, 56px); line-height: 1; }
-
-/* ---------- superfici ---------- */
-.card {
-  background: var(--ds-surface);
-  border: 1px solid var(--ds-line);
+/* ---------- vetro ---------- */
+.glass {
+  position: relative;
+  background: var(--ds-glass);
+  backdrop-filter: blur(22px) saturate(165%);
+  -webkit-backdrop-filter: blur(22px) saturate(165%);
   border-radius: var(--ds-r-lg);
+  box-shadow: var(--ds-shadow);
 }
 
-.card--quiet { background: var(--ds-surface-2); border-color: transparent; }
+/* il filo di luce sul bordo: un bordo disegnato, non un box da 1px */
+.glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(160deg, var(--ds-sheen), transparent 42%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.glass--quiet { background: var(--ds-glass-2); box-shadow: none; }
+
+@supports not (backdrop-filter: blur(1px)) {
+  .glass { background: var(--ds-solid); }
+}
 
 .pill {
   display: inline-flex;
   align-items: center;
   gap: var(--ds-2);
-  padding: 5px 12px;
-  border: 1px solid var(--ds-line-2);
+  padding: 6px 13px;
   border-radius: 100px;
+  background: var(--ds-glass-2);
+  box-shadow: inset 0 0 0 1px var(--ds-hair);
   font-family: var(--ds-mono);
   font-size: 11px;
   letter-spacing: .08em;
@@ -187,9 +250,6 @@ button, input, select { font: inherit; color: inherit; }
 .field { display: flex; flex-direction: column; gap: var(--ds-2); }
 
 .field-label {
-  display: flex;
-  align-items: center;
-  gap: var(--ds-2);
   font-family: var(--ds-mono);
   font-size: 10.5px;
   letter-spacing: .16em;
@@ -202,13 +262,14 @@ button, input, select { font: inherit; color: inherit; }
   align-items: center;
   gap: var(--ds-3);
   padding: 0 var(--ds-4);
-  min-height: 62px;
-  border: 1px solid var(--ds-line-2);
+  min-height: 64px;
   border-radius: var(--ds-r-md);
-  background: var(--ds-surface);
+  background: var(--ds-glass-2);
+  box-shadow: inset 0 0 0 1px var(--ds-hair);
+  transition: box-shadow .2s var(--ds-ease), background .2s var(--ds-ease);
 }
 
-.input:focus-within { border-color: var(--ds-ink); }
+.input:focus-within { box-shadow: inset 0 0 0 1.5px var(--ds-ink); background: var(--ds-glass); }
 .input .unit { font-family: var(--ds-mono); font-size: 15px; color: var(--ds-ink-3); }
 
 .input input {
@@ -217,7 +278,7 @@ button, input, select { font: inherit; color: inherit; }
   border: 0;
   background: none;
   outline: none;
-  font-size: 28px;
+  font-size: 29px;
   font-weight: 700;
   letter-spacing: -.03em;
   font-variant-numeric: tabular-nums;
@@ -228,22 +289,24 @@ button, input, select { font: inherit; color: inherit; }
 .select select {
   appearance: none;
   width: 100%;
-  min-height: 46px;
-  padding: 0 40px 0 var(--ds-3);
-  border: 1px solid var(--ds-line);
+  min-height: 48px;
+  padding: 0 42px 0 var(--ds-4);
+  border: 0;
   border-radius: var(--ds-r-md);
-  background: var(--ds-surface);
+  background: var(--ds-glass-2);
+  box-shadow: inset 0 0 0 1px var(--ds-hair);
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
+  transition: box-shadow .2s var(--ds-ease), transform .2s var(--ds-ease);
 }
 
-.select select:hover { border-color: var(--ds-line-2); }
+.select select:hover { box-shadow: inset 0 0 0 1px var(--ds-hair-2); }
 
 .select::after {
   content: "";
   position: absolute;
-  right: 16px;
+  right: 18px;
   top: 50%;
   width: 6px;
   height: 6px;
@@ -253,18 +316,19 @@ button, input, select { font: inherit; color: inherit; }
   pointer-events: none;
 }
 
+/* mensilità: secondario, mai primario — non è l'azione della pagina */
 .segmented {
   display: inline-flex;
-  padding: 3px;
+  padding: 4px;
   gap: 2px;
-  border: 1px solid var(--ds-line);
   border-radius: 100px;
-  background: var(--ds-surface);
+  background: var(--ds-glass-2);
+  box-shadow: inset 0 0 0 1px var(--ds-hair);
 }
 
 .segmented button {
-  min-width: 46px;
-  min-height: 38px;
+  min-width: 48px;
+  min-height: 40px;
   padding: 0 var(--ds-3);
   border: 0;
   border-radius: 100px;
@@ -273,85 +337,94 @@ button, input, select { font: inherit; color: inherit; }
   font-size: 12.5px;
   color: var(--ds-ink-3);
   cursor: pointer;
+  transition: color .2s var(--ds-ease), background .28s var(--ds-ease), transform .18s var(--ds-ease);
 }
 
-.segmented button[aria-pressed="true"] { background: var(--ds-ink); color: var(--ds-inverse); }
+.segmented button:hover { color: var(--ds-ink); background: var(--ds-secondary-soft); }
+.segmented button:active { transform: scale(.94); }
 
+.segmented button[aria-pressed="true"] {
+  background: var(--ds-secondary);
+  color: var(--ds-secondary-ink);
+  font-weight: 500;
+}
+
+/* Calcola: l'unico elemento con il colore primario pieno */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: var(--ds-2);
-  min-height: 52px;
+  min-height: 54px;
   padding: 0 var(--ds-5);
   border: 0;
   border-radius: 100px;
-  background: var(--ds-ink);
-  color: var(--ds-inverse);
+  background: var(--ds-primary);
+  color: var(--ds-primary-ink);
   font-family: var(--ds-mono);
   font-size: 12.5px;
   letter-spacing: .14em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: opacity .15s ease;
+  box-shadow: 0 10px 24px -12px color-mix(in srgb, var(--ds-primary) 82%, transparent);
+  transition: transform .18s var(--ds-ease), box-shadow .22s var(--ds-ease), filter .18s var(--ds-ease);
 }
 
-.btn:hover { opacity: .86; }
+.btn:hover { filter: brightness(1.08); box-shadow: 0 14px 30px -12px color-mix(in srgb, var(--ds-primary) 88%, transparent); }
+.btn:active { transform: scale(.975); }
 
-/* ---------- tooltip: tutto cio' che prima era un paragrafo ---------- */
-.tip { position: relative; display: inline-flex; }
-
-.tip-btn {
-  width: 16px;
-  height: 16px;
-  display: grid;
-  place-items: center;
-  padding: 0;
-  border: 1px solid var(--ds-line-2);
-  border-radius: 100px;
+/* terziario: un link, non un bottone */
+.link-3 {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 0;
+  border: 0;
   background: none;
-  color: var(--ds-ink-3);
-  font-family: var(--ds-mono);
-  font-size: 9.5px;
-  line-height: 1;
-  cursor: help;
+  color: var(--ds-link);
+  font-size: 13.5px;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  cursor: pointer;
+  transition: opacity .18s var(--ds-ease), gap .18s var(--ds-ease);
 }
 
-.tip-btn:hover { color: var(--ds-ink); border-color: var(--ds-ink); }
+.link-3:hover { opacity: .78; gap: 9px; }
 
-.tip-box {
-  position: absolute;
-  bottom: calc(100% + 8px);
-  left: -8px;
-  z-index: 20;
-  width: max-content;
-  max-width: 268px;
-  padding: 10px 12px;
-  border-radius: var(--ds-r-md);
-  background: var(--ds-ink);
-  color: var(--ds-inverse);
-  font-family: var(--ds-sans);
-  font-size: 12.5px;
-  font-weight: 500;
-  line-height: 1.45;
-  letter-spacing: 0;
-  text-transform: none;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(3px);
-  transition: opacity .14s ease, transform .14s ease, visibility .14s;
+/* ---------- dialogo "perché questi dati" ---------- */
+dialog {
+  /* margin: auto tiene il modale centrato: azzerarlo lo incolla in alto a
+     sinistra, ed e' esattamente cio' che fa un reset distratto. */
+  margin: auto;
+  width: min(620px, calc(100vw - 32px));
+  max-height: min(84vh, 720px);
+  padding: 0;
+  border: 0;
+  border-radius: var(--ds-r-lg);
+  background: var(--ds-glass);
+  backdrop-filter: blur(30px) saturate(170%);
+  -webkit-backdrop-filter: blur(30px) saturate(170%);
+  color: var(--ds-ink);
+  box-shadow: var(--ds-shadow);
+  overflow: auto;
 }
 
-.tip:hover .tip-box,
-.tip:focus-within .tip-box { opacity: 1; visibility: visible; transform: none; }
+dialog::backdrop { background: rgba(20, 18, 14, .42); backdrop-filter: blur(4px); }
 
-@media (max-width: 620px) { .tip-box { left: auto; right: -8px; max-width: 70vw; } }
+dialog[open] { animation: dialog-in .34s var(--ds-ease) both; }
+dialog[open]::backdrop { animation: fade-in .34s var(--ds-ease) both; }
+
+@keyframes dialog-in { from { opacity: 0; transform: translateY(14px) scale(.985); } }
+@keyframes fade-in { from { opacity: 0; } }
 
 /* ---------- donut ---------- */
 .donut-wrap { position: relative; display: grid; place-items: center; }
-.donut { display: block; width: 100%; max-width: 262px; height: auto; }
-.donut circle { transition: opacity .15s ease; }
-.donut-wrap[data-hover="1"] circle[data-seg]:not(.is-on) { opacity: .35; }
+.donut { display: block; width: 100%; max-width: 268px; height: auto; overflow: visible; }
+.donut circle { transition: opacity .2s var(--ds-ease); }
+.donut-wrap[data-hover="1"] circle[data-seg]:not(.is-on) { opacity: .3; }
+.donut circle[data-seg] { cursor: pointer; }
 
 .donut-center {
   position: absolute;
@@ -359,75 +432,65 @@ button, input, select { font: inherit; color: inherit; }
   display: grid;
   place-content: center;
   text-align: center;
-  gap: 2px;
+  gap: 3px;
   pointer-events: none;
 }
 
-.legend { display: flex; flex-direction: column; gap: 2px; width: 100%; }
+.legend { display: flex; flex-direction: column; gap: var(--ds-1); width: 100%; }
 
 .legend-row {
   display: grid;
-  grid-template-columns: 10px minmax(0, 1fr) auto;
+  grid-template-columns: 12px minmax(0, 1fr) auto;
   align-items: center;
   gap: var(--ds-3);
   padding: 11px var(--ds-3);
   border-radius: var(--ds-r-sm);
-  background: none;
-  border: 0;
-  width: 100%;
-  text-align: left;
-  cursor: default;
-  transition: background .14s ease;
+  transition: background .2s var(--ds-ease), transform .2s var(--ds-ease);
 }
 
-.legend-row:hover, .legend-row.is-on { background: var(--ds-surface-2); }
-.legend-row i { width: 10px; height: 10px; border-radius: 3px; }
+.legend-row:hover, .legend-row.is-on { background: var(--ds-glass-2); transform: translateX(2px); }
+.legend-row i { width: 12px; height: 12px; border-radius: 4px; }
 .legend-row .k { font-size: 14px; font-weight: 600; }
 .legend-row .v { font-family: var(--ds-mono); font-size: 13.5px; font-variant-numeric: tabular-nums; }
 .legend-row .p { display: block; font-family: var(--ds-mono); font-size: 11px; color: var(--ds-ink-3); text-align: right; }
 .legend-row > span:last-child { text-align: right; }
 
-/* ---------- prefers-reduced-motion ---------- */
+/* ---------- micromotion ---------- */
+@keyframes rise { from { opacity: 0; transform: translateY(10px); } }
+@keyframes rise-sm { from { opacity: 0; transform: translateY(6px); } }
+
+.rise { animation: rise .5s var(--ds-ease) both; }
+.rise-2 { animation: rise .5s var(--ds-ease) .07s both; }
+.legend-row.in { animation: rise-sm .38s var(--ds-ease) both; }
+
 @media (prefers-reduced-motion: reduce) {
-  * { transition-duration: .01ms !important; animation-duration: .01ms !important; scroll-behavior: auto !important; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* ---------- impaginato ---------- */
 .page { max-width: 1120px; margin: 0 auto; padding: 0 var(--ds-4); }
 
-.bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--ds-3);
-  padding: var(--ds-4) 0;
-}
+.bar { display: flex; align-items: center; justify-content: space-between; gap: var(--ds-3); padding: var(--ds-4) 0; }
+.bar b { font-family: var(--ds-mono); font-size: 11px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; }
 
-.bar b {
-  font-family: var(--ds-mono);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-}
-
-/* ---------- hero: una schermata, non una di piu' ---------- */
-.hero {
-  display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
-  gap: var(--ds-4);
-  align-items: stretch;
-}
+/* ---------- hero ---------- */
+.hero { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: var(--ds-4); align-items: stretch; }
 
 .panel { display: flex; flex-direction: column; gap: var(--ds-4); padding: var(--ds-5); }
-.panel .duo { display: grid; grid-template-columns: 1fr; gap: var(--ds-4); }
+.panel .stack { display: grid; grid-template-columns: 1fr; gap: var(--ds-4); }
 .panel .foot { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--ds-3); margin-top: auto; }
+.panel .why { padding-top: var(--ds-1); }
 
 .viz { display: grid; grid-template-rows: auto 1fr auto; gap: var(--ds-4); padding: var(--ds-5); }
 .viz-head { display: flex; align-items: center; justify-content: space-between; gap: var(--ds-3); }
-.viz-body { display: grid; grid-template-columns: minmax(180px, 262px) minmax(0, 1fr); gap: var(--ds-4); align-items: center; }
-.num-c { font-size: clamp(26px, 3.1vw, 34px); line-height: 1.05; }
-.viz-foot { display: flex; align-items: center; gap: var(--ds-2); padding-top: var(--ds-3); border-top: 1px solid var(--ds-line); }
+.viz-body { display: grid; grid-template-columns: minmax(180px, 268px) minmax(0, 1fr); gap: var(--ds-4); align-items: center; }
+.num-c { font-size: clamp(27px, 3.2vw, 35px); line-height: 1.05; }
+.viz-foot { display: flex; align-items: center; gap: var(--ds-2); padding-top: var(--ds-3); box-shadow: 0 -1px 0 var(--ds-hair); }
 
 .cue {
   display: inline-flex;
@@ -440,11 +503,12 @@ button, input, select { font: inherit; color: inherit; }
   font-size: 11px;
   letter-spacing: .14em;
   text-transform: uppercase;
+  transition: color .2s var(--ds-ease);
 }
 
 .cue:hover { color: var(--ds-ink); }
-.cue span { transition: transform .18s ease; }
-.cue:hover span { transform: translateY(2px); }
+.cue span { transition: transform .22s var(--ds-ease); }
+.cue:hover span { transform: translateY(3px); }
 
 @media (max-width: 900px) {
   .hero { grid-template-columns: 1fr; }
@@ -453,21 +517,36 @@ button, input, select { font: inherit; color: inherit; }
   .panel .foot .btn { width: 100%; }
 }
 
+/* ---------- dialogo ---------- */
+.why-body { padding: var(--ds-5); display: flex; flex-direction: column; gap: var(--ds-4); }
+.why-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--ds-4); }
+.why-list { display: flex; flex-direction: column; gap: var(--ds-3); margin: 0; }
+.why-list div { display: grid; gap: 2px; padding-top: var(--ds-3); box-shadow: 0 -1px 0 var(--ds-hair); }
+.why-list dt { font-size: 14.5px; font-weight: 700; }
+.why-list dd { margin: 0; font-size: 13.5px; line-height: 1.55; color: var(--ds-ink-2); }
+
+.x {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 100px;
+  background: var(--ds-glass-2);
+  color: var(--ds-ink-2);
+  font-size: 17px;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform .18s var(--ds-ease), color .18s var(--ds-ease);
+}
+
+.x:hover { transform: rotate(90deg); color: var(--ds-ink); }
+
 /* ---------- sotto la piega ---------- */
 .deep { padding-bottom: var(--ds-6); scroll-margin-top: var(--ds-3); }
 
-.tiles {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
-  gap: 1px;
-  background: var(--ds-line);
-  border: 1px solid var(--ds-line);
-  border-radius: var(--ds-r-lg);
-  overflow: hidden;
-  margin-bottom: var(--ds-4);
-}
-
-.tile { display: flex; flex-direction: column; gap: 3px; padding: var(--ds-4); background: var(--ds-surface); }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(152px, 1fr)); gap: var(--ds-3); margin-bottom: var(--ds-4); }
+.tile { display: flex; flex-direction: column; gap: 4px; padding: var(--ds-4); border-radius: var(--ds-r-md); }
 .tile .v { font-size: 21px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
 
 .cols { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); gap: var(--ds-4); align-items: start; }
@@ -477,53 +556,37 @@ button, input, select { font: inherit; color: inherit; }
 .deep-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--ds-4); padding-bottom: var(--ds-3); flex-wrap: wrap; }
 .deep-head .h2 { white-space: nowrap; }
 
-.group {
-  font-family: var(--ds-mono);
-  font-size: 10.5px;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  color: var(--ds-ink-3);
-  padding: var(--ds-5) 0 var(--ds-2);
-}
+.group { font-family: var(--ds-mono); font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--ds-ink-3); padding: var(--ds-5) 0 var(--ds-2); }
 
 .row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   gap: var(--ds-4);
   align-items: baseline;
-  padding: 9px 0;
-  border-top: 1px solid var(--ds-line);
+  padding: 10px 0;
+  box-shadow: 0 -1px 0 var(--ds-hair);
 }
 
 .row .name { font-size: 14.5px; }
-.row .why { display: block; font-family: var(--ds-mono); font-size: 11px; line-height: 1.5; color: var(--ds-ink-3); margin-top: 2px; overflow-wrap: anywhere; }
+.row .txt { display: block; font-family: var(--ds-mono); font-size: 11px; line-height: 1.5; color: var(--ds-ink-3); margin-top: 2px; overflow-wrap: anywhere; }
 .row .amt { font-family: var(--ds-mono); font-size: 14px; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .row.sub { padding-left: var(--ds-4); }
 .row.sub .name, .row.sub .amt { color: var(--ds-ink-2); font-size: 13.5px; }
-.row.tot { border-top: 1px solid var(--ds-line-2); }
+.row.tot { box-shadow: 0 -1px 0 var(--ds-hair-2); }
 .row.tot .name, .row.tot .amt { font-weight: 700; }
 
-.flag {
-  display: flex;
-  gap: var(--ds-3);
-  margin-top: var(--ds-4);
-  padding: var(--ds-3) var(--ds-4);
-  border: 1px solid var(--ds-line-2);
-  border-radius: var(--ds-r-md);
-  font-size: 13px;
-  line-height: 1.5;
-  color: var(--ds-ink-2);
-}
+.flag { display: flex; gap: var(--ds-3); margin-top: var(--ds-4); padding: var(--ds-3) var(--ds-4); border-radius: var(--ds-r-md); background: var(--ds-primary-soft); font-size: 13px; line-height: 1.5; color: var(--ds-ink-2); }
 
-details { border-top: 1px solid var(--ds-line); padding: var(--ds-3) 0; }
-details:first-of-type { border-top: 0; padding-top: 0; }
+details { padding: var(--ds-3) 0; box-shadow: 0 -1px 0 var(--ds-hair); }
+details:first-of-type { box-shadow: none; padding-top: 0; }
 summary { cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; gap: var(--ds-3); font-size: 14px; font-weight: 600; }
 summary::-webkit-details-marker { display: none; }
-summary::after { content: ""; width: 6px; height: 6px; border-right: 1.5px solid var(--ds-ink-3); border-bottom: 1.5px solid var(--ds-ink-3); transform: translateY(-2px) rotate(45deg); transition: transform .18s ease; }
+summary::after { content: ""; width: 6px; height: 6px; border-right: 1.5px solid var(--ds-ink-3); border-bottom: 1.5px solid var(--ds-ink-3); transform: translateY(-2px) rotate(45deg); transition: transform .22s var(--ds-ease); }
 details[open] summary::after { transform: translateY(1px) rotate(225deg); }
 details ul { margin: var(--ds-3) 0 var(--ds-1); padding-left: 16px; display: flex; flex-direction: column; gap: var(--ds-2); font-size: 13px; line-height: 1.5; color: var(--ds-ink-2); }
+details[open] ul { animation: rise-sm .3s var(--ds-ease) both; }
 
-footer { padding: var(--ds-4) 0 var(--ds-5); border-top: 1px solid var(--ds-line); font-size: 12.5px; color: var(--ds-ink-3); }
+footer { padding: var(--ds-4) 0 var(--ds-5); box-shadow: 0 -1px 0 var(--ds-hair); font-size: 12.5px; color: var(--ds-ink-3); }
 
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 </style>
@@ -535,7 +598,7 @@ footer { padding: var(--ds-4) 0 var(--ds-5); border-top: 1px solid var(--ds-line
   </header>
 
   <section class="hero">
-    <form class="card panel" id="form">
+    <form class="glass panel rise" id="form">
       <div class="field">
         <span class="field-label" id="lbl-ral">Retribuzione annua lorda</span>
         <div class="input">
@@ -544,30 +607,25 @@ footer { padding: var(--ds-4) 0 var(--ds-5); border-top: 1px solid var(--ds-line
         </div>
       </div>
 
-      <div class="field">
-        <label class="field-label" for="regione">
-          Regione
-          <span class="tip"><button type="button" class="tip-btn" aria-label="Dettaglio sulla regione">i</button><span class="tip-box" role="tooltip" id="tip-regione"></span></span>
-        </label>
-        <div class="select"><select id="regione" name="regione"></select></div>
-      </div>
-
-      <div class="duo">
+      <div class="stack">
         <div class="field">
-          <label class="field-label" for="contratto">
-            Contratto
-            <span class="tip"><button type="button" class="tip-btn" aria-label="Dettaglio sul contratto">i</button><span class="tip-box" role="tooltip" id="tip-contratto"></span></span>
-          </label>
+          <label class="field-label" for="regione">Regione</label>
+          <div class="select"><select id="regione" name="regione"></select></div>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="contratto">Tipologia di contratto</label>
           <div class="select"><select id="contratto" name="contratto"></select></div>
         </div>
 
         <div class="field">
-          <label class="field-label" for="agevolazione">
-            Agevolazione
-            <span class="tip"><button type="button" class="tip-btn" aria-label="Dettaglio sull'agevolazione">i</button><span class="tip-box" role="tooltip" id="tip-agevolazione"></span></span>
-          </label>
+          <label class="field-label" for="agevolazione">Agevolazioni</label>
           <div class="select"><select id="agevolazione" name="agevolazione"></select></div>
         </div>
+      </div>
+
+      <div class="why">
+        <button type="button" class="link-3" id="apri-why">Perché ti chiediamo questi dati <span aria-hidden="true">→</span></button>
       </div>
 
       <div class="foot">
@@ -583,13 +641,10 @@ footer { padding: var(--ds-4) 0 var(--ds-5); border-top: 1px solid var(--ds-line
       </div>
     </form>
 
-    <figure class="card viz">
+    <figure class="glass viz rise-2">
       <figcaption class="viz-head">
         <span class="eyebrow">Dove va la RAL</span>
-        <span class="pill">
-          Ipotesi
-          <span class="tip"><button type="button" class="tip-btn" aria-label="Ipotesi del calcolo">i</button><span class="tip-box" role="tooltip">Full time, anno intero, nessun familiare a carico. Il comune non è un input: addizionale comunale allo 0,80%, il massimo ordinario di legge.</span></span>
-        </span>
+        <span class="pill" id="ctx-2">30.000 €</span>
       </figcaption>
 
       <div class="viz-body">
@@ -608,7 +663,6 @@ footer { padding: var(--ds-4) 0 var(--ds-5); border-top: 1px solid var(--ds-line
 
       <div class="viz-foot">
         <span class="small mono" id="quota">—</span>
-        <span class="tip"><button type="button" class="tip-btn" aria-label="Come si legge">i</button><span class="tip-box" role="tooltip">Il netto comprende trattamento integrativo e somma integrativa, che alzano la busta senza far parte della RAL. Il TFR resta fuori: è accantonato, non pagato ogni mese.</span></span>
       </div>
     </figure>
   </section>
@@ -619,7 +673,7 @@ footer { padding: var(--ds-4) 0 var(--ds-5); border-top: 1px solid var(--ds-line
     <div class="tiles" id="tiles"></div>
 
     <div class="cols">
-      <section class="card pad">
+      <section class="glass pad">
         <div class="deep-head">
           <h2 class="h2">Il conto, riga per riga</h2>
           <span class="eyebrow" id="ledger-ctx"></span>
@@ -627,8 +681,13 @@ footer { padding: var(--ds-4) 0 var(--ds-5); border-top: 1px solid var(--ds-line
         <div id="ledger"></div>
       </section>
 
-      <aside class="card card--quiet pad">
+      <aside class="glass glass--quiet pad">
         <details open>
+          <summary>Le tue scelte</summary>
+          <ul id="scelte"></ul>
+        </details>
+
+        <details>
           <summary>Semplificazioni</summary>
           <ul>
             <li>Full time, anno intero: detrazioni e bonus non ragguagliati ai giorni.</li>
@@ -649,7 +708,6 @@ footer { padding: var(--ds-4) 0 var(--ds-5); border-top: 1px solid var(--ds-line
             <li>Trattamento integrativo — D.L. 3/2020.</li>
             <li>Massimale 122.295 € e prima fascia 56.224 € — INPS circ. 6/2026.</li>
             <li>Addizionali regionali 2026, tutte e 21 le regioni — MEF, Dipartimento delle Finanze.</li>
-            <li id="fonte-regione"></li>
           </ul>
         </details>
 
@@ -667,6 +725,45 @@ footer { padding: var(--ds-4) 0 var(--ds-5); border-top: 1px solid var(--ds-line
 
   <footer>Prototipo dimostrativo per un task di selezione: non è un cedolino, non è un prodotto Jet HR, non sostituisce il consulente del lavoro.</footer>
 </div>
+
+<dialog id="why">
+  <div class="why-body">
+    <div class="why-head">
+      <div>
+        <span class="eyebrow">Trasparenza</span>
+        <h2 class="h2" style="margin-top:6px">Perché ti chiediamo questi dati</h2>
+      </div>
+      <button class="x" type="button" id="chiudi-why" aria-label="Chiudi">✕</button>
+    </div>
+
+    <p class="small">Nessuno di questi campi ti identifica: non chiediamo nome, codice fiscale, datore o comune. Il calcolo gira per intero nel tuo browser, niente viene inviato da nessuna parte. Servono solo perché ognuno sposta una parte diversa della busta paga.</p>
+
+    <dl class="why-list">
+      <div>
+        <dt>Retribuzione annua lorda</dt>
+        <dd>È la base di tutto: da qui si calcolano prima i contributi, poi l'IRPEF su ciò che resta. Conta anche il livello: le detrazioni da lavoro dipendente calano al crescere del reddito e si azzerano a 50.000 €.</dd>
+      </div>
+      <div>
+        <dt>Regione</dt>
+        <dd>Cambia solo l'addizionale regionale, che però ogni regione decide da sé: aliquote, scaglioni, esenzioni e detrazioni. Su 35.000 € di RAL, fra la regione più leggera e la più pesante ballano oltre 400 € l'anno.</dd>
+      </div>
+      <div>
+        <dt>Tipologia di contratto</dt>
+        <dd>Sposta l'aliquota contributiva a tuo carico: 5,84% da apprendista, 9,19% nel caso standard, 9,49% nell'industria che versa la CIGS. Attenzione all'effetto indiretto: meno contributi significa più reddito imponibile, quindi il netto non cresce quanto il risparmio contributivo.</dd>
+      </div>
+      <div>
+        <dt>Agevolazioni</dt>
+        <dd>Riducono la quota di reddito che viene tassata — 50% o 40% per gli impatriati, 10% per docenti e ricercatori — ma non toccano i contributi, dovuti sulla retribuzione piena. Le detrazioni e i bonus restano commisurati al reddito al lordo della quota esente.</dd>
+      </div>
+      <div>
+        <dt>Mensilità</dt>
+        <dd>Non cambia di un euro il netto annuo: cambia solo in quante parti viene diviso. Con 14 mensilità la singola busta è più leggera, non lo è l'anno.</dd>
+      </div>
+    </dl>
+
+    <p class="small">Restano fuori i dati che sposterebbero ancora il risultato e che qui non chiediamo: comune di residenza, familiari a carico, altri redditi, oneri deducibili.</p>
+  </div>
+</dialog>
 
 <script type="module">
 /**
@@ -1359,6 +1456,8 @@ const num = (n, dec = 0) =>
 const $ = (id) => document.getElementById(id);
 const parseRal = (raw) => Number(String(raw).replace(/[^\d,]/g, "").replace(",", ".")) || 0;
 
+const RIDOTTO = matchMedia("(prefers-reduced-motion: reduce)");
+
 let mensilita = 13;
 let ultimo = null;
 
@@ -1381,37 +1480,85 @@ opzioni($("agevolazione"), Object.entries(AGEVOLAZIONI).map(([k, v]) => [k, v.no
 
 /* ---------- donut ----------
  * Parte-tutto a colpo d'occhio: tre segmenti, valori lontani fra loro.
- * La rampa e' sequenziale (piu' scuro = la quota che conta), e l'identita' non
- * e' mai affidata al solo grigio: ogni segmento ha la sua riga in legenda con
- * importo e percentuale, e il conto per esteso sta sotto la piega.
+ * L'identita' non e' mai affidata al solo colore — ogni segmento ha la sua riga
+ * in legenda con importo e percentuale, e il conto completo sta sotto la piega.
  */
 const R = 78;
 const SW = 17;
 const C = 2 * Math.PI * R;
-const GAP = 4; // separazione in superficie fra due segmenti, in unita' di percorso
+const GAP = 4; // separazione in superficie fra due archi, in unita' di percorso
+const DURATA = 900;
 
-function donut(parti) {
+const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+
+function costruisciDonut(parti) {
   const totale = parti.reduce((s, p) => s + p.v, 0) || 1;
   let offset = 0;
 
   const archi = parti
     .map((p) => {
       const len = (p.v / totale) * C;
-      const dash = Math.max(0, len - GAP);
-      const el = `<circle data-seg="${p.k}" cx="100" cy="100" r="${R}" fill="none"
-        stroke="var(--ds-${p.k})" stroke-width="${SW}"
-        stroke-dasharray="${dash} ${C - dash}" stroke-dashoffset="${-offset}"
-        transform="rotate(-90 100 100)"><title>${p.l}: ${eur(p.v)}</title></circle>`;
+      p.len = len;
+      p.offset = offset;
       offset += len;
-      return el;
+      return `<circle data-seg="${p.k}" cx="100" cy="100" r="${R}" fill="none"
+        stroke="var(--ds-${p.k})" stroke-width="${SW}" stroke-linecap="butt"
+        stroke-dasharray="0 ${C}" stroke-dashoffset="${-p.offset}"
+        transform="rotate(-90 100 100)"><title>${p.l}: ${eur(p.v)}</title></circle>`;
     })
     .join("");
 
-  $("donut").innerHTML = `<circle cx="100" cy="100" r="${R}" fill="none" stroke="var(--ds-track)" stroke-width="1"></circle>${archi}`;
+  $("donut").innerHTML = `<circle cx="100" cy="100" r="${R}" fill="none" stroke="var(--ds-track)" stroke-width="${SW}"></circle>${archi}`;
+  $("donut-desc").textContent = parti.map((p) => `${p.l}: ${eur(p.v)}, ${num((p.v / totale) * 100, 1)}%`).join(". ");
+}
 
-  $("donut-desc").textContent = parti
-    .map((p) => `${p.l}: ${eur(p.v)}, ${num((p.v / totale) * 100, 1)}%`)
-    .join(". ");
+/** Disegna gli archi fino alla frazione `p` del giro (0..1). */
+function tracciaFino(parti, p) {
+  const disegnato = p * C;
+  for (const parte of parti) {
+    const quota = Math.min(Math.max(disegnato - parte.offset, 0), parte.len);
+    const dash = Math.max(0, quota >= parte.len ? parte.len - GAP : quota);
+    $("donut").querySelector(`circle[data-seg="${parte.k}"]`)?.setAttribute("stroke-dasharray", `${dash} ${C - dash}`);
+  }
+}
+
+/**
+ * Il grafico si disegna, il numero al centro sale, poi le voci compaiono una
+ * dopo l'altra. Con prefers-reduced-motion tutto arriva al valore finale subito.
+ */
+function anima(r) {
+  const parti = r.parti;
+  const finale = r.totali.nettoMensile;
+
+  if (RIDOTTO.matches) {
+    tracciaFino(parti, 1);
+    $("c-value").textContent = eur(finale);
+    mostraLegenda(r, false);
+    return;
+  }
+
+  const t0 = performance.now();
+  const passo = (ora) => {
+    const t = Math.min((ora - t0) / DURATA, 1);
+    const e = easeOut(t);
+    tracciaFino(parti, e);
+    $("c-value").textContent = eur(finale * e);
+    if (t < 1) requestAnimationFrame(passo);
+    else mostraLegenda(r, true);
+  };
+  requestAnimationFrame(passo);
+}
+
+function mostraLegenda(r, staggera) {
+  $("legend").innerHTML = r.parti
+    .map(
+      (p, i) => `<div class="legend-row${staggera ? " in" : ""}" data-seg="${p.k}" style="animation-delay:${i * 90}ms">
+        <i style="background:var(--ds-${p.k})"></i>
+        <span class="k">${p.l}</span>
+        <span><span class="v">${eur(p.v)}</span> <span class="p">${num((p.v / r.input.ral) * 100, 1)}%</span></span>
+      </div>`,
+    )
+    .join("");
 }
 
 /* Il tooltip del grafico e' il centro del donut: l'occhio e' gia' li'. */
@@ -1434,11 +1581,11 @@ function evidenzia(k) {
   }
 }
 
-function riga({ nome, perche, importo, segno = "", classe = "" }) {
+function riga({ nome, testo, importo, segno = "", classe = "" }) {
   const cls = ["row", classe].filter(Boolean).join(" ");
   const prefisso = segno === "neg" ? "−" : segno === "pos" ? "+" : "";
   return `<div class="${cls}">
-    <div><span class="name">${nome}</span>${perche ? `<span class="why">${perche}</span>` : ""}</div>
+    <div><span class="name">${nome}</span>${testo ? `<span class="txt">${testo}</span>` : ""}</div>
     <div class="amt">${prefisso}${eur(Math.abs(importo))}</div>
   </div>`;
 }
@@ -1450,7 +1597,7 @@ function formulaDetrazione(reddito, importo) {
   return `1.910 × (50.000 − ${num(reddito)}) / 22.000`;
 }
 
-function render(r) {
+function render(r, animato) {
   const t = r.totali;
   const { regione, contratto, agevolazione } = r.scelte;
 
@@ -1462,25 +1609,28 @@ function render(r) {
   ultimo = r;
 
   $("ctx").textContent = `2026 · ${regione.nome}`;
-  $("tip-regione").textContent = `${regione.norma}. Aliquote pubblicate il ${regione.pubblicazione}.`;
-  $("tip-contratto").textContent = contratto.nota;
-  $("tip-agevolazione").textContent = agevolazione.nota || "Tutta la retribuzione concorre al reddito imponibile.";
-  $("fonte-regione").textContent = `${regione.nome}: ${regione.norma}.`;
+  $("ctx-2").textContent = `${num(r.input.ral)} €`;
+  $("c-label").textContent = "Netto al mese";
+  $("c-sub").textContent = `su ${r.input.mensilita} mensilità`;
+  $("quota").textContent = `${num((1 - t.cuneoNetto) * 100, 1)} € su 100 di RAL restano in busta`;
 
-  donut(r.parti);
-
-  $("legend").innerHTML = r.parti
-    .map(
-      (p) => `<div class="legend-row" data-seg="${p.k}">
-        <i style="background:var(--ds-${p.k})"></i>
-        <span class="k">${p.l}</span>
-        <span><span class="v">${eur(p.v)}</span> <span class="p">${num((p.v / r.input.ral) * 100, 1)}%</span></span>
-      </div>`,
-    )
+  $("scelte").innerHTML = [
+    `<strong>${regione.nome}</strong> — ${regione.norma}, aliquote pubblicate il ${regione.pubblicazione}.`,
+    `<strong>${contratto.nome}</strong> — ${contratto.nota}`,
+    `<strong>${agevolazione.nome}</strong> — ${agevolazione.nota || "tutta la retribuzione concorre al reddito imponibile."}`,
+  ]
+    .map((x) => `<li>${x}</li>`)
     .join("");
 
-  evidenzia(null);
-  $("quota").textContent = `${num((1 - t.cuneoNetto) * 100, 1)} € su 100 di RAL restano in busta`;
+  costruisciDonut(r.parti);
+  if (animato) {
+    $("legend").innerHTML = "";
+    anima(r);
+  } else {
+    tracciaFino(r.parti, 1);
+    $("c-value").textContent = eur(t.nettoMensile);
+    mostraLegenda(r, false);
+  }
 
   $("tiles").innerHTML = [
     ["Netto annuo", eur(t.nettoAnnuo)],
@@ -1490,7 +1640,7 @@ function render(r) {
     ["Aliquota effettiva", pct(t.aliquotaEffettiva, 1)],
     ["TFR maturato", eur(r.tfr.accantonato)],
   ]
-    .map(([k, v]) => `<div class="tile"><span class="eyebrow">${k}</span><span class="v">${v}</span></div>`)
+    .map(([k, v]) => `<div class="glass tile"><span class="eyebrow">${k}</span><span class="v">${v}</span></div>`)
     .join("");
 
   const c = r.contributi;
@@ -1503,15 +1653,15 @@ function render(r) {
     ${riga({ nome: "Retribuzione annua lorda", importo: r.input.ral, classe: "tot" })}
 
     <div class="group">Contributi</div>
-    ${riga({ nome: contratto.voce, perche: `${eur(c.imponibile)} × ${pct(c.aliquota, 2)}`, importo: c.base, segno: "neg" })}
-    ${c.aggiuntivo > 0 ? riga({ nome: "Aliquota aggiuntiva 1%", perche: `(${eur(c.imponibile)} − ${eur(56224)}) × 1%`, importo: c.aggiuntivo, segno: "neg" }) : ""}
-    ${riga({ nome: "Reddito al netto dei contributi", perche: "i contributi sono deducibili", importo: r.redditoNettoContributi, classe: "tot" })}
+    ${riga({ nome: contratto.voce, testo: `${eur(c.imponibile)} × ${pct(c.aliquota, 2)}`, importo: c.base, segno: "neg" })}
+    ${c.aggiuntivo > 0 ? riga({ nome: "Aliquota aggiuntiva 1%", testo: `(${eur(c.imponibile)} − ${eur(56224)}) × 1%`, importo: c.aggiuntivo, segno: "neg" }) : ""}
+    ${riga({ nome: "Reddito al netto dei contributi", testo: "i contributi sono deducibili", importo: r.redditoNettoContributi, classe: "tot" })}
 
     ${
       r.quotaEsente > 0
         ? `<div class="group">Agevolazione</div>
-    ${riga({ nome: agevolazione.nome, perche: `${agevolazione.norma}: quota che non concorre al reddito`, importo: r.quotaEsente, segno: "neg" })}
-    ${riga({ nome: "Imponibile fiscale", perche: "detrazioni e bonus restano commisurati al reddito pieno", importo: r.imponibileFiscale, classe: "tot" })}`
+    ${riga({ nome: agevolazione.nome, testo: `${agevolazione.norma}: quota che non concorre al reddito`, importo: r.quotaEsente, segno: "neg" })}
+    ${riga({ nome: "Imponibile fiscale", testo: "detrazioni e bonus restano commisurati al reddito pieno", importo: r.imponibileFiscale, classe: "tot" })}`
         : ""
     }
 
@@ -1520,20 +1670,20 @@ function render(r) {
       .map((s) =>
         riga({
           nome: `${pct(s.aliquota, 0)} · da ${eur(s.da)} a ${s.a === Infinity ? "oltre" : eur(s.a)}`,
-          perche: `${eur(s.imponibile)} × ${pct(s.aliquota, 0)}`,
+          testo: `${eur(s.imponibile)} × ${pct(s.aliquota, 0)}`,
           importo: s.imposta,
           classe: "sub",
         }),
       )
       .join("")}
     ${riga({ nome: "IRPEF lorda", importo: r.irpef.lorda, classe: "tot" })}
-    ${riga({ nome: "Detrazione da lavoro dipendente", perche: formulaDetrazione(r.redditoRiferimento, detrLavoro.base), importo: detrLavoro.base, segno: "pos" })}
-    ${detrLavoro.bonus > 0 ? riga({ nome: "Detrazione aggiuntiva art. 13 c. 1-bis", perche: "tra 25.000 € e 35.000 € di reddito", importo: detrLavoro.bonus, segno: "pos" }) : ""}
+    ${riga({ nome: "Detrazione da lavoro dipendente", testo: formulaDetrazione(r.redditoRiferimento, detrLavoro.base), importo: detrLavoro.base, segno: "pos" })}
+    ${detrLavoro.bonus > 0 ? riga({ nome: "Detrazione aggiuntiva art. 13 c. 1-bis", testo: "tra 25.000 € e 35.000 € di reddito", importo: detrLavoro.bonus, segno: "pos" }) : ""}
     ${
       r.irpef.detrazioneCuneo > 0
         ? riga({
             nome: "Ulteriore detrazione, taglio del cuneo",
-            perche: r.redditoRiferimento <= 32000 ? "importo pieno tra 20.000 € e 32.000 €" : `1.000 × (40.000 − ${num(r.redditoRiferimento)}) / 8.000`,
+            testo: r.redditoRiferimento <= 32000 ? "importo pieno tra 20.000 € e 32.000 €" : `1.000 × (40.000 − ${num(r.redditoRiferimento)}) / 8.000`,
             importo: r.irpef.detrazioneCuneo,
             segno: "pos",
           })
@@ -1541,7 +1691,7 @@ function render(r) {
     }
     ${riga({
       nome: "IRPEF netta",
-      perche: r.irpef.lorda - r.irpef.detrazioniTotali < 0 ? "detrazioni oltre l'imposta: l'eccedenza non è rimborsabile" : "imposta lorda meno detrazioni",
+      testo: r.irpef.lorda - r.irpef.detrazioniTotali < 0 ? "detrazioni oltre l'imposta: l'eccedenza non è rimborsabile" : "imposta lorda meno detrazioni",
       importo: r.irpef.netta,
       segno: "neg",
       classe: "tot",
@@ -1550,27 +1700,27 @@ function render(r) {
     <div class="group">Addizionali</div>
     ${
       a.regionaleEsente
-        ? riga({ nome: regione.nome, perche: "esente: imponibile sotto la soglia regionale", importo: 0, classe: "sub" })
+        ? riga({ nome: regione.nome, testo: "esente: imponibile sotto la soglia regionale", importo: 0, classe: "sub" })
         : a.regionaleScaglioni
             .map((s) =>
               riga({
                 nome: `${regione.nome} · ${pct(s.aliquota, 2)}`,
-                perche: s.unica ? `aliquota unica sull'intero imponibile: ${eur(s.imponibile)}` : `${eur(s.imponibile)} × ${pct(s.aliquota, 2)}`,
+                testo: s.unica ? `aliquota unica sull'intero imponibile: ${eur(s.imponibile)}` : `${eur(s.imponibile)} × ${pct(s.aliquota, 2)}`,
                 importo: s.imposta,
                 classe: "sub",
               }),
             )
             .join("")
     }
-    ${a.regionaleDetrazione > 0 ? riga({ nome: "Detrazione regionale", perche: "non genera credito d'imposta", importo: a.regionaleDetrazione, segno: "pos", classe: "sub" }) : ""}
-    ${riga({ nome: "Comunale 0,80%", perche: `ipotesi: ${eur(r.imponibileFiscale)} × 0,80%`, importo: a.comunale, classe: "sub" })}
+    ${a.regionaleDetrazione > 0 ? riga({ nome: "Detrazione regionale", testo: "non genera credito d'imposta", importo: a.regionaleDetrazione, segno: "pos", classe: "sub" }) : ""}
+    ${riga({ nome: "Comunale 0,80%", testo: `ipotesi: ${eur(r.imponibileFiscale)} × 0,80%`, importo: a.comunale, classe: "sub" })}
     ${riga({ nome: "Totale addizionali", importo: a.totale, segno: "neg", classe: "tot" })}
 
     ${
       r.bonus.totale > 0
         ? `<div class="group">Integrazioni</div>
-    ${r.bonus.trattamentoIntegrativo > 0 ? riga({ nome: "Trattamento integrativo", perche: "1.200 € annui, spettanti per capienza", importo: r.bonus.trattamentoIntegrativo, segno: "pos" }) : ""}
-    ${r.bonus.sommaIntegrativa > 0 ? riga({ nome: "Somma integrativa", perche: `${eur(r.input.ral)} × ${pct(r.bonus.sommaIntegrativa / r.input.ral, 1)}`, importo: r.bonus.sommaIntegrativa, segno: "pos" }) : ""}`
+    ${r.bonus.trattamentoIntegrativo > 0 ? riga({ nome: "Trattamento integrativo", testo: "1.200 € annui, spettanti per capienza", importo: r.bonus.trattamentoIntegrativo, segno: "pos" }) : ""}
+    ${r.bonus.sommaIntegrativa > 0 ? riga({ nome: "Somma integrativa", testo: `${eur(r.input.ral)} × ${pct(r.bonus.sommaIntegrativa / r.input.ral, 1)}`, importo: r.bonus.sommaIntegrativa, segno: "pos" }) : ""}`
         : ""
     }
 
@@ -1605,19 +1755,19 @@ function scelteCorrenti() {
   };
 }
 
-function aggiorna() {
+function aggiorna(animato = false) {
   const ral = parseRal($("ral").value);
   $("ral").value = ral ? num(ral) : "";
-  render(calcola(ral, scelteCorrenti()));
+  render(calcola(ral, scelteCorrenti()), animato);
 }
 
 $("form").addEventListener("submit", (e) => {
   e.preventDefault();
-  aggiorna();
+  aggiorna(true);
 });
 
 for (const id of ["regione", "contratto", "agevolazione"]) {
-  $(id).addEventListener("change", aggiorna);
+  $(id).addEventListener("change", () => aggiorna(false));
 }
 
 $("mensilita").addEventListener("click", (e) => {
@@ -1625,7 +1775,7 @@ $("mensilita").addEventListener("click", (e) => {
   if (!b) return;
   mensilita = Number(b.dataset.m);
   for (const x of $("mensilita").querySelectorAll("button")) x.setAttribute("aria-pressed", String(x === b));
-  aggiorna();
+  aggiorna(false);
 });
 
 for (const nodo of [$("donut"), $("legend")]) {
@@ -1642,5 +1792,12 @@ document.addEventListener("pointerdown", (e) => {
   if (!e.target.closest(".viz-body")) evidenzia(null);
 });
 
-aggiorna();
+$("apri-why").addEventListener("click", () => $("why").showModal());
+$("chiudi-why").addEventListener("click", () => $("why").close());
+$("why").addEventListener("click", (e) => {
+  // clic sul backdrop: il target e' il dialog stesso, non il contenuto
+  if (e.target === $("why")) $("why").close();
+});
+
+aggiorna(true);
 </script>
