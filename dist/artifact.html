@@ -1530,26 +1530,44 @@ function anima(r) {
   const parti = r.parti;
   const finale = r.totali.nettoMensile;
 
-  if (RIDOTTO.matches) {
+  const subito = () => {
     tracciaFino(parti, 1);
     $("c-value").textContent = eur(finale);
     mostraLegenda(r, false);
+  };
+
+  // requestAnimationFrame non gira su una tab in secondo piano: senza questa
+  // uscita la pagina resterebbe con il grafico vuoto e un trattino al centro.
+  if (RIDOTTO.matches || document.visibilityState !== "visible") {
+    subito();
     return;
   }
 
-  // Si parte da zero, sempre: senza questo il valore precedente resterebbe
-  // a schermo fino al primo frame utile.
   tracciaFino(parti, 0);
   $("c-value").textContent = eur(0);
 
+  let chiuso = false;
+  const chiudi = (staggera) => {
+    if (chiuso) return;
+    chiuso = true;
+    clearTimeout(rete);
+    tracciaFino(parti, 1);
+    $("c-value").textContent = eur(finale);
+    mostraLegenda(r, staggera);
+  };
+
+  // rete di sicurezza: se i frame non arrivano, il risultato compare comunque
+  const rete = setTimeout(() => chiudi(false), DURATA + 700);
+
   const t0 = performance.now();
   const passo = (ora) => {
+    if (chiuso) return;
     const t = Math.min((ora - t0) / DURATA, 1);
     const e = easeOut(t);
     tracciaFino(parti, e);
     $("c-value").textContent = eur(finale * e);
     if (t < 1) requestAnimationFrame(passo);
-    else mostraLegenda(r, true);
+    else chiudi(true);
   };
   requestAnimationFrame(passo);
 }
