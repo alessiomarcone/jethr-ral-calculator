@@ -1,0 +1,43 @@
+/**
+ * Un'unica sorgente, due output:
+ *   index.html        pagina standalone apribile in locale
+ *   dist/artifact.html frammento per la pubblicazione come Artifact
+ *
+ * Il motore di calcolo viene inlinato in entrambi, cosi' la pagina resta
+ * self-contained e non puo' divergere da src/tax-engine.js.
+ */
+import { readFile, writeFile, mkdir } from "node:fs/promises";
+
+const engine = await readFile(new URL("./src/tax-engine.js", import.meta.url), "utf8");
+const page = await readFile(new URL("./src/page.html", import.meta.url), "utf8");
+const ds = await readFile(new URL("./src/design-system.css", import.meta.url), "utf8");
+
+// Le keyword `export` non servono una volta inlinato lo script.
+const inlined = engine.replace(/^export /gm, "");
+const composed = page
+  .replace("/* DS */", ds.trim())
+  .replace("/* ENGINE */", inlined.trim());
+
+await mkdir(new URL("./dist/", import.meta.url), { recursive: true });
+await writeFile(new URL("./dist/artifact.html", import.meta.url), composed);
+
+const cut = composed.indexOf("</style>") + "</style>".length;
+const head = composed.slice(0, cut);
+const body = composed.slice(cut);
+
+const standalone = `<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Calcolatore RAL lordo-netto per un impiegato a Milano, anno d'imposta 2026.">
+${head}
+</head>
+<body>
+${body}
+</body>
+</html>
+`;
+
+await writeFile(new URL("./index.html", import.meta.url), standalone);
+console.log("build ok: index.html + dist/artifact.html");

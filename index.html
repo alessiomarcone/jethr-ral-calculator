@@ -1,0 +1,1063 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Calcolatore RAL lordo-netto per un impiegato a Milano, anno d'imposta 2026.">
+<title>Dal lordo al netto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+/* =========================================================================
+   PAYSLIP DS — design system del prototipo RAL → netto
+   Fusione di due riferimenti:
+   · Jet HR (jethr.com): inchiostro near-black oliva #11150A, fondi sage,
+     pill a raggio pieno, radius 8/16, impaginazione ariosa ad alto contrasto.
+   · Bento fintech dashboard: blocchi pieni e saturi, numeri giganti in
+     grottesco stretto, micro-label monospace in maiuscoletto.
+   Le serie del grafico NON sono decorative: sono la palette categoriale
+   validata con lo script dataviz (sei check superati in entrambi i temi).
+   ========================================================================= */
+
+:root {
+  /* --- fondi e inchiostri (tema chiaro) --- */
+  --ds-ground: #f1f4f1;
+  --ds-tile: #ffffff;
+  --ds-tile-2: #f6f8f5;
+  --ds-ink: #11150a;
+  --ds-ink-soft: #59615f;
+  --ds-ink-faint: #888a85;
+  --ds-line: #dfe4dd;
+  --ds-line-strong: #c3ccc0;
+  --ds-on-block: #11150a; /* inchiostro sui blocchi pieni, sempre scuro */
+
+  /* --- blocchi pieni: identici nei due temi, ink scuro sopra --- */
+  --ds-lime: #c3cf12;
+  --ds-lilac: #a99cd6;
+  --ds-flame: #f0512a;
+  --ds-sun: #f2d111;
+  --ds-mint: #dde7da;
+
+  /* --- serie del grafico: palette categoriale validata --- */
+  --ds-series-netto: #1baf7a;
+  --ds-series-inps: #2a78d6;
+  --ds-series-irpef: #eb6834;
+  --ds-series-add: #4a3aa7;
+  --ds-series-ink: #ffffff;
+
+  /* --- tipografia --- */
+  --ds-display: "Archivo", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --ds-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* --- forma --- */
+  --ds-r-tile: 22px;
+  --ds-r-field: 12px;
+  --ds-r-pill: 999px;
+  --ds-gap: 14px;
+  --ds-pad: 22px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ds-ground: #0d1008;
+    --ds-tile: #171b12;
+    --ds-tile-2: #1e2318;
+    --ds-ink: #f2f5ee;
+    --ds-ink-soft: #a8b0a2;
+    --ds-ink-faint: #7c847a;
+    --ds-line: #2b3124;
+    --ds-line-strong: #3d4534;
+    --ds-series-netto: #199e70;
+    --ds-series-inps: #3987e5;
+    --ds-series-irpef: #d95926;
+    --ds-series-add: #9085e9;
+    --ds-series-ink: #0d1008;
+  }
+}
+
+:root[data-theme="dark"] {
+  --ds-ground: #0d1008;
+  --ds-tile: #171b12;
+  --ds-tile-2: #1e2318;
+  --ds-ink: #f2f5ee;
+  --ds-ink-soft: #a8b0a2;
+  --ds-ink-faint: #7c847a;
+  --ds-line: #2b3124;
+  --ds-line-strong: #3d4534;
+  --ds-series-netto: #199e70;
+  --ds-series-inps: #3987e5;
+  --ds-series-irpef: #d95926;
+  --ds-series-add: #9085e9;
+  --ds-series-ink: #0d1008;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--ds-ground);
+  color: var(--ds-ink);
+  font-family: var(--ds-display);
+  font-size: 15px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- primitive: pill ---------- */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1.5px solid currentColor;
+  border-radius: var(--ds-r-pill);
+  padding: 7px 15px;
+  font-family: var(--ds-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.pill--solid { border-color: transparent; background: var(--ds-ink); color: var(--ds-ground); }
+.pill--ghost { color: var(--ds-ink-soft); border-color: var(--ds-line-strong); }
+
+/* ---------- primitive: tile ---------- */
+.tile {
+  background: var(--ds-tile);
+  border-radius: var(--ds-r-tile);
+  padding: var(--ds-pad);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+.tile--outline { background: transparent; border: 1.5px solid var(--ds-line); }
+.block-lime  { background: var(--ds-lime);  color: var(--ds-on-block); }
+.block-lilac { background: var(--ds-lilac); color: var(--ds-on-block); }
+.block-flame { background: var(--ds-flame); color: var(--ds-on-block); }
+.block-sun   { background: var(--ds-sun);   color: var(--ds-on-block); }
+.block-mint  { background: var(--ds-mint);  color: var(--ds-on-block); }
+
+/* ---------- primitive: numero gigante ---------- */
+.figure-xl,
+.figure-lg {
+  font-family: var(--ds-display);
+  font-weight: 700;
+  letter-spacing: -.045em;
+  line-height: .88;
+  font-variant-numeric: tabular-nums;
+  margin: 0;
+}
+
+.figure-xl { font-size: clamp(50px, 8.2vw, 96px); letter-spacing: -.04em; }
+.figure-lg { font-size: clamp(30px, 4.4vw, 46px); letter-spacing: -.035em; }
+
+.label {
+  font-family: var(--ds-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+  color: var(--ds-ink-soft);
+}
+
+/* Sui blocchi pieni il testo resta inchiostro pieno: alle dimensioni micro
+   una mescola trasparente scenderebbe sotto il rapporto AA sul flame. */
+.block-lime .label,
+.block-lilac .label,
+.block-flame .label,
+.block-sun .label,
+.block-mint .label { color: var(--ds-on-block); opacity: .92; }
+
+.meta { font-size: 13px; color: var(--ds-ink-soft); margin: 0; }
+.block-lime .meta,
+.block-lilac .meta,
+.block-flame .meta,
+.block-sun .meta,
+.block-mint .meta { color: var(--ds-on-block); opacity: .92; }
+
+/* ---------- primitive: griglia bento ---------- */
+.bento {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--ds-gap);
+  align-items: start;
+}
+
+.span-4 { grid-column: span 4; }
+.span-5 { grid-column: span 5; }
+.span-7 { grid-column: span 7; }
+.span-8 { grid-column: span 8; }
+.span-12 { grid-column: span 12; }
+
+@media (max-width: 960px) {
+  .span-4, .span-5, .span-7, .span-8 { grid-column: span 12; }
+}
+
+/* ---------- primitive: controlli ---------- */
+.control {
+  display: flex;
+  align-items: center;
+  background: var(--ds-tile-2);
+  border: 1.5px solid var(--ds-line-strong);
+  border-radius: var(--ds-r-field);
+  overflow: hidden;
+}
+
+.control:focus-within {
+  border-color: var(--ds-ink);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ds-ink) 14%, transparent);
+}
+
+.control > .unit {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  font-family: var(--ds-mono);
+  color: var(--ds-ink-faint);
+  border-right: 1.5px solid var(--ds-line);
+}
+
+.control input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ds-ink);
+  font-family: var(--ds-display);
+  font-weight: 600;
+  font-size: 26px;
+  letter-spacing: -.02em;
+  font-variant-numeric: tabular-nums;
+  padding: 12px 14px;
+}
+
+.control input:focus { outline: none; }
+
+.switch {
+  display: flex;
+  background: var(--ds-tile-2);
+  border: 1.5px solid var(--ds-line-strong);
+  border-radius: var(--ds-r-pill);
+  padding: 3px;
+  gap: 3px;
+}
+
+.switch button {
+  flex: 1;
+  border: 0;
+  border-radius: var(--ds-r-pill);
+  background: transparent;
+  color: var(--ds-ink-soft);
+  font-family: var(--ds-mono);
+  font-size: 12px;
+  padding: 8px 0;
+  cursor: pointer;
+  transition: background .14s ease, color .14s ease;
+}
+
+.switch button:hover { color: var(--ds-ink); }
+.switch button[aria-pressed="true"] { background: var(--ds-ink); color: var(--ds-ground); }
+
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.chips button {
+  border: 1.5px solid var(--ds-line-strong);
+  background: transparent;
+  color: var(--ds-ink-soft);
+  font-family: var(--ds-mono);
+  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: var(--ds-r-pill);
+  cursor: pointer;
+}
+
+.chips button:hover { border-color: var(--ds-ink); color: var(--ds-ink); }
+
+.btn {
+  border: 0;
+  border-radius: var(--ds-r-pill);
+  background: var(--ds-ink);
+  color: var(--ds-ground);
+  font-family: var(--ds-display);
+  font-weight: 600;
+  font-size: 16px;
+  padding: 15px 22px;
+  cursor: pointer;
+  transition: transform .12s ease, opacity .12s ease;
+}
+
+.btn:hover { transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
+
+:where(button, summary, input, a):focus-visible {
+  outline: 3px solid var(--ds-ink);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+  .btn:hover { transform: none; }
+}
+
+/* ---------- pagina ---------- */
+.wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 26px 18px 56px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-gap);
+}
+
+.masthead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 4px 6px 14px;
+}
+
+.masthead h1 {
+  font-family: var(--ds-display);
+  font-weight: 700;
+  font-size: clamp(30px, 4.6vw, 50px);
+  letter-spacing: -.028em;
+  line-height: .95;
+  margin: 0;
+  text-wrap: balance;
+}
+
+.masthead .sub { margin: 8px 0 0; max-width: 54ch; color: var(--ds-ink-soft); font-size: 14.5px; }
+.masthead .pills { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* ---------- tile hero ---------- */
+.hero { justify-content: space-between; gap: 18px; }
+.hero-top { display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: flex-start; }
+.hero-foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 30px;
+  border-top: 1.5px solid color-mix(in srgb, var(--ds-on-block) 22%, transparent);
+  padding-top: 14px;
+}
+.hero-foot div { display: flex; flex-direction: column; gap: 3px; }
+.hero-foot b { font-family: var(--ds-mono); font-size: 17px; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+/* ---------- tile metrica ---------- */
+.metric { gap: 10px; }
+.metric .formula {
+  font-family: var(--ds-mono);
+  font-size: 11.5px;
+  color: var(--ds-on-block);
+  opacity: .88;
+  overflow-wrap: anywhere;
+  margin: 0;
+}
+
+/* ---------- barra di ripartizione ---------- */
+.bar { display: flex; gap: 3px; height: 34px; }
+.bar div { min-width: 3px; border-radius: 3px; }
+.bar div:first-child { border-radius: 999px 3px 3px 999px; }
+.bar div:last-child { border-radius: 3px 999px 999px 3px; }
+.bar .s-netto { background: var(--ds-series-netto); }
+.bar .s-inps { background: var(--ds-series-inps); }
+.bar .s-irpef { background: var(--ds-series-irpef); }
+.bar .s-add { background: var(--ds-series-add); }
+
+.key { display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 13px; color: var(--ds-ink-soft); font-variant-numeric: tabular-nums; }
+.key span { display: inline-flex; align-items: center; gap: 8px; }
+.key i { width: 11px; height: 11px; border-radius: 3px; flex: none; }
+
+/* ---------- cedolino ---------- */
+.ledger { padding-bottom: 10px; gap: 0; }
+.ledger h2 { font-size: 17px; font-weight: 600; letter-spacing: -.02em; margin: 0 0 4px; }
+
+.group {
+  font-family: var(--ds-mono);
+  font-size: 11px;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+  color: var(--ds-ink-faint);
+  padding: 18px 0 7px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: baseline;
+  padding: 9px 0;
+  border-top: 1px solid var(--ds-line);
+}
+
+.row .name { font-size: 14.5px; }
+.row .why { display: block; font-family: var(--ds-mono); font-size: 11.5px; color: var(--ds-ink-faint); margin-top: 3px; overflow-wrap: anywhere; }
+.row .amt { font-family: var(--ds-mono); font-size: 14px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.row.sub { padding-left: 18px; }
+.row.sub .name { color: var(--ds-ink-soft); font-size: 13.5px; }
+.row.tot { border-top: 1.5px solid var(--ds-ink); }
+.row.tot .name, .row.tot .amt { font-weight: 600; }
+.row.tot .amt { font-size: 15px; }
+.amt.pos { color: var(--ds-series-netto); }
+.amt.bonus { color: var(--ds-series-irpef); }
+
+.flag {
+  margin-top: 16px;
+  padding: 13px 15px;
+  border-radius: var(--ds-r-field);
+  background: var(--ds-sun);
+  color: var(--ds-on-block);
+  font-size: 13px;
+}
+
+/* ---------- note laterali ---------- */
+.side { gap: 16px; }
+.side h3 { font-family: var(--ds-mono); font-size: 11px; letter-spacing: .11em; text-transform: uppercase; margin: 0 0 8px; color: var(--ds-on-block); opacity: .92; }
+.side ul { margin: 0; padding-left: 17px; display: flex; flex-direction: column; gap: 7px; font-size: 13px; }
+.side details { border-top: 1.5px solid color-mix(in srgb, var(--ds-on-block) 22%, transparent); padding-top: 14px; }
+.side summary { cursor: pointer; list-style: none; font-family: var(--ds-mono); font-size: 11px; letter-spacing: .11em; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; }
+.side summary::-webkit-details-marker { display: none; }
+.side summary::after { content: "+"; }
+.side details[open] summary::after { content: "\2013"; }
+.side details ul { margin-top: 12px; }
+
+.tfr { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.tfr b { font-family: var(--ds-mono); font-size: 20px; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+footer { padding: 6px 8px 0; font-size: 12.5px; color: var(--ds-ink-faint); }
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header class="masthead">
+    <div>
+      <h1>Dal lordo al netto</h1>
+      <p class="sub">Metti una RAL: quanto resta ogni mese, quanto se ne va e con quale formula. Ogni riga del conto mostra il calcolo che c'è dietro.</p>
+    </div>
+    <div class="pills">
+      <span class="pill pill--ghost">Anno d'imposta 2026</span>
+      <span class="pill pill--solid">Milano</span>
+    </div>
+  </header>
+
+  <div class="bento">
+    <form class="tile span-4" id="form">
+      <span class="label">Retribuzione annua lorda</span>
+      <div class="control">
+        <span class="unit">€</span>
+        <input id="ral" name="ral" type="text" inputmode="numeric" autocomplete="off" value="30.000" aria-label="Retribuzione annua lorda in euro">
+      </div>
+      <div class="chips" id="quick">
+        <button type="button" data-ral="22000">22k</button>
+        <button type="button" data-ral="30000">30k</button>
+        <button type="button" data-ral="40000">40k</button>
+        <button type="button" data-ral="55000">55k</button>
+        <button type="button" data-ral="80000">80k</button>
+      </div>
+
+      <span class="label" id="lbl-mens">Mensilità</span>
+      <div class="switch" role="group" aria-labelledby="lbl-mens" id="mensilita">
+        <button type="button" data-m="12" aria-pressed="false">12</button>
+        <button type="button" data-m="13" aria-pressed="true">13</button>
+        <button type="button" data-m="14" aria-pressed="false">14</button>
+      </div>
+
+      <button class="btn" type="submit">Calcola</button>
+
+      <p class="meta">Impiegato a tempo indeterminato, full time, anno intero. Nessun familiare a carico, nessuna agevolazione, domicilio fiscale a Milano.</p>
+    </form>
+
+    <section class="tile block-lime hero span-8" id="hero" aria-live="polite"></section>
+
+    <section class="tile block-lilac metric span-4" id="m-inps"></section>
+    <section class="tile block-flame metric span-4" id="m-irpef"></section>
+    <section class="tile block-sun metric span-4" id="m-add"></section>
+
+    <section class="tile span-12" id="split"></section>
+
+    <section class="tile ledger span-8" id="ledger"></section>
+
+    <aside class="tile block-mint side span-4">
+      <div>
+        <h3>TFR maturato nell'anno</h3>
+        <div class="tfr"><span class="meta">accantonato, non in busta</span><b id="tfr">—</b></div>
+      </div>
+
+      <details>
+        <summary>Semplificazioni</summary>
+        <ul>
+          <li>Tutta la RAL è imponibile: niente fringe benefit, welfare, premi detassati o trasferte.</li>
+          <li>Aliquota contributiva fissa al 9,19%: il CCNL può spostarla di qualche decimo.</li>
+          <li>Reddito complessivo = RAL meno contributi, senza altri redditi né oneri deducibili.</li>
+          <li>Addizionali per competenza: in busta si versano come saldo più acconto.</li>
+          <li>Nessun conguaglio di fine anno e nessun ragguaglio ai giorni lavorati.</li>
+        </ul>
+      </details>
+
+      <details>
+        <summary>Fonti dei parametri</summary>
+        <ul>
+          <li>IRPEF 23/33/43% — L. 199/2025 (Bilancio 2026) art. 1 c. 3.</li>
+          <li>Detrazione lavoro dipendente e bonus 65 € — art. 13 c. 1 e 1-bis TUIR.</li>
+          <li>Somma integrativa e ulteriore detrazione — L. 207/2024, circ. Agenzia Entrate 4/E 2025.</li>
+          <li>Trattamento integrativo — D.L. 3/2020, capienza ridotta di 75 €.</li>
+          <li>Massimale 122.295 € e prima fascia 56.224 € — INPS circ. 6/2026.</li>
+          <li>Addizionale regionale — L.R. Lombardia 10/2003 art. 72, dati MEF.</li>
+          <li>Addizionale comunale Milano 0,80%, esenzione a 23.000 € — delib. C.C. 46/2020.</li>
+        </ul>
+      </details>
+    </aside>
+  </div>
+
+  <footer>Prototipo dimostrativo costruito per un task di selezione: non è un cedolino, non è un prodotto Jet HR e non sostituisce il consulente del lavoro.</footer>
+</div>
+
+<script type="module">
+/**
+ * Motore di calcolo lordo -> netto per un lavoratore dipendente.
+ * Anno d'imposta 2026. Tutti i parametri normativi stanno in PARAMS
+ * (un solo posto da aggiornare quando cambia la legge di bilancio).
+ *
+ * Le fonti di ogni numero sono documentate in README.md.
+ */
+
+const PARAMS = {
+  anno: 2026,
+
+  // --- Contributi previdenziali a carico del lavoratore (IVS, FPLD) ---
+  contributi: {
+    // Impiegato, azienda industria/terziario. Quota a carico dipendente.
+    aliquotaBase: 0.0919,
+    // Art. 3-ter L. 438/1992: +1% sulla quota eccedente la prima fascia
+    // di retribuzione pensionabile (INPS circ. 6/2026).
+    aliquotaAggiuntiva: 0.01,
+    primaFasciaPensionabile: 56224,
+    // Massimale annuo per iscritti dal 1/1/1996 (INPS circ. 6/2026).
+    massimaleAnnuo: 122295,
+  },
+
+  // --- IRPEF (art. 11 TUIR, aliquote rese strutturali dalla L. 199/2025) ---
+  irpefScaglioni: [
+    { fino: 28000, aliquota: 0.23 },
+    { fino: 50000, aliquota: 0.33 },
+    { fino: Infinity, aliquota: 0.43 },
+  ],
+
+  // --- Addizionale regionale Lombardia (L.R. 10/2003 art. 72 c.1) ---
+  addizionaleRegionale: [
+    { fino: 15000, aliquota: 0.0123 },
+    { fino: 28000, aliquota: 0.0158 },
+    { fino: 50000, aliquota: 0.0172 },
+    { fino: Infinity, aliquota: 0.0173 },
+  ],
+
+  // --- Addizionale comunale Milano (delib. C.C. 46/2020) ---
+  addizionaleComunale: {
+    aliquota: 0.008,
+    // Soglia di esenzione, NON franchigia: sopra la soglia si tassa tutto.
+    sogliaEsenzione: 23000,
+  },
+
+  // --- Detrazione per redditi da lavoro dipendente (art. 13 c.1 TUIR) ---
+  detrazioneLavoro: {
+    importoBase: 1955, // reddito <= 15.000
+    fascia1: 15000,
+    fascia2: 28000,
+    fascia3: 50000,
+    // Bonus 65 EUR art. 13 c.1-bis TUIR
+    bonus65: { da: 25000, a: 35000, importo: 65 },
+  },
+
+  // --- Trattamento integrativo, ex "bonus Renzi" (D.L. 3/2020) ---
+  trattamentoIntegrativo: {
+    importo: 1200,
+    sogliaPiena: 15000,
+    sogliaMassima: 28000,
+    // Capienza verificata sulla detrazione art.13 diminuita di 75 EUR
+    scontoCapienza: 75,
+  },
+
+  // --- Taglio del cuneo fiscale (L. 207/2024, resa strutturale nel 2026) ---
+  cuneo: {
+    // A) somma non imponibile per reddito complessivo <= 20.000
+    sommaIntegrativa: {
+      sogliaRedditoComplessivo: 20000,
+      scaglioni: [
+        { fino: 8500, percentuale: 0.071 },
+        { fino: 15000, percentuale: 0.053 },
+        { fino: Infinity, percentuale: 0.048 },
+      ],
+    },
+    // B) ulteriore detrazione per reddito complessivo 20.000 - 40.000
+    ulterioreDetrazione: {
+      da: 20000,
+      pienaFinoA: 32000,
+      azzeramentoA: 40000,
+      importo: 1000,
+    },
+  },
+
+  // --- TFR (informativo, non entra nel netto in busta) ---
+  tfr: {
+    divisore: 13.5,
+    contributoFondoGaranzia: 0.005, // 0,50% trattenuto sull'accantonamento
+  },
+};
+
+/** Applica una scala a scaglioni progressivi a un imponibile. */
+function imposta_a_scaglioni(imponibile, scaglioni) {
+  let residuo = Math.max(0, imponibile);
+  let precedente = 0;
+  let totale = 0;
+  const dettaglio = [];
+
+  for (const s of scaglioni) {
+    if (residuo <= 0) break;
+    const ampiezza = s.fino - precedente;
+    const quota = Math.min(residuo, ampiezza);
+    const imposta = quota * s.aliquota;
+    if (quota > 0) {
+      dettaglio.push({
+        da: precedente,
+        a: s.fino,
+        aliquota: s.aliquota,
+        imponibile: quota,
+        imposta,
+      });
+    }
+    totale += imposta;
+    residuo -= quota;
+    precedente = s.fino;
+  }
+  return { totale, dettaglio };
+}
+
+/** Contributi previdenziali a carico del dipendente. */
+function contributi_dipendente(ral, p = PARAMS) {
+  const c = p.contributi;
+  const imponibile = Math.min(ral, c.massimaleAnnuo);
+  const base = imponibile * c.aliquotaBase;
+  const eccedenza = Math.max(0, imponibile - c.primaFasciaPensionabile);
+  const aggiuntivo = eccedenza * c.aliquotaAggiuntiva;
+  return { imponibile, base, aggiuntivo, totale: base + aggiuntivo };
+}
+
+/** Detrazione per lavoro dipendente, art. 13 c.1 e c.1-bis TUIR. */
+function detrazione_lavoro_dipendente(reddito, p = PARAMS) {
+  const d = p.detrazioneLavoro;
+  let base;
+  if (reddito <= 0) base = 0;
+  else if (reddito <= d.fascia1) base = d.importoBase;
+  else if (reddito <= d.fascia2)
+    base = 1910 + (1190 * (d.fascia2 - reddito)) / 13000;
+  else if (reddito <= d.fascia3)
+    base = (1910 * (d.fascia3 - reddito)) / 22000;
+  else base = 0;
+
+  const bonus =
+    reddito > d.bonus65.da && reddito <= d.bonus65.a ? d.bonus65.importo : 0;
+
+  return { base, bonus, totale: base + bonus };
+}
+
+/** Ulteriore detrazione "cuneo" per reddito complessivo 20.000-40.000. */
+function ulteriore_detrazione_cuneo(reddito, p = PARAMS) {
+  const u = p.cuneo.ulterioreDetrazione;
+  if (reddito <= u.da || reddito > u.azzeramentoA) return 0;
+  if (reddito <= u.pienaFinoA) return u.importo;
+  return (
+    (u.importo * (u.azzeramentoA - reddito)) /
+    (u.azzeramentoA - u.pienaFinoA)
+  );
+}
+
+/** Somma integrativa non imponibile per reddito complessivo <= 20.000. */
+function somma_integrativa(redditoComplessivo, redditoLavoro, p = PARAMS) {
+  const s = p.cuneo.sommaIntegrativa;
+  if (redditoComplessivo > s.sogliaRedditoComplessivo) return 0;
+  const scaglione = s.scaglioni.find((x) => redditoLavoro <= x.fino);
+  return redditoLavoro * scaglione.percentuale;
+}
+
+/**
+ * Trattamento integrativo.
+ * - reddito <= 15.000: spetta pieno se l'IRPEF lorda supera la detrazione
+ *   da lavoro dipendente diminuita di 75 EUR (condizione di capienza).
+ * - 15.000 < reddito <= 28.000: spetta per la sola parte di detrazioni
+ *   incapienti, con tetto di 1.200 EUR.
+ */
+function trattamento_integrativo(reddito, irpefLorda, detrazioni, p = PARAMS) {
+  const t = p.trattamentoIntegrativo;
+  if (reddito <= t.sogliaPiena) {
+    const soglia = Math.max(0, detrazioni.lavoro - t.scontoCapienza);
+    return irpefLorda > soglia ? t.importo : 0;
+  }
+  if (reddito <= t.sogliaMassima) {
+    const incapienza = detrazioni.totale - irpefLorda;
+    return Math.min(t.importo, Math.max(0, incapienza));
+  }
+  return 0;
+}
+
+/**
+ * Calcolo completo RAL -> netto.
+ * @param {number} ral Retribuzione annua lorda in euro.
+ * @param {object} opzioni { mensilita: 12|13|14, params }
+ */
+function calcola(ral, opzioni = {}) {
+  const p = opzioni.params ?? PARAMS;
+  const mensilita = opzioni.mensilita ?? 13;
+  const lordo = Math.max(0, Number(ral) || 0);
+
+  // 1. Contributi previdenziali (deducibili dall'imponibile IRPEF).
+  const contributi = contributi_dipendente(lordo, p);
+
+  // 2. Imponibile fiscale = reddito complessivo (semplificazione: nessun
+  //    altro reddito e nessun onere deducibile oltre ai contributi).
+  const imponibileFiscale = Math.max(0, lordo - contributi.totale);
+
+  // 3. IRPEF lorda a scaglioni.
+  const irpef = imposta_a_scaglioni(imponibileFiscale, p.irpefScaglioni);
+
+  // 4. Detrazioni.
+  const detrLavoro = detrazione_lavoro_dipendente(imponibileFiscale, p);
+  const detrCuneo = ulteriore_detrazione_cuneo(imponibileFiscale, p);
+  const detrazioniTotali = detrLavoro.totale + detrCuneo;
+
+  // 5. IRPEF netta (mai negativa: l'eccedenza non e' rimborsabile).
+  const irpefNetta = Math.max(0, irpef.totale - detrazioniTotali);
+
+  // 6. Addizionali locali, calcolate sull'imponibile IRPEF.
+  const regionale = imposta_a_scaglioni(imponibileFiscale, p.addizionaleRegionale);
+  const comunaleDovuta = imponibileFiscale > p.addizionaleComunale.sogliaEsenzione;
+  const comunale = comunaleDovuta
+    ? imponibileFiscale * p.addizionaleComunale.aliquota
+    : 0;
+
+  // 7. Bonus in busta paga (aumentano il netto, non sono imposte).
+  const ti = trattamento_integrativo(imponibileFiscale, irpef.totale, {
+    lavoro: detrLavoro.totale,
+    totale: detrazioniTotali,
+  }, p);
+  const somma = somma_integrativa(imponibileFiscale, lordo, p);
+
+  // 8. Netto.
+  const trattenuteTotali =
+    contributi.totale + irpefNetta + regionale.totale + comunale;
+  const bonusTotali = ti + somma;
+  const nettoAnnuo = lordo - trattenuteTotali + bonusTotali;
+
+  // 9. TFR: informativo, non fa parte del netto mensile.
+  const tfrLordo = lordo / p.tfr.divisore;
+  const tfrAccantonato = tfrLordo * (1 - p.tfr.contributoFondoGaranzia);
+
+  return {
+    input: { ral: lordo, mensilita, anno: p.anno },
+    contributi,
+    imponibileFiscale,
+    irpef: {
+      lorda: irpef.totale,
+      scaglioni: irpef.dettaglio,
+      detrazioneLavoro: detrLavoro,
+      detrazioneCuneo: detrCuneo,
+      detrazioniTotali,
+      netta: irpefNetta,
+    },
+    addizionali: {
+      regionale: regionale.totale,
+      regionaleScaglioni: regionale.dettaglio,
+      comunale,
+      comunaleDovuta,
+      totale: regionale.totale + comunale,
+    },
+    bonus: { trattamentoIntegrativo: ti, sommaIntegrativa: somma, totale: bonusTotali },
+    totali: {
+      trattenute: trattenuteTotali,
+      imposte: irpefNetta + regionale.totale + comunale,
+      nettoAnnuo,
+      nettoMensile: nettoAnnuo / mensilita,
+      aliquotaEffettiva: lordo > 0 ? trattenuteTotali / lordo : 0,
+      cuneoNetto: lordo > 0 ? (lordo - nettoAnnuo) / lordo : 0,
+    },
+    tfr: { lordo: tfrLordo, accantonato: tfrAccantonato },
+  };
+}
+
+const eur = (n, dec = 0) =>
+  new Intl.NumberFormat("it-IT", {
+    style: "currency",
+    currency: "EUR",
+    minimumFractionDigits: dec,
+    maximumFractionDigits: dec,
+    useGrouping: true, // it-IT userebbe "min2" e lascerebbe 2757 senza punto
+  }).format(n);
+
+const pct = (n, dec = 2) =>
+  new Intl.NumberFormat("it-IT", { style: "percent", minimumFractionDigits: dec }).format(n);
+
+const num = (n, dec = 0) =>
+  new Intl.NumberFormat("it-IT", {
+    minimumFractionDigits: dec,
+    maximumFractionDigits: dec,
+    useGrouping: true,
+  }).format(n);
+
+const $ = (id) => document.getElementById(id);
+const parseRal = (raw) => Number(String(raw).replace(/[^\d,]/g, "").replace(",", ".")) || 0;
+
+let mensilita = 13;
+
+function riga({ nome, perche, importo, segno = "", classe = "", dec = 0 }) {
+  const cls = ["row", classe].filter(Boolean).join(" ");
+  const amtCls = ["amt", segno].filter(Boolean).join(" ");
+  const prefisso = segno === "neg" ? "−" : segno === "bonus" || segno === "pos" ? "+" : "";
+  return `<div class="${cls}">
+    <div><span class="name">${nome}</span>${perche ? `<span class="why">${perche}</span>` : ""}</div>
+    <div class="${amtCls}">${prefisso}${eur(Math.abs(importo), dec)}</div>
+  </div>`;
+}
+
+function metrica(el, { titolo, importo, quota, formula }) {
+  el.innerHTML = `
+    <span class="label">${titolo}</span>
+    <p class="figure-lg">${eur(importo)}</p>
+    <p class="meta">${num(quota, 1)}% della RAL</p>
+    <p class="formula">${formula}</p>`;
+}
+
+function formulaDetrazione(reddito, importo) {
+  if (importo === 0) return "azzerata sopra i 50.000 € di reddito";
+  if (reddito <= 15000) return "importo fisso fino a 15.000 € di reddito";
+  if (reddito <= 28000) return `1.910 + 1.190 × (28.000 − ${num(reddito)}) / 13.000`;
+  return `1.910 × (50.000 − ${num(reddito)}) / 22.000`;
+}
+
+function render(r) {
+  const t = r.totali;
+  const quota = (v) => (r.input.ral > 0 ? (v / r.input.ral) * 100 : 0);
+
+  $("hero").innerHTML = `
+    <div class="hero-top">
+      <span class="label">Netto mensile · ${r.input.mensilita} mensilità</span>
+      <span class="pill">${pct(1 - t.cuneoNetto, 1)} del lordo</span>
+    </div>
+    <p class="figure-xl">${eur(t.nettoMensile)}</p>
+    <div class="hero-foot">
+      <div><span class="label">Netto annuo</span><b>${eur(t.nettoAnnuo)}</b></div>
+      <div><span class="label">Tasse e contributi</span><b>${eur(t.trattenute)}</b></div>
+      <div><span class="label">Aliquota effettiva</span><b>${pct(t.aliquotaEffettiva, 1)}</b></div>
+    </div>`;
+
+  metrica($("m-inps"), {
+    titolo: "Contributi INPS",
+    importo: r.contributi.totale,
+    quota: quota(r.contributi.totale),
+    formula:
+      r.contributi.aggiuntivo > 0
+        ? `9,19% + 1% sulla quota oltre ${eur(56224)}`
+        : `${eur(r.contributi.imponibile)} × 9,19%`,
+  });
+
+  metrica($("m-irpef"), {
+    titolo: "IRPEF netta",
+    importo: r.irpef.netta,
+    quota: quota(r.irpef.netta),
+    formula: `${eur(r.irpef.lorda)} di imposta lorda − ${eur(r.irpef.detrazioniTotali)} di detrazioni`,
+  });
+
+  metrica($("m-add"), {
+    titolo: "Addizionali locali",
+    importo: r.addizionali.totale,
+    quota: quota(r.addizionali.totale),
+    formula: r.addizionali.comunaleDovuta
+      ? "Lombardia a scaglioni + Milano 0,80%"
+      : "Lombardia a scaglioni · Milano esente",
+  });
+
+  const parti = [
+    { cls: "s-netto", token: "netto", v: t.nettoAnnuo, l: "Netto in tasca" },
+    { cls: "s-inps", token: "inps", v: r.contributi.totale, l: "Contributi INPS" },
+    { cls: "s-irpef", token: "irpef", v: r.irpef.netta, l: "IRPEF" },
+    { cls: "s-add", token: "add", v: r.addizionali.totale, l: "Addizionali" },
+  ];
+
+  $("split").innerHTML = `
+    <span class="label">Dove va ogni euro di RAL</span>
+    <div class="bar" role="img" aria-label="${parti.map((p) => `${p.l}: ${eur(p.v)}`).join(", ")}">
+      ${parti
+        .map(
+          (p) =>
+            `<div class="${p.cls}" style="width:${quota(p.v)}%" title="${p.l}: ${eur(p.v)} (${num(quota(p.v), 1)}%)"></div>`,
+        )
+        .join("")}
+    </div>
+    <div class="key">
+      ${parti
+        .map(
+          (p) =>
+            `<span><i style="background:var(--ds-series-${p.token})"></i>${p.l} · ${eur(p.v)} · ${num(quota(p.v), 1)}%</span>`,
+        )
+        .join("")}
+    </div>
+    ${
+      r.bonus.totale > 0
+        ? `<p class="meta">Il netto comprende ${eur(r.bonus.totale)} di integrazioni che non fanno parte della RAL: senza di esse la quota netta scenderebbe.</p>`
+        : ""
+    }`;
+
+  const c = r.contributi;
+  const detrLavoro = r.irpef.detrazioneLavoro;
+  const vicinoSoglia = r.imponibileFiscale > 23000 && r.imponibileFiscale < 25500;
+
+  $("ledger").innerHTML = `
+    <h2>Il conto, riga per riga</h2>
+
+    ${riga({ nome: "Retribuzione annua lorda", perche: "punto di partenza", importo: r.input.ral, classe: "tot" })}
+
+    <div class="group">Contributi previdenziali a carico del dipendente</div>
+    ${riga({ nome: "Contributi IVS 9,19%", perche: `${eur(c.imponibile)} × 9,19%`, importo: c.base, segno: "neg" })}
+    ${
+      c.aggiuntivo > 0
+        ? riga({
+            nome: "Aliquota aggiuntiva 1% oltre la prima fascia",
+            perche: `(${eur(c.imponibile)} − ${eur(56224)}) × 1%`,
+            importo: c.aggiuntivo,
+            segno: "neg",
+          })
+        : ""
+    }
+    ${riga({ nome: "Imponibile fiscale", perche: "RAL meno contributi: i contributi sono deducibili", importo: r.imponibileFiscale, classe: "tot" })}
+
+    <div class="group">IRPEF</div>
+    ${r.irpef.scaglioni
+      .map((s) =>
+        riga({
+          nome: `da ${eur(s.da)} a ${s.a === Infinity ? "oltre" : eur(s.a)} · ${pct(s.aliquota, 0)}`,
+          perche: `${eur(s.imponibile)} × ${pct(s.aliquota, 0)}`,
+          importo: s.imposta,
+          classe: "sub",
+        }),
+      )
+      .join("")}
+    ${riga({ nome: "IRPEF lorda", importo: r.irpef.lorda, classe: "tot" })}
+    ${riga({
+      nome: "Detrazione da lavoro dipendente",
+      perche: formulaDetrazione(r.imponibileFiscale, detrLavoro.base),
+      importo: detrLavoro.base,
+      segno: "pos",
+    })}
+    ${detrLavoro.bonus > 0 ? riga({ nome: "Detrazione aggiuntiva art. 13 c. 1-bis", perche: "spetta tra 25.000 € e 35.000 € di reddito", importo: detrLavoro.bonus, segno: "pos" }) : ""}
+    ${
+      r.irpef.detrazioneCuneo > 0
+        ? riga({
+            nome: "Ulteriore detrazione (taglio del cuneo)",
+            perche:
+              r.imponibileFiscale <= 32000
+                ? "importo pieno tra 20.000 € e 32.000 €"
+                : `1.000 × (40.000 − ${num(r.imponibileFiscale)}) / 8.000`,
+            importo: r.irpef.detrazioneCuneo,
+            segno: "pos",
+          })
+        : ""
+    }
+    ${riga({
+      nome: "IRPEF netta",
+      perche:
+        r.irpef.lorda - r.irpef.detrazioniTotali < 0
+          ? "detrazioni superiori all'imposta: l'eccedenza non è rimborsabile"
+          : "imposta lorda meno detrazioni",
+      importo: r.irpef.netta,
+      segno: "neg",
+      classe: "tot",
+    })}
+
+    <div class="group">Addizionali locali</div>
+    ${r.addizionali.regionaleScaglioni
+      .map((s) =>
+        riga({
+          nome: `Regionale Lombardia · ${pct(s.aliquota, 2)}`,
+          perche: `${eur(s.imponibile)} × ${pct(s.aliquota, 2)}`,
+          importo: s.imposta,
+          classe: "sub",
+        }),
+      )
+      .join("")}
+    ${riga({
+      nome: "Comunale Milano 0,80%",
+      perche: r.addizionali.comunaleDovuta ? `${eur(r.imponibileFiscale)} × 0,80%` : "esente: imponibile fino a 23.000 €",
+      importo: r.addizionali.comunale,
+      classe: r.addizionali.comunaleDovuta ? "" : "sub",
+    })}
+    ${riga({ nome: "Totale addizionali", importo: r.addizionali.totale, segno: "neg", classe: "tot" })}
+
+    ${
+      r.bonus.totale > 0
+        ? `<div class="group">Integrazioni in busta paga</div>
+    ${r.bonus.trattamentoIntegrativo > 0 ? riga({ nome: "Trattamento integrativo", perche: "1.200 € annui, spettanti per capienza dell'imposta", importo: r.bonus.trattamentoIntegrativo, segno: "bonus" }) : ""}
+    ${
+      r.bonus.sommaIntegrativa > 0
+        ? riga({
+            nome: "Somma integrativa non imponibile",
+            perche: `${eur(r.input.ral)} × ${pct(r.bonus.sommaIntegrativa / r.input.ral, 1)} · reddito complessivo fino a 20.000 €`,
+            importo: r.bonus.sommaIntegrativa,
+            segno: "bonus",
+          })
+        : ""
+    }`
+        : ""
+    }
+
+    <div class="group">Risultato</div>
+    ${riga({ nome: "Netto annuo", perche: "lordo − contributi − IRPEF − addizionali + integrazioni", importo: t.nettoAnnuo, classe: "tot" })}
+    ${riga({ nome: `Netto per ognuna delle ${r.input.mensilita} mensilità`, importo: t.nettoMensile, classe: "tot" })}
+
+    ${
+      vicinoSoglia
+        ? `<div class="flag">Sei appena sopra la soglia dell'addizionale comunale: a Milano è una soglia, non una franchigia, quindi superare 23.000 € di imponibile costa ${eur(r.addizionali.comunale)} pieni.</div>`
+        : ""
+    }`;
+
+  $("tfr").textContent = eur(r.tfr.accantonato);
+}
+
+function aggiorna() {
+  const ral = parseRal($("ral").value);
+  $("ral").value = ral ? num(ral) : "";
+  render(calcola(ral, { mensilita }));
+}
+
+$("form").addEventListener("submit", (e) => {
+  e.preventDefault();
+  aggiorna();
+});
+
+$("mensilita").addEventListener("click", (e) => {
+  const b = e.target.closest("button[data-m]");
+  if (!b) return;
+  mensilita = Number(b.dataset.m);
+  for (const x of $("mensilita").querySelectorAll("button"))
+    x.setAttribute("aria-pressed", String(x === b));
+  aggiorna();
+});
+
+$("quick").addEventListener("click", (e) => {
+  const b = e.target.closest("button[data-ral]");
+  if (!b) return;
+  $("ral").value = num(Number(b.dataset.ral));
+  aggiorna();
+});
+
+aggiorna();
+</script>
+
+</body>
+</html>

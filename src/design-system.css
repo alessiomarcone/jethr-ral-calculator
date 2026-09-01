@@ -1,0 +1,294 @@
+/* =========================================================================
+   PAYSLIP DS — design system del prototipo RAL → netto
+   Fusione di due riferimenti:
+   · Jet HR (jethr.com): inchiostro near-black oliva #11150A, fondi sage,
+     pill a raggio pieno, radius 8/16, impaginazione ariosa ad alto contrasto.
+   · Bento fintech dashboard: blocchi pieni e saturi, numeri giganti in
+     grottesco stretto, micro-label monospace in maiuscoletto.
+   Le serie del grafico NON sono decorative: sono la palette categoriale
+   validata con lo script dataviz (sei check superati in entrambi i temi).
+   ========================================================================= */
+
+:root {
+  /* --- fondi e inchiostri (tema chiaro) --- */
+  --ds-ground: #f1f4f1;
+  --ds-tile: #ffffff;
+  --ds-tile-2: #f6f8f5;
+  --ds-ink: #11150a;
+  --ds-ink-soft: #59615f;
+  --ds-ink-faint: #888a85;
+  --ds-line: #dfe4dd;
+  --ds-line-strong: #c3ccc0;
+  --ds-on-block: #11150a; /* inchiostro sui blocchi pieni, sempre scuro */
+
+  /* --- blocchi pieni: identici nei due temi, ink scuro sopra --- */
+  --ds-lime: #c3cf12;
+  --ds-lilac: #a99cd6;
+  --ds-flame: #f0512a;
+  --ds-sun: #f2d111;
+  --ds-mint: #dde7da;
+
+  /* --- serie del grafico: palette categoriale validata --- */
+  --ds-series-netto: #1baf7a;
+  --ds-series-inps: #2a78d6;
+  --ds-series-irpef: #eb6834;
+  --ds-series-add: #4a3aa7;
+  --ds-series-ink: #ffffff;
+
+  /* --- tipografia --- */
+  --ds-display: "Archivo", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --ds-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* --- forma --- */
+  --ds-r-tile: 22px;
+  --ds-r-field: 12px;
+  --ds-r-pill: 999px;
+  --ds-gap: 14px;
+  --ds-pad: 22px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ds-ground: #0d1008;
+    --ds-tile: #171b12;
+    --ds-tile-2: #1e2318;
+    --ds-ink: #f2f5ee;
+    --ds-ink-soft: #a8b0a2;
+    --ds-ink-faint: #7c847a;
+    --ds-line: #2b3124;
+    --ds-line-strong: #3d4534;
+    --ds-series-netto: #199e70;
+    --ds-series-inps: #3987e5;
+    --ds-series-irpef: #d95926;
+    --ds-series-add: #9085e9;
+    --ds-series-ink: #0d1008;
+  }
+}
+
+:root[data-theme="dark"] {
+  --ds-ground: #0d1008;
+  --ds-tile: #171b12;
+  --ds-tile-2: #1e2318;
+  --ds-ink: #f2f5ee;
+  --ds-ink-soft: #a8b0a2;
+  --ds-ink-faint: #7c847a;
+  --ds-line: #2b3124;
+  --ds-line-strong: #3d4534;
+  --ds-series-netto: #199e70;
+  --ds-series-inps: #3987e5;
+  --ds-series-irpef: #d95926;
+  --ds-series-add: #9085e9;
+  --ds-series-ink: #0d1008;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--ds-ground);
+  color: var(--ds-ink);
+  font-family: var(--ds-display);
+  font-size: 15px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- primitive: pill ---------- */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1.5px solid currentColor;
+  border-radius: var(--ds-r-pill);
+  padding: 7px 15px;
+  font-family: var(--ds-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.pill--solid { border-color: transparent; background: var(--ds-ink); color: var(--ds-ground); }
+.pill--ghost { color: var(--ds-ink-soft); border-color: var(--ds-line-strong); }
+
+/* ---------- primitive: tile ---------- */
+.tile {
+  background: var(--ds-tile);
+  border-radius: var(--ds-r-tile);
+  padding: var(--ds-pad);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+.tile--outline { background: transparent; border: 1.5px solid var(--ds-line); }
+.block-lime  { background: var(--ds-lime);  color: var(--ds-on-block); }
+.block-lilac { background: var(--ds-lilac); color: var(--ds-on-block); }
+.block-flame { background: var(--ds-flame); color: var(--ds-on-block); }
+.block-sun   { background: var(--ds-sun);   color: var(--ds-on-block); }
+.block-mint  { background: var(--ds-mint);  color: var(--ds-on-block); }
+
+/* ---------- primitive: numero gigante ---------- */
+.figure-xl,
+.figure-lg {
+  font-family: var(--ds-display);
+  font-weight: 700;
+  letter-spacing: -.045em;
+  line-height: .88;
+  font-variant-numeric: tabular-nums;
+  margin: 0;
+}
+
+.figure-xl { font-size: clamp(50px, 8.2vw, 96px); letter-spacing: -.04em; }
+.figure-lg { font-size: clamp(30px, 4.4vw, 46px); letter-spacing: -.035em; }
+
+.label {
+  font-family: var(--ds-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+  color: var(--ds-ink-soft);
+}
+
+/* Sui blocchi pieni il testo resta inchiostro pieno: alle dimensioni micro
+   una mescola trasparente scenderebbe sotto il rapporto AA sul flame. */
+.block-lime .label,
+.block-lilac .label,
+.block-flame .label,
+.block-sun .label,
+.block-mint .label { color: var(--ds-on-block); opacity: .92; }
+
+.meta { font-size: 13px; color: var(--ds-ink-soft); margin: 0; }
+.block-lime .meta,
+.block-lilac .meta,
+.block-flame .meta,
+.block-sun .meta,
+.block-mint .meta { color: var(--ds-on-block); opacity: .92; }
+
+/* ---------- primitive: griglia bento ---------- */
+.bento {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--ds-gap);
+  align-items: start;
+}
+
+.span-4 { grid-column: span 4; }
+.span-5 { grid-column: span 5; }
+.span-7 { grid-column: span 7; }
+.span-8 { grid-column: span 8; }
+.span-12 { grid-column: span 12; }
+
+@media (max-width: 960px) {
+  .span-4, .span-5, .span-7, .span-8 { grid-column: span 12; }
+}
+
+/* ---------- primitive: controlli ---------- */
+.control {
+  display: flex;
+  align-items: center;
+  background: var(--ds-tile-2);
+  border: 1.5px solid var(--ds-line-strong);
+  border-radius: var(--ds-r-field);
+  overflow: hidden;
+}
+
+.control:focus-within {
+  border-color: var(--ds-ink);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ds-ink) 14%, transparent);
+}
+
+.control > .unit {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  font-family: var(--ds-mono);
+  color: var(--ds-ink-faint);
+  border-right: 1.5px solid var(--ds-line);
+}
+
+.control input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ds-ink);
+  font-family: var(--ds-display);
+  font-weight: 600;
+  font-size: 26px;
+  letter-spacing: -.02em;
+  font-variant-numeric: tabular-nums;
+  padding: 12px 14px;
+}
+
+.control input:focus { outline: none; }
+
+.switch {
+  display: flex;
+  background: var(--ds-tile-2);
+  border: 1.5px solid var(--ds-line-strong);
+  border-radius: var(--ds-r-pill);
+  padding: 3px;
+  gap: 3px;
+}
+
+.switch button {
+  flex: 1;
+  border: 0;
+  border-radius: var(--ds-r-pill);
+  background: transparent;
+  color: var(--ds-ink-soft);
+  font-family: var(--ds-mono);
+  font-size: 12px;
+  padding: 8px 0;
+  cursor: pointer;
+  transition: background .14s ease, color .14s ease;
+}
+
+.switch button:hover { color: var(--ds-ink); }
+.switch button[aria-pressed="true"] { background: var(--ds-ink); color: var(--ds-ground); }
+
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.chips button {
+  border: 1.5px solid var(--ds-line-strong);
+  background: transparent;
+  color: var(--ds-ink-soft);
+  font-family: var(--ds-mono);
+  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: var(--ds-r-pill);
+  cursor: pointer;
+}
+
+.chips button:hover { border-color: var(--ds-ink); color: var(--ds-ink); }
+
+.btn {
+  border: 0;
+  border-radius: var(--ds-r-pill);
+  background: var(--ds-ink);
+  color: var(--ds-ground);
+  font-family: var(--ds-display);
+  font-weight: 600;
+  font-size: 16px;
+  padding: 15px 22px;
+  cursor: pointer;
+  transition: transform .12s ease, opacity .12s ease;
+}
+
+.btn:hover { transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
+
+:where(button, summary, input, a):focus-visible {
+  outline: 3px solid var(--ds-ink);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+  .btn:hover { transform: none; }
+}
