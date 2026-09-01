@@ -60,8 +60,8 @@
     --b-line-2: #454d3c;
     --b-lime: #a3d857;
     --b-lime-soft: #33401f;
-    --b-deep: #e9efdd;
-    --b-on-deep: #1b2017;
+    --b-deep: #101409;
+    --b-on-deep: #eef2e6;
     --b-tile-lime: #4a5a24;
     --b-tile-blue: #2c3d5e;
     --b-tile-teal: #23483d;
@@ -82,8 +82,8 @@
   --b-line-2: #454d3c;
   --b-lime: #a3d857;
   --b-lime-soft: #33401f;
-  --b-deep: #e9efdd;
-  --b-on-deep: #1b2017;
+  --b-deep: #101409;
+  --b-on-deep: #eef2e6;
   --b-tile-lime: #4a5a24;
   --b-tile-blue: #2c3d5e;
   --b-tile-teal: #23483d;
@@ -246,41 +246,159 @@ input[type="range"]::-moz-range-thumb { width: 22px; height: 22px; border-radius
   *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
 }
 
-.page { max-width: 860px; margin: 0 auto; padding: var(--b-6) var(--b-4) var(--b-7); display: flex; flex-direction: column; gap: var(--b-4); }
+.page { max-width: 1060px; margin: 0 auto; padding: var(--b-6) var(--b-4) var(--b-7); display: flex; flex-direction: column; gap: var(--b-4); }
+.top { display: flex; align-items: center; justify-content: space-between; gap: var(--b-3); padding: 0 var(--b-2); }
+.intro { padding: var(--b-4) var(--b-2) var(--b-2); display: flex; flex-direction: column; gap: var(--b-3); }
 
-.top { display: flex; align-items: center; justify-content: space-between; gap: var(--b-3); padding: 0 var(--b-2) var(--b-2); }
-.intro { padding: var(--b-3) var(--b-2) var(--b-4); display: flex; flex-direction: column; gap: var(--b-3); }
+/* ---------- card principale: input a sinistra, esito a destra ---------- */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: var(--b-card);
+  border-radius: var(--b-radius);
+  box-shadow: var(--b-shadow);
+  overflow: hidden;
+}
 
-/* ---------- card di calcolo ---------- */
-.calc { display: flex; flex-direction: column; gap: var(--b-5); }
-.calc-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--b-3); }
-.calc-input { display: flex; flex-direction: column; gap: var(--b-3); }
-.range-scale { display: flex; justify-content: space-between; font-size: 12.5px; color: var(--b-ink-3); }
+@media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
 
-.result { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--b-5); padding-top: var(--b-5); border-top: 1px solid var(--b-line); }
-.result-main { display: flex; flex-direction: column; gap: var(--b-1); min-width: 240px; flex: 1; }
-.result-side { display: flex; gap: var(--b-6); flex-wrap: wrap; }
-.result-side div { display: flex; flex-direction: column; gap: 2px; }
+.hero-form { padding: var(--b-6); display: flex; flex-direction: column; gap: var(--b-5); }
 
-/* ---------- ripartizione ---------- */
-.share { display: flex; flex-direction: column; gap: var(--b-4); }
-.share-bar { display: flex; gap: 3px; height: 44px; }
-.share-bar .keep { background: var(--b-lime); border-radius: 100px 6px 6px 100px; }
-.share-bar .gone { background: var(--b-deep); border-radius: 6px 100px 100px 6px; }
-.share-bar div { display: flex; align-items: center; padding: 0 var(--b-4); font-weight: 700; font-size: 14px; overflow: hidden; white-space: nowrap; }
-.share-bar .keep { color: #1e2419; }
-.share-bar .gone { color: var(--b-on-deep); justify-content: flex-end; }
+.eyebrow {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--b-ink-3);
+}
 
-.meters { display: flex; flex-direction: column; gap: var(--b-3); }
-.meter { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; gap: var(--b-3); align-items: center; }
-.meter-name { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
-.meter-track { display: block; height: 6px; border-radius: 100px; background: var(--b-line); overflow: hidden; margin-top: 6px; }
-.meter-fill { display: block; height: 100%; border-radius: 100px; background: var(--b-deep); }
-.meter-name > .small { display: block; font-weight: 600; }
-.meter .amt { font-variant-numeric: tabular-nums; font-weight: 700; white-space: nowrap; }
+.field-head { display: flex; align-items: center; justify-content: space-between; gap: var(--b-3); }
+.field-head .h3 { font-weight: 700; }
 
-/* ---------- lista del conto ---------- */
+.value-pill {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--b-2);
+  border: 1.5px solid var(--b-line-2);
+  border-radius: 100px;
+  padding: 8px 16px;
+  background: var(--b-card);
+}
+
+.value-pill input {
+  width: 5.5ch;
+  border: 0;
+  background: transparent;
+  color: var(--b-ink);
+  font-family: var(--b-sans);
+  font-size: 17px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -.02em;
+  text-align: right;
+  padding: 0;
+}
+
+.value-pill input:focus { outline: none; }
+.value-pill:focus-within { border-color: var(--b-lime); }
+.value-pill span { font-size: 13px; color: var(--b-ink-3); font-weight: 600; }
+
+.range-scale { display: flex; justify-content: space-between; font-size: 12.5px; color: var(--b-ink-3); margin-top: 2px; }
+
+.group { display: flex; flex-direction: column; gap: var(--b-3); }
+.opts { display: flex; flex-wrap: wrap; gap: var(--b-2); }
+
+.opt {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--b-2);
+  min-height: 44px;
+  padding: 0 var(--b-4);
+  border: 1.5px solid var(--b-line-2);
+  border-radius: 100px;
+  background: transparent;
+  color: var(--b-ink-2);
+  font-family: var(--b-sans);
+  font-size: 14.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color .15s ease, background .15s ease, color .15s ease;
+}
+
+.opt:hover { border-color: var(--b-ink-3); color: var(--b-ink); }
+.opt[aria-pressed="true"] { border-color: var(--b-lime); background: var(--b-lime-soft); color: var(--b-ink); }
+.opt[aria-disabled="true"] { cursor: not-allowed; border-style: dashed; color: var(--b-ink-3); background: var(--b-card-2); }
+.opt[aria-disabled="true"]:hover { border-color: var(--b-line-2); color: var(--b-ink-3); }
+.opt svg { flex: none; opacity: .85; }
+
+/* ---------- pannello esito ---------- */
+.hero-out { display: flex; flex-direction: column; }
+
+.out-top { background: var(--b-lime-soft); padding: var(--b-6); display: flex; flex-direction: column; gap: var(--b-4); }
+
+.toggle { display: inline-flex; gap: 4px; background: var(--b-card); border-radius: 100px; padding: 4px; align-self: flex-start; }
+
+.toggle button {
+  min-height: 38px;
+  padding: 0 18px;
+  border: 1.5px solid transparent;
+  border-radius: 100px;
+  background: transparent;
+  color: var(--b-ink-2);
+  font-family: var(--b-sans);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.toggle button[aria-pressed="true"] { border-color: var(--b-deep); color: var(--b-ink); }
+
+.out-label { font-size: 14.5px; font-weight: 700; color: var(--b-ink-2); margin: 0 0 var(--b-2); }
+.out-value { font-size: clamp(40px, 5.2vw, 60px); font-weight: 800; letter-spacing: -.04em; line-height: 1; font-variant-numeric: tabular-nums; margin: 0; }
+.out-sub { font-size: 13.5px; color: var(--b-ink-2); margin: 0; }
+
+.out-bottom {
+  flex: 1;
+  background: var(--b-deep);
+  color: var(--b-on-deep);
+  padding: var(--b-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--b-5);
+}
+
+.out-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--b-5) var(--b-4); }
+.out-cell { display: flex; flex-direction: column; gap: var(--b-1); }
+.out-cell .k { font-size: 13px; opacity: .72; }
+.out-cell .v { font-size: 21px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
+.out-cell--wide { grid-column: 1 / -1; }
+
+.out-highlight { display: flex; align-items: baseline; gap: var(--b-3); flex-wrap: wrap; }
+.out-highlight .lead { display: inline-flex; align-items: center; gap: var(--b-2); font-size: 21px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.out-highlight .muted { font-size: 16px; opacity: .5; font-variant-numeric: tabular-nums; }
+
+.out-foot { display: flex; align-items: center; gap: var(--b-4); flex-wrap: wrap; margin-top: auto; }
+.out-foot p { flex: 1; min-width: 190px; font-size: 12.5px; line-height: 1.5; opacity: .72; margin: 0; }
+
+.cta {
+  min-height: 48px;
+  padding: 0 var(--b-5);
+  border: 0;
+  border-radius: 100px;
+  background: var(--b-lime);
+  color: #1e2419;
+  font-family: var(--b-sans);
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: filter .15s ease;
+}
+
+.cta:hover { filter: brightness(1.06); }
+
+/* ---------- dettaglio ---------- */
 .detail { display: flex; flex-direction: column; gap: var(--b-2); }
+.detail[hidden] { display: none; }
 .detail-head { display: flex; align-items: center; justify-content: space-between; gap: var(--b-3); margin-bottom: var(--b-2); }
 
 .block { border-radius: var(--b-radius-sm); background: var(--b-card-2); padding: var(--b-3) var(--b-4); }
@@ -289,7 +407,7 @@ input[type="range"]::-moz-range-thumb { width: 22px; height: 22px; border-radius
 .block-top .txt { flex: 1; min-width: 0; }
 .block-top .amt { font-variant-numeric: tabular-nums; font-weight: 800; font-size: 17px; white-space: nowrap; }
 
-.lines { display: flex; flex-direction: column; gap: 0; margin-top: var(--b-3); padding-top: var(--b-2); border-top: 1px solid var(--b-line); }
+.lines { display: flex; flex-direction: column; margin-top: var(--b-3); padding-top: var(--b-2); border-top: 1px solid var(--b-line); }
 .line { display: flex; align-items: baseline; justify-content: space-between; gap: var(--b-3); padding: 7px 0; font-size: 14px; }
 .line .k { color: var(--b-ink-2); }
 .line .k em { display: block; font-style: normal; font-size: 12px; color: var(--b-ink-3); font-variant-numeric: tabular-nums; }
@@ -301,39 +419,9 @@ summary::after { content: ""; width: 6px; height: 6px; border-right: 2px solid c
 details[open] > summary::after { transform: translateY(1px) rotate(225deg); }
 summary:hover { color: var(--b-ink); }
 
-/* ---------- contesto bloccato ---------- */
-.context { display: flex; flex-direction: column; gap: var(--b-2); }
-.ctx-row { display: flex; align-items: center; gap: var(--b-3); padding: var(--b-3); border-radius: var(--b-radius-sm); background: var(--b-card-2); }
-.ctx-row .txt { flex: 1; min-width: 0; }
-.ctx-lock { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700; color: var(--b-ink-3); white-space: nowrap; }
-
-/* ---------- avviso soglia ---------- */
-.notice { display: flex; gap: var(--b-3); align-items: flex-start; padding: var(--b-3) var(--b-4); border-radius: var(--b-radius-sm); background: var(--b-lime-soft); font-size: 14px; line-height: 1.5; }
+.notice { display: flex; gap: var(--b-3); align-items: flex-start; padding: var(--b-3) var(--b-4); border-radius: var(--b-radius-sm); background: var(--b-lime-soft); font-size: 14px; line-height: 1.5; margin-top: var(--b-2); }
 
 footer { padding: var(--b-4) var(--b-2) 0; font-size: 12.5px; color: var(--b-ink-3); }
-
-/* barra riassuntiva che compare allo scroll */
-.sticky {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--b-3);
-  margin: 0 0 calc(var(--b-4) * -1);
-  padding: var(--b-3) var(--b-4);
-  border-radius: 100px;
-  background: var(--b-card);
-  box-shadow: var(--b-shadow);
-  opacity: 0;
-  transform: translateY(-8px);
-  pointer-events: none;
-  transition: opacity .2s ease, transform .2s ease;
-}
-
-.sticky.on { opacity: 1; transform: none; }
-.sticky .amt { font-variant-numeric: tabular-nums; font-weight: 800; }
 </style>
 
 <div class="page">
@@ -344,89 +432,110 @@ footer { padding: var(--b-4) var(--b-2) 0; font-size: 12.5px; color: var(--b-ink
 
   <div class="intro">
     <h1 class="h1">Quanto ti resta davvero</h1>
-    <p class="lede">Sposta la RAL e vedi subito il netto. Nessun modulo da compilare, nessun bottone da premere: il conto si aggiorna mentre scegli.</p>
+    <p class="lede">Sposta la RAL e leggi subito il netto. Nessun modulo da compilare, nessun bottone da premere: il conto si aggiorna mentre scegli.</p>
   </div>
 
-  <div class="sticky" id="sticky" aria-hidden="true">
-    <span class="small">Netto mensile</span>
-    <span class="amt" id="sticky-amt">—</span>
-  </div>
+  <section class="hero">
+    <div class="hero-form">
+      <span class="eyebrow">Dati del rapporto di lavoro</span>
 
-  <section class="card calc">
-    <div class="calc-head">
-      <span class="h3">Retribuzione annua lorda</span>
-      <div class="seg" role="group" aria-label="Mensilità" id="mensilita">
-        <button type="button" data-m="12" aria-pressed="false">12</button>
-        <button type="button" data-m="13" aria-pressed="true">13</button>
-        <button type="button" data-m="14" aria-pressed="false">14</button>
+      <div class="group">
+        <div class="field-head">
+          <span class="h3">Retribuzione annua lorda</span>
+          <span class="value-pill">
+            <span aria-hidden="true">€</span>
+            <input id="ral" type="text" inputmode="numeric" autocomplete="off" value="30.000" aria-label="Retribuzione annua lorda in euro">
+          </span>
+        </div>
+        <input id="slider" type="range" min="10000" max="150000" step="500" value="30000" aria-label="Regola la retribuzione annua lorda">
+        <div class="range-scale"><span>10.000 €</span><span>150.000 €</span></div>
+      </div>
+
+      <div class="group">
+        <span class="h3">Mensilità</span>
+        <div class="opts" id="mensilita" role="group" aria-label="Numero di mensilità">
+          <button type="button" class="opt" data-m="12" aria-pressed="false">12</button>
+          <button type="button" class="opt" data-m="13" aria-pressed="true">13</button>
+          <button type="button" class="opt" data-m="14" aria-pressed="false">14</button>
+        </div>
+      </div>
+
+      <div class="group">
+        <span class="h3">Tipo di contratto</span>
+        <div class="opts">
+          <button type="button" class="opt" aria-pressed="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"></path><path d="M14 3v5h5"></path></svg>
+            Indeterminato
+          </button>
+          <button type="button" class="opt" aria-disabled="true" title="Fuori dal perimetro del prototipo">Determinato</button>
+          <button type="button" class="opt" aria-disabled="true" title="Fuori dal perimetro del prototipo">Apprendistato</button>
+          <button type="button" class="opt" aria-disabled="true" title="Fuori dal perimetro del prototipo">Part time</button>
+        </div>
+      </div>
+
+      <div class="group">
+        <span class="h3">Regione e comune</span>
+        <div class="opts">
+          <button type="button" class="opt" aria-pressed="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-5.3 7-11a7 7 0 1 0-14 0c0 5.7 7 11 7 11z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+            Milano
+          </button>
+          <button type="button" class="opt" aria-disabled="true" title="Fuori dal perimetro del prototipo">Roma</button>
+          <button type="button" class="opt" aria-disabled="true" title="Fuori dal perimetro del prototipo">Torino</button>
+          <button type="button" class="opt" aria-disabled="true" title="Fuori dal perimetro del prototipo">Napoli</button>
+        </div>
+      </div>
+
+      <div class="group">
+        <span class="h3">Agevolazioni</span>
+        <div class="opts">
+          <button type="button" class="opt" aria-pressed="true">Nessuna</button>
+          <button type="button" class="opt" aria-disabled="true" title="Fuori dal perimetro del prototipo">Familiari a carico</button>
+          <button type="button" class="opt" aria-disabled="true" title="Fuori dal perimetro del prototipo">Impatriati</button>
+        </div>
       </div>
     </div>
 
-    <div class="calc-input">
-      <div class="money">
-        <span aria-hidden="true">€</span>
-        <input id="ral" type="text" inputmode="numeric" autocomplete="off" value="30.000" aria-label="Retribuzione annua lorda in euro">
+    <div class="hero-out">
+      <div class="out-top">
+        <div class="toggle" role="group" aria-label="Periodo del netto" id="periodo">
+          <button type="button" data-p="mese" aria-pressed="true">Al mese</button>
+          <button type="button" data-p="anno" aria-pressed="false">All'anno</button>
+        </div>
+        <div>
+          <p class="out-label" id="out-label">Netto stimato al mese</p>
+          <p class="out-value" id="out-value">—</p>
+        </div>
+        <p class="out-sub" id="out-sub"></p>
       </div>
-      <input id="slider" type="range" min="10000" max="150000" step="500" value="30000" aria-label="Regola la retribuzione annua lorda">
-      <div class="range-scale"><span>10.000 €</span><span>150.000 €</span></div>
-    </div>
 
-    <div class="result" id="result"></div>
+      <div class="out-bottom">
+        <div class="out-grid">
+          <div class="out-cell"><span class="k">Contributi INPS</span><span class="v" id="k-inps">—</span></div>
+          <div class="out-cell"><span class="k">IRPEF netta</span><span class="v" id="k-irpef">—</span></div>
+          <div class="out-cell"><span class="k">Addizionali locali</span><span class="v" id="k-add">—</span></div>
+          <div class="out-cell"><span class="k">Aliquota effettiva</span><span class="v" id="k-aliq">—</span></div>
+          <div class="out-cell out-cell--wide">
+            <span class="k">Su ogni 100 € di lordo</span>
+            <span class="out-highlight">
+              <span class="lead">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 5L5 19"></path><circle cx="7.5" cy="7.5" r="2.5"></circle><circle cx="16.5" cy="16.5" r="2.5"></circle></svg>
+                <span id="k-cento">—</span>
+              </span>
+              <span class="muted" id="k-tfr"></span>
+            </span>
+          </div>
+        </div>
+
+        <div class="out-foot">
+          <p>Il calcolo è indicativo: copre un solo caso standard e non tiene conto di conguagli, welfare o voci variabili del CCNL.</p>
+          <button class="cta" type="button" id="cta">Vedi il conto</button>
+        </div>
+      </div>
+    </div>
   </section>
 
-  <section class="card share" id="share"></section>
-
-  <section class="card detail" id="detail"></section>
-
-  <section class="card card--flat context">
-    <div class="detail-head"><h2 class="h2">Cosa ho dato per scontato</h2></div>
-
-    <div class="ctx-row">
-      <span class="tile tile--blue" aria-hidden="true">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"></path><path d="M14 3v5h5"></path></svg>
-      </span>
-      <span class="txt"><span class="h3">Impiegato a tempo indeterminato</span><p class="tiny">Full time, anno intero, CCNL con aliquota contributiva standard.</p></span>
-      <span class="ctx-lock">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg>
-        fisso
-      </span>
-    </div>
-
-    <div class="ctx-row">
-      <span class="tile tile--teal" aria-hidden="true">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-5.3 7-11a7 7 0 1 0-14 0c0 5.7 7 11 7 11z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
-      </span>
-      <span class="txt"><span class="h3">Lombardia, comune di Milano</span><p class="tiny">Addizionale regionale a scaglioni e comunale allo 0,80%.</p></span>
-      <span class="ctx-lock">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg>
-        fisso
-      </span>
-    </div>
-
-    <div class="ctx-row">
-      <span class="tile tile--sand" aria-hidden="true">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.6 5.6 6.4.8-4.7 4.3 1.2 6.3L12 17l-5.5 3 1.2-6.3L3 9.4l6.4-.8z"></path></svg>
-      </span>
-      <span class="txt"><span class="h3">Nessuna agevolazione</span><p class="tiny">Nessun familiare a carico, nessun regime speciale, nessun premio detassato.</p></span>
-      <span class="ctx-lock">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg>
-        fisso
-      </span>
-    </div>
-
-    <details>
-      <summary>Le fonti di ogni numero</summary>
-      <div class="lines">
-        <div class="line"><span class="k">IRPEF 23 / 33 / 43%</span><span class="v">L. 199/2025 art. 1 c. 3</span></div>
-        <div class="line"><span class="k">Detrazione lavoro dipendente e bonus 65 €</span><span class="v">art. 13 TUIR</span></div>
-        <div class="line"><span class="k">Somma integrativa e ulteriore detrazione</span><span class="v">L. 207/2024, circ. 4/E 2025</span></div>
-        <div class="line"><span class="k">Trattamento integrativo</span><span class="v">D.L. 3/2020</span></div>
-        <div class="line"><span class="k">Massimale e prima fascia contributiva</span><span class="v">INPS circ. 6/2026</span></div>
-        <div class="line"><span class="k">Addizionale regionale Lombardia</span><span class="v">L.R. 10/2003 art. 72</span></div>
-        <div class="line"><span class="k">Addizionale comunale Milano</span><span class="v">delib. C.C. 46/2020</span></div>
-      </div>
-    </details>
-  </section>
+  <section class="card detail" id="detail" hidden></section>
 
   <footer>Prototipo dimostrativo costruito per un task di selezione: non è un cedolino, non è un prodotto Jet HR e non sostituisce il consulente del lavoro.</footer>
 </div>
@@ -714,6 +823,7 @@ const SLIDER_MIN = 10000;
 const SLIDER_MAX = 150000;
 
 let mensilita = 13;
+let periodo = "mese";
 
 const icone = {
   inps: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h16v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"></path><path d="M4 10l8-6 8 6"></path><path d="M10 20v-5h4v5"></path></svg>`,
@@ -723,12 +833,10 @@ const icone = {
   tfr: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h13a3 3 0 0 1 3 3v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"></path><path d="M4 8V6a2 2 0 0 1 2-2h9"></path><circle cx="16" cy="14" r="1"></circle></svg>`,
 };
 
-function linea(k, sub, v) {
-  return `<div class="line"><span class="k">${k}${sub ? `<em>${sub}</em>` : ""}</span><span class="v">${v}</span></div>`;
-}
+const linea = (k, sub, v) =>
+  `<div class="line"><span class="k">${k}${sub ? `<em>${sub}</em>` : ""}</span><span class="v">${v}</span></div>`;
 
-function blocco({ tile, icona, titolo, sotto, importo, righe }) {
-  return `<div class="block">
+const blocco = ({ tile, icona, titolo, sotto, importo, righe }) => `<div class="block">
     <div class="block-top">
       <span class="tile ${tile}" aria-hidden="true">${icona}</span>
       <span class="txt"><span class="h3">${titolo}</span><p class="tiny">${sotto}</p></span>
@@ -736,7 +844,6 @@ function blocco({ tile, icona, titolo, sotto, importo, righe }) {
     </div>
     ${righe ? `<details><summary>Mostra il calcolo</summary><div class="lines">${righe}</div></details>` : ""}
   </div>`;
-}
 
 function formulaDetrazione(reddito, importo) {
   if (importo === 0) return "azzerata sopra i 50.000 € di reddito";
@@ -747,74 +854,43 @@ function formulaDetrazione(reddito, importo) {
 
 function render(r) {
   const t = r.totali;
-  const q = (v) => (r.input.ral > 0 ? v / r.input.ral : 0);
+  const mensile = periodo === "mese";
 
-  $("result").innerHTML = `
-    <div class="result-main">
-      <span class="small">Netto al mese, su ${r.input.mensilita} mensilità</span>
-      <span class="num num-hero">${eur(t.nettoMensile)}</span>
-    </div>
-    <div class="result-side">
-      <div><span class="small">Netto all'anno</span><span class="num num-lg">${eur(t.nettoAnnuo)}</span></div>
-      <div><span class="small">Trattenute</span><span class="num num-lg">${eur(t.trattenute)}</span></div>
-    </div>`;
+  $("out-label").textContent = mensile ? `Netto stimato al mese` : "Netto stimato all'anno";
+  $("out-value").textContent = eur(mensile ? t.nettoMensile : t.nettoAnnuo);
+  $("out-sub").textContent = mensile
+    ? `su ${r.input.mensilita} mensilità · ${eur(t.nettoAnnuo)} l'anno`
+    : `${eur(t.nettoMensile)} per ognuna delle ${r.input.mensilita} mensilità`;
 
-  $("sticky-amt").textContent = eur(t.nettoMensile);
-
-  const trattenute = t.trattenute;
-  const voci = [
-    { l: "Contributi INPS", v: r.contributi.totale },
-    { l: "IRPEF", v: r.irpef.netta },
-    { l: "Addizionali locali", v: r.addizionali.totale },
-  ];
-  const maxVoce = Math.max(...voci.map((v) => v.v), 1);
-
-  $("share").innerHTML = `
-    <div class="detail-head">
-      <h2 class="h2">Dove vanno i tuoi soldi</h2>
-      <span class="badge">${pct(q(t.nettoAnnuo))} resta a te</span>
-    </div>
-    <div class="share-bar" role="img" aria-label="Netto ${eur(t.nettoAnnuo)}, trattenute ${eur(trattenute)}">
-      <div class="keep" style="width:${q(t.nettoAnnuo) * 100}%">${eur(t.nettoAnnuo)}</div>
-      <div class="gone" style="width:${q(trattenute) * 100}%">${eur(trattenute)}</div>
-    </div>
-    <div class="meters">
-      ${voci
-        .map(
-          (v) => `<div class="meter">
-            <span class="small" style="font-weight:700">${num((v.v / r.input.ral) * 100, 1)}%</span>
-            <span class="meter-name">
-              <span class="small" style="color:var(--b-ink)">${v.l}</span>
-              <span class="meter-track"><span class="meter-fill" style="width:${(v.v / maxVoce) * 100}%"></span></span>
-            </span>
-            <span class="amt">${eur(v.v)}</span>
-          </div>`,
-        )
-        .join("")}
-    </div>`;
+  $("k-inps").textContent = eur(r.contributi.totale);
+  $("k-irpef").textContent = eur(r.irpef.netta);
+  $("k-add").textContent = eur(r.addizionali.totale);
+  $("k-aliq").textContent = pct(t.aliquotaEffettiva);
+  $("k-cento").textContent = `${num((1 - t.cuneoNetto) * 100, 2)} € restano a te`;
+  $("k-tfr").textContent = `${eur(r.tfr.accantonato)} di TFR a parte`;
 
   const c = r.contributi;
   const detr = r.irpef.detrazioneLavoro;
 
   const righeInps =
     linea("Contributi IVS", `${num(c.imponibile)} € × 9,19%`, eur(c.base)) +
-    (c.aggiuntivo > 0 ? linea("Aliquota aggiuntiva 1%", `sulla quota oltre 56.224 €`, eur(c.aggiuntivo)) : "");
+    (c.aggiuntivo > 0 ? linea("Aliquota aggiuntiva 1%", "sulla quota oltre 56.224 €", eur(c.aggiuntivo)) : "");
 
   const righeIrpef =
-    r.irpef.scaglioni
-      .map((s) => linea(`Scaglione ${pct(s.aliquota, 0)}`, `${num(s.imponibile)} € imponibili`, eur(s.imposta)))
-      .join("") +
+    r.irpef.scaglioni.map((s) => linea(`Scaglione ${pct(s.aliquota, 0)}`, `${num(s.imponibile)} € imponibili`, eur(s.imposta))).join("") +
     linea("Imposta lorda", `su ${num(r.imponibileFiscale)} € di imponibile`, eur(r.irpef.lorda)) +
     linea("Detrazione da lavoro", formulaDetrazione(r.imponibileFiscale, detr.base), `− ${eur(detr.base)}`) +
     (detr.bonus > 0 ? linea("Detrazione aggiuntiva", "tra 25.000 € e 35.000 € di reddito", `− ${eur(detr.bonus)}`) : "") +
     (r.irpef.detrazioneCuneo > 0
-      ? linea("Ulteriore detrazione", r.imponibileFiscale <= 32000 ? "importo pieno fino a 32.000 €" : `1.000 × (40.000 − ${num(r.imponibileFiscale)}) / 8.000`, `− ${eur(r.irpef.detrazioneCuneo)}`)
+      ? linea(
+          "Ulteriore detrazione",
+          r.imponibileFiscale <= 32000 ? "importo pieno fino a 32.000 €" : `1.000 × (40.000 − ${num(r.imponibileFiscale)}) / 8.000`,
+          `− ${eur(r.irpef.detrazioneCuneo)}`,
+        )
       : "");
 
   const righeAdd =
-    r.addizionali.regionaleScaglioni
-      .map((s) => linea(`Lombardia ${pct(s.aliquota, 2)}`, `${num(s.imponibile)} € imponibili`, eur(s.imposta)))
-      .join("") +
+    r.addizionali.regionaleScaglioni.map((s) => linea(`Lombardia ${pct(s.aliquota, 2)}`, `${num(s.imponibile)} € imponibili`, eur(s.imposta))).join("") +
     linea("Milano 0,80%", r.addizionali.comunaleDovuta ? `${num(r.imponibileFiscale)} € imponibili` : "esente fino a 23.000 € di imponibile", eur(r.addizionali.comunale));
 
   const righeBonus =
@@ -829,46 +905,10 @@ function render(r) {
       <span class="small">${num(r.input.ral)} € di lordo</span>
     </div>
 
-    ${blocco({
-      tile: "tile--blue",
-      icona: icone.inps,
-      titolo: "Contributi INPS",
-      sotto: "Trattenuti in busta e dedotti prima di calcolare l'IRPEF",
-      importo: `− ${eur(c.totale)}`,
-      righe: righeInps,
-    })}
-
-    ${blocco({
-      tile: "tile--sand",
-      icona: icone.irpef,
-      titolo: "IRPEF",
-      sotto: `Imposta lorda ${eur(r.irpef.lorda)} meno ${eur(r.irpef.detrazioniTotali)} di detrazioni`,
-      importo: `− ${eur(r.irpef.netta)}`,
-      righe: righeIrpef,
-    })}
-
-    ${blocco({
-      tile: "tile--teal",
-      icona: icone.add,
-      titolo: "Addizionali locali",
-      sotto: r.addizionali.comunaleDovuta ? "Regione Lombardia e Comune di Milano" : "Solo regionale: sotto la soglia il Comune non trattiene nulla",
-      importo: `− ${eur(r.addizionali.totale)}`,
-      righe: righeAdd,
-    })}
-
-    ${
-      r.bonus.totale > 0
-        ? blocco({
-            tile: "tile--lime",
-            icona: icone.bonus,
-            titolo: "Integrazioni in busta",
-            sotto: "Somme che aumentano il netto senza essere retribuzione lorda",
-            importo: `+ ${eur(r.bonus.totale)}`,
-            righe: righeBonus,
-          })
-        : ""
-    }
-
+    ${blocco({ tile: "tile--blue", icona: icone.inps, titolo: "Contributi INPS", sotto: "Trattenuti in busta e dedotti prima di calcolare l'IRPEF", importo: `− ${eur(c.totale)}`, righe: righeInps })}
+    ${blocco({ tile: "tile--sand", icona: icone.irpef, titolo: "IRPEF", sotto: `Imposta lorda ${eur(r.irpef.lorda)} meno ${eur(r.irpef.detrazioniTotali)} di detrazioni`, importo: `− ${eur(r.irpef.netta)}`, righe: righeIrpef })}
+    ${blocco({ tile: "tile--teal", icona: icone.add, titolo: "Addizionali locali", sotto: r.addizionali.comunaleDovuta ? "Regione Lombardia e Comune di Milano" : "Solo regionale: sotto la soglia il Comune non trattiene nulla", importo: `− ${eur(r.addizionali.totale)}`, righe: righeAdd })}
+    ${r.bonus.totale > 0 ? blocco({ tile: "tile--lime", icona: icone.bonus, titolo: "Integrazioni in busta", sotto: "Somme che aumentano il netto senza essere retribuzione lorda", importo: `+ ${eur(r.bonus.totale)}`, righe: righeBonus }) : ""}
     ${blocco({
       tile: "tile--lime",
       icona: icone.tfr,
@@ -885,13 +925,27 @@ function render(r) {
              <span>Sei appena sopra la soglia dell'addizionale comunale. A Milano è una soglia, non una franchigia: superare 23.000 € di imponibile costa ${eur(r.addizionali.comunale)} pieni.</span>
            </div>`
         : ""
-    }`;
+    }
+
+    <details>
+      <summary>Le fonti di ogni numero</summary>
+      <div class="lines">
+        ${linea("IRPEF 23 / 33 / 43%", "", "L. 199/2025 art. 1 c. 3")}
+        ${linea("Detrazione lavoro dipendente e bonus 65 €", "", "art. 13 TUIR")}
+        ${linea("Somma integrativa e ulteriore detrazione", "", "L. 207/2024, circ. 4/E 2025")}
+        ${linea("Trattamento integrativo", "", "D.L. 3/2020")}
+        ${linea("Massimale e prima fascia contributiva", "", "INPS circ. 6/2026")}
+        ${linea("Addizionale regionale Lombardia", "", "L.R. 10/2003 art. 72")}
+        ${linea("Addizionale comunale Milano", "", "delib. C.C. 46/2020")}
+      </div>
+    </details>`;
 }
 
 function aggiorna(ral) {
   const v = Math.max(0, ral);
-  $("slider").value = Math.min(SLIDER_MAX, Math.max(SLIDER_MIN, v));
-  $("slider").style.setProperty("--pos", `${((Math.min(SLIDER_MAX, Math.max(SLIDER_MIN, v)) - SLIDER_MIN) / (SLIDER_MAX - SLIDER_MIN)) * 100}%`);
+  const clamp = Math.min(SLIDER_MAX, Math.max(SLIDER_MIN, v));
+  $("slider").value = clamp;
+  $("slider").style.setProperty("--pos", `${((clamp - SLIDER_MIN) / (SLIDER_MAX - SLIDER_MIN)) * 100}%`);
   render(calcola(v, { mensilita }));
 }
 
@@ -921,14 +975,26 @@ $("mensilita").addEventListener("click", (e) => {
   aggiorna(parseRal($("ral").value));
 });
 
-// la barra riassuntiva compare solo quando il risultato esce dallo schermo
-const sentinella = $("result");
-if ("IntersectionObserver" in window) {
-  new IntersectionObserver(
-    ([e]) => $("sticky").classList.toggle("on", !e.isIntersecting && e.boundingClientRect.top < 0),
-    { threshold: 0 },
-  ).observe(sentinella);
+$("periodo").addEventListener("click", (e) => {
+  const b = e.target.closest("button[data-p]");
+  if (!b) return;
+  periodo = b.dataset.p;
+  for (const x of $("periodo").querySelectorAll("button")) x.setAttribute("aria-pressed", String(x === b));
+  aggiorna(parseRal($("ral").value));
+});
+
+// le opzioni fuori perimetro restano visibili ma non selezionabili
+for (const b of document.querySelectorAll('.opt[aria-disabled="true"]')) {
+  b.addEventListener("click", (e) => e.preventDefault());
 }
+
+$("cta").addEventListener("click", () => {
+  const d = $("detail");
+  const apri = d.hidden;
+  d.hidden = !apri;
+  $("cta").textContent = apri ? "Nascondi il conto" : "Vedi il conto";
+  if (apri) d.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+});
 
 aggiorna(parseRal($("ral").value));
 </script>

@@ -50,14 +50,34 @@ Sette traduzioni dirette dal manifesto alla pagina:
 | Perdersi tra le pagine | **Una colonna sola,** quattro card, nessuna navigazione da imparare; una barra riassuntiva compare solo quando il risultato esce dallo schermo |
 | Il totale nascosto in fondo | **Il risultato in cima,** grande, sempre visibile |
 
-Palette dal prodotto: fondo `#EEF1EA` (oliva chiaro), card bianche a raggio 20,
-verde lime `#8FC53F` per ciò che resta, oliva scuro `#2C3123` per ciò che se ne
-va, tile pastello lime/blu/verdeacqua/sabbia per orientarsi a colpo d'occhio.
+### Impianto della card
 
-La ripartizione è a due parti — quello che resta e quello che se ne va — invece
-di quattro serie colorate: la scomposizione delle trattenute vive in tre barre
-di magnitudine nello stesso oliva. Meno colore, meno da decifrare, e nessuna
-identità affidata alla sola tinta.
+L'impianto viene da un calcolatore di risparmio fotovoltaico usato come
+riferimento strutturale: **una sola card divisa a metà**, input a sinistra ed
+esito a destra, col pannello di destra che arriva a filo del bordo e si divide in
+due fasce — tinta chiara sopra col numero grande, blocco pieno sotto con la
+griglia di dati e la call to action. Tradotto sul nostro dominio:
+
+| Riferimento | Qui |
+|---|---|
+| `HOUSE DETAILS` | `DATI DEL RAPPORTO DI LAVORO` |
+| Slider della bolletta con pill del valore | Slider della RAL con pill editabile |
+| Gruppi di chip (falde, orientamento, riscaldamento) | Gruppi di chip (mensilità, contratto, comune, agevolazioni) |
+| Toggle `1 year / 25 years` | Toggle `Al mese / All'anno` |
+| Risparmio stimato, numero gigante | Netto stimato, numero gigante |
+| Griglia `system size / payback / CO2` | Griglia `INPS / IRPEF / addizionali / aliquota` |
+| Riga CO2 con dato secondario in grigio | Riga «su ogni 100 € di lordo», col TFR come dato secondario |
+| Disclaimer + `Get a Quote` | Disclaimer + `Vedi il conto`, che apre il dettaglio |
+
+I chip risolvono anche il problema dei campi fuori perimetro: le alternative non
+coperte restano visibili, con bordo tratteggiato e `aria-disabled`, invece di
+sparire. Si vede cosa il prototipo non fa.
+
+Palette dal prodotto Jet HR: fondo `#EEF1EA`, card bianche a raggio 20, verde
+lime `#8FC53F` per il valore positivo e per la CTA, fascia chiara `#E9F4D4`,
+blocco pieno oliva `#2C3123` con testo chiaro, tile pastello
+lime/blu/verdeacqua/sabbia nel dettaglio. In dark mode il blocco pieno resta più
+scuro della card (`#101409`): non si inverte, altrimenti la gerarchia si ribalta.
 
 ## Regole valide in entrambe
 
