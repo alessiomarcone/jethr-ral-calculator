@@ -1,5 +1,10 @@
 # Prompt per Lovable
 
+> Nota: questo prompt descrive la prima versione del prototipo, quella a caso
+> fisso (Lombardia, Milano, impiegato a tempo indeterminato). La versione
+> corrente aggiunge tre input reali — regione, contratto, agevolazione — che il
+> prompt non copre. Vale ancora come traccia di impaginazione e di tono.
+
 Due versioni. La **breve** lascia a Lovable le scelte di impaginazione: usala se
 vuoi vedere cosa propone. La **lunga**, più sotto, fissa anche layout e token.
 

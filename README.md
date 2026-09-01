@@ -1,12 +1,13 @@
 # Dal lordo al netto — calcolatore RAL → netto (anno d'imposta 2026)
 
-Prototipo per il task Jet HR. Inserisci una RAL, ottieni il netto annuo e mensile
-e il dettaglio riga per riga di tutto ciò che viene trattenuto sul lordo, con la
-formula usata per ogni voce.
+Prototipo per il task Jet HR. Inserisci una RAL, scegli **regione di residenza
+fiscale**, **tipologia di contratto** e **agevolazione**, premi *Calcola*:
+ottieni il netto annuo e mensile e il dettaglio riga per riga di tutto ciò che
+viene trattenuto sul lordo, con la formula usata per ogni voce.
 
-Due interfacce sullo stesso motore: `index.html` (sobria) e `index-b.html`
-(traduzione del manifesto Jet HR — nessun modulo, nessun bottone). Vedi
-`DESIGN-SYSTEM.md`.
+Due interfacce sullo stesso motore: `index.html` (sobria, con il bottone
+*Calcola*) e `index-b.html` (traduzione del manifesto Jet HR, si aggiorna mentre
+scegli). Vedi `DESIGN-SYSTEM.md`.
 
 - **Pagine live:** vedi i link nella mail di consegna
 - **Uso in locale:** apri `index.html` o `index-b.html`, non serve nessun server
@@ -16,36 +17,53 @@ Due interfacce sullo stesso motore: `index.html` (sobria) e `index-b.html`
 
 | File | Cosa contiene |
 |---|---|
-| `src/tax-engine.js` | il motore di calcolo e **tutti** i parametri normativi in un solo oggetto `PARAMS` |
+| `src/tax-engine.js` | il motore di calcolo e **tutti** i parametri normativi: `PARAMS`, `REGIONI` (21), `CONTRATTI` (5), `AGEVOLAZIONI` (4) |
 | `src/page.html` + `src/design-system.css` | variante A, sobria |
 | `src/page-b.html` + `src/ds-b.css` | variante B, manifesto |
-| `test/tax-engine.test.mjs` | 13 test sul motore |
+| `test/tax-engine.test.mjs` | 22 test sul motore |
 | `build.mjs` | inlina design system e motore in ogni variante e genera le pagine standalone |
 
-I parametri di legge stanno tutti in `PARAMS`: quando cambia la legge di bilancio
-si tocca un oggetto solo, non la logica. La pagina è generata dal motore, quindi
-quello che gira nel browser è esattamente il codice testato.
+I parametri di legge stanno tutti in quattro oggetti: quando cambia la legge di
+bilancio, o una regione ritocca l'addizionale, si tocca un dato, non la logica.
+Le tendine sono generate dagli stessi oggetti, quindi un'opzione visibile a
+schermo esiste sempre anche nel motore.
 
 ## La catena di calcolo
 
 ```
 RAL
- − contributi previdenziali a carico del dipendente        (deducibili)
- = reddito imponibile IRPEF (= reddito complessivo)
+ − contributi previdenziali a carico del dipendente        (aliquota dal contratto)
+ = reddito di lavoro al netto dei contributi
+ − quota esente                                            (agevolazione scelta)
+ = imponibile IRPEF e addizionali
  − IRPEF lorda a scaglioni
  + detrazione da lavoro dipendente + ulteriore detrazione   (fino a capienza)
  = IRPEF netta
- − addizionale regionale Lombardia
- − addizionale comunale Milano
+ − addizionale regionale                                    (regione scelta)
+ − addizionale comunale 0,80%                               (ipotesi dichiarata)
  + trattamento integrativo e somma integrativa              (non sono retribuzione)
  = netto annuo → / mensilità = netto mensile
 ```
 
-L'ordine conta: i contributi sono deducibili, quindi l'IRPEF non si calcola sulla
+L'ordine conta. I contributi sono deducibili, quindi l'IRPEF non si calcola sulla
 RAL ma sull'imponibile al netto dei contributi. Le detrazioni si sottraggono
 dall'**imposta**, non dal reddito, e non sono rimborsabili: se superano l'IRPEF
 lorda, l'imposta va a zero e l'eccedenza si perde (è la ragione per cui esiste il
 trattamento integrativo).
+
+### Le tre scelte, e cosa spostano davvero
+
+| Input | Cosa cambia | Cosa **non** cambia |
+|---|---|---|
+| **Regione** | aliquote e scaglioni dell'addizionale regionale, più le esenzioni, le aliquote uniche sotto soglia e le detrazioni fissate dalla legge regionale | IRPEF erariale, contributi |
+| **Contratto** | aliquota contributiva a carico del lavoratore (5,84% apprendista, 9,19% standard, 9,49% con CIGS) e, di riflesso, l'imponibile fiscale | aliquote IRPEF, detrazioni |
+| **Agevolazione** | quota di reddito che concorre all'imponibile: 50%, 40% o 10% | i **contributi**, dovuti sulla retribuzione piena, e le soglie di detrazioni e bonus (vedi sotto) |
+
+Una scelta di modello dichiarata: detrazioni, trattamento integrativo e taglio
+del cuneo restano commisurati al reddito **al lordo** della quota esente. Senza
+questa regola un impatriato con 30.000 € di RAL scivolerebbe sotto le soglie dei
+bonus per redditi bassi e cumulerebbe agevolazione e sostegno. Un test fissa il
+comportamento.
 
 ## Parametri e fonti
 
@@ -59,49 +77,68 @@ Tutti verificati a settembre 2026 per l'anno d'imposta 2026.
 | Somma integrativa (non imponibile) | 7,1% / 5,3% / 4,8% del reddito di lavoro, per reddito complessivo ≤ 20.000 | L. 207/2024 art. 1 c. 4-5, circ. Agenzia Entrate 4/E del 16.5.2025 |
 | Ulteriore detrazione | 1.000 € tra 20.000 e 32.000, poi `1.000 × (40.000 − R)/8.000` fino a 40.000 | idem |
 | Trattamento integrativo | 1.200 € fino a 15.000 con capienza verificata sulla detrazione ridotta di 75 €; tra 15.000 e 28.000 solo per l'incapienza | D.L. 3/2020, come modificato dalla L. 207/2024 |
-| Contributi a carico dipendente | 9,19% | aliquota IVS FPLD standard per impiegati industria/terziario |
+| Contributi a carico dipendente | 9,19% standard · 9,49% con CIGS a carico lavoratore (0,30%) · 5,84% apprendista | aliquota IVS FPLD; CIGS art. 9 L. 407/1990; apprendisti art. 1 c. 773 L. 296/2006 |
 | Aliquota aggiuntiva 1% | sulla quota oltre 56.224 € | art. 3-ter L. 438/1992; soglia 2026 da INPS circ. 6/2026 |
 | Massimale contributivo | 122.295 € | INPS circ. 6/2026 |
-| Addizionale regionale Lombardia | 1,23% / 1,58% / 1,72% / 1,73% sugli stessi scaglioni IRPEF | L.R. Lombardia 10/2003 art. 72 c. 1, dati pubblicati dal MEF (28.1.2026) |
-| Addizionale comunale Milano | 0,80%, esenzione fino a 23.000 € di imponibile | delib. C.C. Milano 46/2020 |
+| **Addizionali regionali** | **tutte e 21 le regioni e province autonome**, con scaglioni, esenzioni e detrazioni | MEF – Dipartimento delle Finanze, [ricerca aliquote applicabili](https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/addregirpef/), anno 2026, dati letti l'1.9.2026 |
+| Addizionale comunale | 0,80% su tutto l'imponibile | aliquota massima ordinaria, art. 1 c. 3 D.Lgs. 360/1998 — **ipotesi**, il comune non è un input |
+| Impatriati | concorre il 50% del reddito (40% con figlio minore), entro 600.000 € | art. 5 D.Lgs. 209/2023 |
+| Docenti e ricercatori | concorre il 10% del reddito | art. 44 D.L. 78/2010 |
 | TFR | RAL / 13,5 meno 0,50% al Fondo di garanzia | art. 2120 c.c.; il TFR è mostrato a parte perché è accantonato, non pagato in busta |
+
+Le aliquote regionali sono state lette una per una dall'interrogazione ufficiale
+del MEF, non da tabelle di terze parti: le fonti secondarie consultate in fase di
+raccolta si contraddicevano fra loro su Sicilia, Valle d'Aosta e Calabria. Ogni
+regione porta con sé la propria norma di riferimento e la data di pubblicazione,
+mostrate in pagina sotto la tendina.
 
 ## Semplificazioni (dichiarate, non nascoste)
 
-1. **Impiegato a tempo indeterminato, full time, anno intero.** Nessun ragguaglio
-   ai giorni: detrazioni e bonus sono presi per intero. Nessun minimo di 690/1.380 €
-   sulla detrazione, che diventa rilevante solo con rapporti parziali.
+1. **Full time, anno intero.** Nessun ragguaglio ai giorni: detrazioni e bonus
+   sono presi per intero. Nessun minimo di 690/1.380 € sulla detrazione, che
+   diventa rilevante solo con rapporti parziali.
 2. **Tutta la RAL è imponibile**, sia ai fini contributivi che fiscali. Niente
    fringe benefit, welfare, premi di risultato detassati al 5%, trasferte, auto
    aziendale, straordinari.
-3. **Aliquota contributiva fissa al 9,19%.** Nella realtà dipende da CCNL,
-   settore, dimensione aziendale e qualifica: può variare di qualche decimo, e i
-   dirigenti hanno tutt'altro schema.
-4. **Reddito complessivo = RAL − contributi.** Nessun altro reddito, nessun
-   familiare a carico, nessun onere deducibile o detraibile, nessuna agevolazione
-   (impatriati, rientro cervelli, detassazione premi).
-5. **Addizionali per competenza.** In busta paga si trattengono come saldo
+3. **Il comune non è un input.** L'addizionale comunale è calcolata allo 0,80%
+   su tutto l'imponibile: è il massimo ordinario di legge, quindi la stima è
+   prudenziale. Il comune reale può avere un'aliquota più bassa, una soglia di
+   esenzione o nessuna addizionale.
+4. **Nessun familiare a carico.** Restano fuori le detrazioni per carichi di
+   famiglia, comprese quelle regionali di Campania, Marche, Piemonte, Puglia,
+   Sardegna, Trento, Bolzano e Veneto, e le aliquote agevolate per disabilità.
+5. **Reddito complessivo = RAL − contributi.** Nessun altro reddito, nessun onere
+   deducibile o detraibile oltre ai contributi.
+6. **Aliquota contributiva per tipologia, non per CCNL.** Nella realtà dipende
+   anche da settore, dimensione aziendale e qualifica, e i fondi contrattuali dei
+   dirigenti (Previndai, Fasi, Mario Negri) qui non sono calcolati.
+7. **Addizionali per competenza.** In busta paga si trattengono come saldo
    dell'anno precedente più acconto dell'anno in corso; qui sono calcolate
    sull'anno di competenza, che è la lettura corretta per una proiezione annuale.
-6. **Nessun conguaglio di fine anno**, nessuna gestione dei ratei di
-   tredicesima/quattordicesima: la mensilità è il netto annuo diviso per il numero
-   di mensilità scelto.
-7. **Solo lato dipendente.** Il costo azienda (≈ +30% di contributi a carico del
+8. **Nessun conguaglio di fine anno**, nessuna gestione dei ratei di
+   tredicesima/quattordicesima: la mensilità è il netto annuo diviso per il
+   numero di mensilità scelto.
+9. **Solo lato dipendente.** Il costo azienda (≈ +30% di contributi a carico del
    datore, più TFR e INAIL) non è calcolato.
 
 ## Le soglie che fanno saltare il netto
 
 Il sistema italiano contiene vere discontinuità: superare la soglia di un euro fa
-perdere l'intero beneficio. Il prototipo le riproduce invece di lisciarle, e un
-test le fissa esplicitamente (`il netto e' monotono, salvo le soglie di legge
-documentate`), così ogni altro salto all'indietro è un bug.
+perdere l'intero beneficio. Il prototipo le riproduce invece di lisciarle, e le
+segnala in pagina quando ci si finisce sopra.
 
 | Soglia | Effetto |
 |---|---|
-| 23.000 € di imponibile | l'addizionale comunale di Milano è una **soglia, non una franchigia**: un euro sopra costa 184 € pieni. La pagina lo segnala quando ci sei vicino |
+| Valle d'Aosta, 15.000 € di imponibile | sotto è esente, sopra l'addizionale è dovuta sull'intero importo: un euro in più costa 185 € |
+| Trento, 30.000 € di imponibile | la deduzione di 30.000 € azzera l'addizionale fino alla soglia e sparisce di colpo appena sopra |
+| Lazio e Umbria, 28.000 € · Friuli-Venezia Giulia, 15.000 € | sotto soglia si applica un'aliquota unica sull'intero imponibile, sopra si passa alla scala progressiva |
 | 8.500 e 15.000 € di reddito di lavoro | cambia la percentuale della somma integrativa, applicata a tutta la base |
 | 20.000 € di reddito complessivo | finisce la somma integrativa e inizia l'ulteriore detrazione |
 | 35.000 € | decade la detrazione aggiuntiva di 65 € |
+
+In Lombardia, dove non ci sono soglie regionali, il netto è **monotono** su tutto
+l'arco 5.000–150.000 €: un test lo verifica passo passo, così ogni salto
+all'indietro che comparisse in futuro è un bug.
 
 ## Verifica
 
@@ -109,20 +146,28 @@ documentate`), così ogni altro salto all'indietro è un bug.
 npm test
 ```
 
-I test coprono la progressività degli scaglioni, il massimale e l'aliquota
-aggiuntiva dell'1%, la continuità delle detrazioni ai confini di fascia, la catena
-completa su RAL 30.000 con i valori attesi calcolati a mano, il caso a basso
-reddito con somma integrativa, la monotonia del netto su tutto l'arco
-5.000–150.000 € e il cliff dell'addizionale comunale.
+I 22 test coprono: la progressività degli scaglioni, il massimale e l'aliquota
+aggiuntiva dell'1%, le tre aliquote contributive per contratto, la continuità
+delle detrazioni ai confini di fascia, la completezza e la coerenza della tabella
+delle 21 regioni, la scala progressiva e l'aliquota unica sotto soglia,
+le esenzioni piene di Valle d'Aosta e Trento, la detrazione di Bolzano che non
+genera mai credito, le quote imponibili delle agevolazioni e il tetto dei
+600.000 €, il fatto che un'agevolazione non apra la porta ai bonus per redditi
+bassi, la catena completa su RAL 30.000 con i valori calcolati a mano, il caso a
+basso reddito con somma integrativa, la monotonia del netto in Lombardia e il
+salto all'indietro sopra la soglia valdostana.
 
-Controprova rapida: RAL 30.000, 13 mensilità → 1.802 € netti al mese, 23.426 €
-l'anno, aliquota effettiva 21,9%. RAL 80.000 → 3.641 € al mese.
+Controprova rapida: RAL 30.000, Lombardia, impiegato a tempo indeterminato,
+nessuna agevolazione, 13 mensilità → **1.802 € netti al mese**, 23.426 € l'anno,
+aliquota effettiva 21,9%. Stessa RAL in Lazio → 23.332 € l'anno; in Valle d'Aosta
+→ 23.468 €.
 
 ## Cosa servirebbe per andare oltre il prototipo
 
-- tabelle CCNL per aliquota contributiva, mensilità e minimi
-- anagrafica comune/regione con le rispettive aliquote e soglie, non due valori fissi
-- familiari a carico, altri redditi, oneri deducibili e detraibili
-- ratei, ferie, ROL, conguaglio di fine anno e gestione del cambio di scaglione in corso d'anno
-- regimi agevolati (impatriati, premi di risultato, welfare, fringe benefit)
+- anagrafica comunale completa (oltre 7.900 comuni, con aliquote e soglie proprie)
+- tabelle CCNL per aliquota contributiva, mensilità e minimi, e i fondi dirigenti
+- familiari a carico, altri redditi, oneri deducibili e detraibili, e con essi le
+  detrazioni regionali oggi non modellate
+- ratei, ferie, ROL, conguaglio di fine anno e cambio di scaglione in corso d'anno
+- le altre agevolazioni (premi di risultato, welfare, fringe benefit, frontalieri)
 - costo azienda e vista bidirezionale netto → lordo

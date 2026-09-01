@@ -28,10 +28,13 @@ ripartizione: quattro serie di una palette categoriale validata con lo script
 della skill dataviz (sei check superati in entrambi i temi). Tutto il resto è
 inchiostro e grigi.
 
-I tre campi di contesto — contratto, regione, agevolazioni — sono presenti ma
-bloccati: bordo tratteggiato, `disabled` semantico, cursore `not-allowed` e una
-riga che spiega perché. Un campo assente nasconde una scelta, un campo bloccato
-la dichiara.
+I tre campi di contesto — regione, contratto, agevolazioni — sono tendine vere,
+popolate dagli stessi oggetti che il motore usa per calcolare: 21 regioni,
+5 contratti, 4 agevolazioni. Sotto ognuna, una riga in grigio dice cosa quella
+scelta sposta davvero — la norma regionale e la data di pubblicazione, l'aliquota
+contributiva, la quota di reddito esente — così il campo non è solo un filtro ma
+spiega il proprio effetto. Il bottone *Calcola* resta, ma le tendine ricalcolano
+già al cambio: chi lo preme conferma, non sblocca.
 
 ## Variante B — manifesto
 
@@ -44,7 +47,7 @@ Sette traduzioni dirette dal manifesto alla pagina:
 |---|---|
 | Compilare un modulo | **Un solo campo.** Slider più input: si trascina, non si compila |
 | Premere invio e aspettare | **Nessun bottone.** Il conto si aggiorna mentre digiti o trascini |
-| Il modulo che non spiega perché | **Campi bloccati che parlano:** tile pastello, titolo in italiano, motivo esplicito |
+| Il modulo che non spiega perché | **Ogni campo dichiara il suo effetto:** sotto la scelta, in grigio, la norma o l'aliquota che cambia |
 | Il gergo prima del significato | **Prima il senso, poi la norma.** "Dove vanno i tuoi soldi", i riferimenti di legge in un dettaglio ripiegato |
 | Il prospetto illeggibile | **Liste, non tabelle.** Ogni voce è un blocco con icona, importo grande e "Mostra il calcolo" a richiesta |
 | Perdersi tra le pagine | **Una colonna sola,** quattro card, nessuna navigazione da imparare; una barra riassuntiva compare solo quando il risultato esce dallo schermo |
@@ -62,16 +65,17 @@ griglia di dati e la call to action. Tradotto sul nostro dominio:
 |---|---|
 | `HOUSE DETAILS` | `DATI DEL RAPPORTO DI LAVORO` |
 | Slider della bolletta con pill del valore | Slider della RAL con pill editabile |
-| Gruppi di chip (falde, orientamento, riscaldamento) | Gruppi di chip (mensilità, contratto, comune, agevolazioni) |
+| Gruppi di chip (falde, orientamento, riscaldamento) | Gruppi di chip (mensilità, contratto, agevolazioni) più la tendina delle 21 regioni |
 | Toggle `1 year / 25 years` | Toggle `Al mese / All'anno` |
 | Risparmio stimato, numero gigante | Netto stimato, numero gigante |
 | Griglia `system size / payback / CO2` | Griglia `INPS / IRPEF / addizionali / aliquota` |
 | Riga CO2 con dato secondario in grigio | Riga «su ogni 100 € di lordo», col TFR come dato secondario |
 | Disclaimer + `Get a Quote` | Disclaimer + `Vedi il conto`, che apre il dettaglio |
 
-I chip risolvono anche il problema dei campi fuori perimetro: le alternative non
-coperte restano visibili, con bordo tratteggiato e `aria-disabled`, invece di
-sparire. Si vede cosa il prototipo non fa.
+I chip reggono bene insiemi piccoli e chiusi — cinque contratti, quattro
+agevolazioni — ma non ventuno regioni: quella sola scelta diventa una tendina a
+pill, con la stessa altezza minima di 44px e la freccia disegnata in CSS. Dove
+serviva un elenco lungo, la chip cede il posto senza cambiare linguaggio.
 
 Palette dal prodotto Jet HR: fondo `#EEF1EA`, card bianche a raggio 20, verde
 lime `#8FC53F` per il valore positivo e per la CTA, fascia chiara `#E9F4D4`,

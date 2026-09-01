@@ -34,6 +34,7 @@
 
 /* ---------- pannello di calcolo ---------- */
 .form-divider { height: 1px; background: var(--ds-line); margin: var(--ds-1) 0; }
+.field .hint { font-size: 12.5px; line-height: 1.5; color: var(--ds-ink-3); }
 
 /* ---------- riepilogo ---------- */
 .summary { display: flex; flex-direction: column; gap: var(--ds-5); }
@@ -148,12 +149,12 @@ footer { margin-top: var(--ds-6); padding-top: var(--ds-4); border-top: 1px soli
 <div class="page">
   <header class="topbar">
     <span class="eyebrow">Calcolatore retribuzione</span>
-    <span class="pill">Anno d'imposta 2026 · Milano</span>
+    <span class="pill" id="ctx">Anno d'imposta 2026</span>
   </header>
 
   <div class="intro">
     <h1 class="h1">Dal lordo al netto</h1>
-    <p class="lede">Inserisci una RAL e ottieni il netto annuo e mensile, con il dettaglio di ogni trattenuta e la formula che la produce.</p>
+    <p class="lede">Inserisci una RAL, scegli regione, contratto e agevolazione: ottieni il netto annuo e mensile, con il dettaglio di ogni trattenuta e la formula che la produce.</p>
   </div>
 
   <div class="grid grid--main">
@@ -174,6 +175,30 @@ footer { margin-top: var(--ds-6); padding-top: var(--ds-4); border-top: 1px soli
       </div>
 
       <div class="field">
+        <label for="regione">Regione di residenza fiscale</label>
+        <div class="select">
+          <select id="regione" name="regione"></select>
+        </div>
+        <span class="hint" id="hint-regione"></span>
+      </div>
+
+      <div class="field">
+        <label for="contratto">Tipologia di contratto</label>
+        <div class="select">
+          <select id="contratto" name="contratto"></select>
+        </div>
+        <span class="hint" id="hint-contratto"></span>
+      </div>
+
+      <div class="field">
+        <label for="agevolazione">Agevolazioni</label>
+        <div class="select">
+          <select id="agevolazione" name="agevolazione"></select>
+        </div>
+        <span class="hint" id="hint-agevolazione"></span>
+      </div>
+
+      <div class="field">
         <span id="lbl-mens" style="font-size:14px;font-weight:600">Mensilità</span>
         <div class="segmented" role="group" aria-labelledby="lbl-mens" id="mensilita">
           <button type="button" data-m="12" aria-pressed="false">12</button>
@@ -187,39 +212,8 @@ footer { margin-top: var(--ds-6); padding-top: var(--ds-4); border-top: 1px soli
       <div class="form-divider"></div>
 
       <div class="stack stack--tight">
-        <span class="eyebrow">Ipotesi fissate in questo prototipo</span>
-
-        <div class="field">
-          <label for="contratto">Tipo di contratto</label>
-          <div class="select">
-            <select id="contratto" disabled>
-              <option>Impiegato · tempo indeterminato · full time</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="regione">Regione e comune</label>
-          <div class="select">
-            <select id="regione" disabled>
-              <option>Lombardia · Milano</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="agevolazioni">Agevolazioni e carichi di famiglia</label>
-          <div class="select">
-            <select id="agevolazioni" disabled>
-              <option>Nessuna agevolazione, nessun familiare a carico</option>
-            </select>
-          </div>
-        </div>
-
-        <p class="locked-note">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg>
-          <span>Campi bloccati: il prototipo copre un solo caso standard. In produzione ognuno di questi selettori cambierebbe aliquote, detrazioni e soglie.</span>
-        </p>
+        <span class="eyebrow">Cosa resta fuori</span>
+        <p class="small">Comune di residenza, situazione familiare e altri redditi non sono input di questo prototipo: l'addizionale comunale è calcolata all'aliquota massima ordinaria dello 0,80% e non sono applicate le detrazioni per carichi di famiglia, nemmeno quelle regionali.</p>
       </div>
     </form>
 
@@ -242,11 +236,12 @@ footer { margin-top: var(--ds-6); padding-top: var(--ds-4); border-top: 1px soli
       <details>
         <summary>Semplificazioni</summary>
         <ul>
+          <li>Rapporto full time per l'anno intero: detrazioni e bonus non sono ragguagliati ai giorni.</li>
           <li>Tutta la RAL è imponibile: niente fringe benefit, welfare, premi detassati o trasferte.</li>
-          <li>Aliquota contributiva fissa al 9,19%: il CCNL può spostarla di qualche decimo.</li>
           <li>Reddito complessivo = RAL meno contributi, senza altri redditi né oneri deducibili.</li>
-          <li>Addizionali per competenza: in busta si versano come saldo più acconto.</li>
-          <li>Nessun conguaglio di fine anno e nessun ragguaglio ai giorni lavorati.</li>
+          <li>Addizionale comunale allo 0,80% (massimo ordinario): il comune non è un input.</li>
+          <li>Addizionali per competenza, senza conguaglio di fine anno.</li>
+          <li>Solo lato dipendente: il costo azienda non è calcolato.</li>
         </ul>
       </details>
 
@@ -258,8 +253,8 @@ footer { margin-top: var(--ds-6); padding-top: var(--ds-4); border-top: 1px soli
           <li>Somma integrativa e ulteriore detrazione — L. 207/2024, circ. Agenzia Entrate 4/E 2025.</li>
           <li>Trattamento integrativo — D.L. 3/2020, capienza ridotta di 75 €.</li>
           <li>Massimale 122.295 € e prima fascia 56.224 € — INPS circ. 6/2026.</li>
-          <li>Addizionale regionale — L.R. Lombardia 10/2003 art. 72, dati MEF.</li>
-          <li>Addizionale comunale Milano 0,80%, esenzione a 23.000 € — delib. C.C. 46/2020.</li>
+          <li>Addizionali regionali 2026 di tutte e 21 le regioni e province autonome — MEF, Dipartimento delle Finanze, ricerca aliquote applicabili.</li>
+          <li id="fonte-regione"></li>
         </ul>
       </details>
     </aside>
@@ -291,6 +286,23 @@ const parseRal = (raw) => Number(String(raw).replace(/[^\d,]/g, "").replace(",",
 
 let mensilita = 13;
 
+/* ---------- popolamento dei tre selettori dal motore ---------- */
+function opzioni(select, voci, selezionata) {
+  select.innerHTML = voci
+    .map(([k, v]) => `<option value="${k}"${k === selezionata ? " selected" : ""}>${v}</option>`)
+    .join("");
+}
+
+opzioni(
+  $("regione"),
+  Object.entries(REGIONI)
+    .map(([k, v]) => [k, v.nome])
+    .sort((a, b) => a[1].localeCompare(b[1], "it")),
+  "lombardia",
+);
+opzioni($("contratto"), Object.entries(CONTRATTI).map(([k, v]) => [k, v.nome]), "indeterminato-impiegato");
+opzioni($("agevolazione"), Object.entries(AGEVOLAZIONI).map(([k, v]) => [k, v.nome]), "nessuna");
+
 function riga({ nome, perche, importo, segno = "", classe = "" }) {
   const cls = ["row", classe].filter(Boolean).join(" ");
   const prefisso = segno === "neg" ? "−" : segno === "pos" ? "+" : "";
@@ -309,7 +321,14 @@ function formulaDetrazione(reddito, importo) {
 
 function render(r) {
   const t = r.totali;
+  const { regione, contratto, agevolazione } = r.scelte;
   const quota = (v) => (r.input.ral > 0 ? (v / r.input.ral) * 100 : 0);
+
+  $("ctx").textContent = `Anno d'imposta 2026 · ${regione.nome}`;
+  $("hint-regione").textContent = `Addizionale regionale: ${regione.norma}. Aliquote pubblicate il ${regione.pubblicazione}.`;
+  $("hint-contratto").textContent = contratto.nota;
+  $("hint-agevolazione").textContent = agevolazione.nota || "Nessuna quota di reddito esclusa dall'imponibile.";
+  $("fonte-regione").textContent = `${regione.nome}: ${regione.norma}.`;
 
   $("summary").innerHTML = `
     <div class="summary-head">
@@ -344,20 +363,33 @@ function render(r) {
 
   const c = r.contributi;
   const detrLavoro = r.irpef.detrazioneLavoro;
-  const vicinoSoglia = r.imponibileFiscale > 23000 && r.imponibileFiscale < 25500;
+  const a = r.addizionali;
 
   $("ledger").innerHTML = `
     <div class="ledger-head">
       <h2 class="h2">Il conto, riga per riga</h2>
-      <span class="eyebrow">${num(r.input.ral)} € di RAL</span>
+      <span class="eyebrow">${num(r.input.ral)} € di RAL · ${contratto.nome}</span>
     </div>
 
     ${riga({ nome: "Retribuzione annua lorda", perche: "punto di partenza", importo: r.input.ral, classe: "tot" })}
 
     <div class="group">Contributi previdenziali a carico del dipendente</div>
-    ${riga({ nome: "Contributi IVS 9,19%", perche: `${eur(c.imponibile)} × 9,19%`, importo: c.base, segno: "neg" })}
+    ${riga({ nome: contratto.voce, perche: `${eur(c.imponibile)} × ${pct(c.aliquota, 2)}`, importo: c.base, segno: "neg" })}
     ${c.aggiuntivo > 0 ? riga({ nome: "Aliquota aggiuntiva 1% oltre la prima fascia", perche: `(${eur(c.imponibile)} − ${eur(56224)}) × 1%`, importo: c.aggiuntivo, segno: "neg" }) : ""}
-    ${riga({ nome: "Imponibile fiscale", perche: "RAL meno contributi: i contributi sono deducibili", importo: r.imponibileFiscale, classe: "tot" })}
+    ${riga({ nome: "Reddito al netto dei contributi", perche: "i contributi sono deducibili dal reddito imponibile", importo: r.redditoNettoContributi, classe: "tot" })}
+
+    ${
+      r.quotaEsente > 0
+        ? `<div class="group">Agevolazione</div>
+    ${riga({
+      nome: agevolazione.nome,
+      perche: `${agevolazione.norma}: non concorre al reddito ${pct(1 - agevolazione.quotaImponibile, 0)} della retribuzione`,
+      importo: r.quotaEsente,
+      segno: "neg",
+    })}
+    ${riga({ nome: "Imponibile fiscale", perche: "su questa base si calcolano IRPEF e addizionali; detrazioni e bonus restano commisurati al reddito pieno", importo: r.imponibileFiscale, classe: "tot" })}`
+        : ""
+    }
 
     <div class="group">IRPEF</div>
     ${r.irpef.scaglioni
@@ -371,13 +403,13 @@ function render(r) {
       )
       .join("")}
     ${riga({ nome: "IRPEF lorda", importo: r.irpef.lorda, classe: "tot" })}
-    ${riga({ nome: "Detrazione da lavoro dipendente", perche: formulaDetrazione(r.imponibileFiscale, detrLavoro.base), importo: detrLavoro.base, segno: "pos" })}
+    ${riga({ nome: "Detrazione da lavoro dipendente", perche: formulaDetrazione(r.redditoRiferimento, detrLavoro.base), importo: detrLavoro.base, segno: "pos" })}
     ${detrLavoro.bonus > 0 ? riga({ nome: "Detrazione aggiuntiva art. 13 c. 1-bis", perche: "spetta tra 25.000 € e 35.000 € di reddito", importo: detrLavoro.bonus, segno: "pos" }) : ""}
     ${
       r.irpef.detrazioneCuneo > 0
         ? riga({
             nome: "Ulteriore detrazione (taglio del cuneo)",
-            perche: r.imponibileFiscale <= 32000 ? "importo pieno tra 20.000 € e 32.000 €" : `1.000 × (40.000 − ${num(r.imponibileFiscale)}) / 8.000`,
+            perche: r.redditoRiferimento <= 32000 ? "importo pieno tra 20.000 € e 32.000 €" : `1.000 × (40.000 − ${num(r.redditoRiferimento)}) / 8.000`,
             importo: r.irpef.detrazioneCuneo,
             segno: "pos",
           })
@@ -392,16 +424,25 @@ function render(r) {
     })}
 
     <div class="group">Addizionali locali</div>
-    ${r.addizionali.regionaleScaglioni
-      .map((s) => riga({ nome: `Regionale Lombardia · ${pct(s.aliquota, 2)}`, perche: `${eur(s.imponibile)} × ${pct(s.aliquota, 2)}`, importo: s.imposta, classe: "sub" }))
-      .join("")}
-    ${riga({
-      nome: "Comunale Milano 0,80%",
-      perche: r.addizionali.comunaleDovuta ? `${eur(r.imponibileFiscale)} × 0,80%` : "esente: imponibile fino a 23.000 €",
-      importo: r.addizionali.comunale,
-      classe: r.addizionali.comunaleDovuta ? "" : "sub",
-    })}
-    ${riga({ nome: "Totale addizionali", importo: r.addizionali.totale, segno: "neg", classe: "tot" })}
+    ${
+      a.regionaleEsente
+        ? riga({ nome: `Regionale ${regione.nome}`, perche: "esente: imponibile sotto la soglia fissata dalla regione", importo: 0, classe: "sub" })
+        : a.regionaleScaglioni
+            .map((s) =>
+              riga({
+                nome: `Regionale ${regione.nome} · ${pct(s.aliquota, 2)}`,
+                perche: s.unica
+                  ? `aliquota unica sull'intero imponibile: ${eur(s.imponibile)} × ${pct(s.aliquota, 2)}`
+                  : `${eur(s.imponibile)} × ${pct(s.aliquota, 2)}`,
+                importo: s.imposta,
+                classe: "sub",
+              }),
+            )
+            .join("")
+    }
+    ${a.regionaleDetrazione > 0 ? riga({ nome: "Detrazione regionale", perche: "prevista dalla legge regionale, non genera credito d'imposta", importo: a.regionaleDetrazione, segno: "pos", classe: "sub" }) : ""}
+    ${riga({ nome: "Addizionale comunale 0,80%", perche: `ipotesi unica, aliquota massima ordinaria: ${eur(r.imponibileFiscale)} × 0,80%`, importo: a.comunale, classe: "sub" })}
+    ${riga({ nome: "Totale addizionali", importo: a.totale, segno: "neg", classe: "tot" })}
 
     ${
       r.bonus.totale > 0
@@ -424,28 +465,56 @@ function render(r) {
     ${riga({ nome: "Netto annuo", perche: "lordo − contributi − IRPEF − addizionali + integrazioni", importo: t.nettoAnnuo, classe: "tot" })}
     ${riga({ nome: `Netto per ognuna delle ${r.input.mensilita} mensilità`, importo: t.nettoMensile, classe: "tot" })}
 
-    ${
-      vicinoSoglia
-        ? `<div class="flag">
-             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5M12 16.5v.01"></path></svg>
-             <span>Sei appena sopra la soglia dell'addizionale comunale: a Milano è una soglia, non una franchigia, quindi superare 23.000 € di imponibile costa ${eur(r.addizionali.comunale)} pieni.</span>
-           </div>`
-        : ""
-    }`;
+    ${avvisoSoglia(r)}`;
 
   $("tfr").textContent = eur(r.tfr.accantonato);
+}
+
+/**
+ * Le regioni con aliquota unica sotto soglia o esenzione producono vere
+ * discontinuita': un euro in piu' di imponibile puo' costare centinaia di euro.
+ * Quando siamo appena sopra il salto, lo diciamo.
+ */
+function avvisoSoglia(r) {
+  const reg = r.scelte.regione;
+  const soglia = reg.esenzioneFinoA ?? reg.flatSottoSoglia?.soglia;
+  if (!soglia) return "";
+  const imp = r.imponibileFiscale;
+  if (imp <= soglia || imp > soglia * 1.12) return "";
+
+  const testo = reg.esenzioneFinoA
+    ? `Sopra ${eur(soglia)} di imponibile ${reg.nome} non esenta più: l'addizionale regionale torna dovuta per intero, ${eur(r.addizionali.regionale)}.`
+    : `Sopra ${eur(soglia)} di imponibile ${reg.nome} lascia l'aliquota unica e passa alla scala progressiva: l'addizionale regionale sale a ${eur(r.addizionali.regionale)}.`;
+
+  return `<div class="flag">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5M12 16.5v.01"></path></svg>
+    <span>${testo}</span>
+  </div>`;
+}
+
+function scelteCorrenti() {
+  return {
+    mensilita,
+    regione: $("regione").value,
+    contratto: $("contratto").value,
+    agevolazione: $("agevolazione").value,
+  };
 }
 
 function aggiorna() {
   const ral = parseRal($("ral").value);
   $("ral").value = ral ? num(ral) : "";
-  render(calcola(ral, { mensilita }));
+  render(calcola(ral, scelteCorrenti()));
 }
 
 $("form").addEventListener("submit", (e) => {
   e.preventDefault();
   aggiorna();
 });
+
+for (const id of ["regione", "contratto", "agevolazione"]) {
+  $(id).addEventListener("change", aggiorna);
+}
 
 $("mensilita").addEventListener("click", (e) => {
   const b = e.target.closest("button[data-m]");
