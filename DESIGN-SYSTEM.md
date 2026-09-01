@@ -21,24 +21,29 @@ struttura, B tiene tutto.
 
 ## Variante A — minimal, vetro, colore semantico
 
-**La base è monocromatica**: una rampa di pietra calda, piatta, senza tinte.
-Il colore entra solo dove significa qualcosa, e ogni tinta ha un solo lavoro:
+**La base è monocromatica**: una rampa di pietra calda, piatta. Il colore vive
+in un posto solo — il grafico — così l'unica cosa colorata a schermo è il dato.
 
-| Ruolo | Tinta | Dove |
+| Ruolo | Trattamento | Dove |
 |---|---|---|
-| Primario | emerald | il bottone *Calcola* e la quota che resta in mano |
-| Secondario | sky | i controlli di secondo livello: il selettore delle mensilità |
+| Azione | inchiostro pieno, invertito col tema | *Calcola*: nero su bianco in chiaro, bianco su nero in scuro |
+| Selezione | un gradino di pietra | il selettore delle mensilità: non compete con l'azione |
 | Serie | emerald · violet · amber | i tre segmenti del grafico |
 
-Il primario non si usa per due cose diverse: le mensilità non competono con
-*Calcola*, perché non sono l'azione della pagina. I passi del grafico sono
+Le mensilità non sono l'azione della pagina, quindi non ne prendono il peso: un
+riempimento di pietra le distingue senza gridare. I passi del grafico sono
 validati con lo script della skill dataviz — in chiaro passano tutti e sei i
 check, in scuro passano separazione CVD, soglia a vista normale e contrasto.
 
-**Contrasto AAA ovunque**, non solo sul testo grande: le etichette mono da
-10,5px stanno a 7,9:1, il testo bianco sul verde del bottone a 7,7:1, quello sul
-blu delle mensilità a 7,6:1. In scuro il testo scuro sulle tinte chiare arriva a
-oltre 9:1.
+Il tema si sceglie da un interruttore nell'header sticky, in alto a destra: la
+scelta esplicita vince sul sistema e sopravvive al reload (`localStorage`, in
+try/catch — in una finestra privata anche solo leggerlo lancia).
+
+**Contrasto AAA ovunque**, non solo sul testo grande: le etichette dei campi
+stanno a 9,9:1 sulla card e 8,2:1 sul vetro più scuro, il testo del bottone a
+16,8:1 in chiaro e 18,9:1 in scuro, la mensilità selezionata a 12,6:1. Le
+etichette sono in mono da 13px con crenatura larga: leggibili prima che
+decorative.
 
 ### Vetro, non bordi
 
@@ -63,9 +68,10 @@ scendono sotto la piega, nella piega *Le tue scelte*.
 
 Parte-tutto a colpo d'occhio, tre segmenti, valori lontani fra loro: è il caso
 in cui il cerchio regge. 4px di gap in superficie fra due archi, mai un bordo
-attorno al segmento. L'identità non è affidata al solo colore: ogni segmento ha
-la sua riga in legenda con importo e percentuale, e la tabella completa sta
-sotto. **Il tooltip del grafico è il centro del donut**: passando su un segmento
+attorno al segmento. **La legenda sta sotto il grafico a ogni larghezza**, non a
+fianco solo sul desktop: un'unica colonna di lettura, e nessun salto di layout
+fra mobile e desktop. L'identità non è affidata al solo colore: ogni segmento ha
+la sua riga con importo e percentuale, e la tabella completa sta sotto. **Il tooltip del grafico è il centro del donut**: passando su un segmento
 il numero grande diventa quel segmento, invece di aprire un popover dove
 l'occhio non sta guardando.
 

@@ -2,11 +2,11 @@
  * Design system — variante A: base monocromatica piatta, colore solo dove
  * significa qualcosa.
  *
- * Tre soli usi del colore, tutti semantici:
- *   primario   emerald  → l'azione (Calcola) e la quota che resta in mano
- *   secondario sky      → i controlli di secondo livello (mensilità)
- *   serie      emerald / violet / amber → i tre pezzi del grafico
- * Tutto il resto è una rampa di pietra calda.
+ * Il colore vive in un posto solo, il grafico: emerald / violet / amber per i
+ * tre pezzi della RAL. L'interfaccia e' tutta pietra calda —
+ *   azione (Calcola)        inchiostro pieno, invertito col tema
+ *   selezione (mensilità)   un gradino di pietra, mai una tinta
+ * cosi' l'unica cosa colorata a schermo e' il dato.
  *
  * Contrasto: ogni coppia testo/fondo è verificata AAA (>= 7:1), comprese le
  * etichette piccole in mono e il testo sui fondi pieni dei bottoni.
@@ -47,13 +47,14 @@
   --ds-hair: rgba(28, 25, 23, .09);
   --ds-hair-2: rgba(28, 25, 23, .16);
 
-  /* azione */
-  --ds-primary: #065F46;        /* emerald 800 — testo bianco a 7,7:1 */
-  --ds-primary-ink: #FFFFFF;
-  --ds-primary-soft: rgba(6, 95, 70, .1);
-  --ds-secondary: #075985;      /* sky 800 — testo bianco a 7,6:1 */
-  --ds-secondary-ink: #FFFFFF;
-  --ds-secondary-soft: rgba(7, 89, 133, .1);
+  /* azione: inchiostro pieno, si inverte col tema */
+  --ds-primary: #1C1917;
+  --ds-primary-ink: #FBFAF8;    /* 16,8:1 */
+  --ds-primary-soft: rgba(28, 25, 23, .07);
+  /* selezione: un gradino di pietra, non una tinta */
+  --ds-accent: #E0DACD;
+  --ds-accent-ink: #1C1917;     /* 12,6:1 */
+  --ds-accent-soft: rgba(28, 25, 23, .05);
   --ds-link: #064E3B;   /* emerald 900: AAA anche sul vetro piu' scuro */
 
   /* serie del grafico: passi validati con scripts/validate_palette.js */
@@ -96,12 +97,12 @@
     --ds-hair: rgba(250, 250, 249, .1);
     --ds-hair-2: rgba(250, 250, 249, .18);
 
-    --ds-primary: #34D399;
-    --ds-primary-ink: #0C0A09;
-    --ds-primary-soft: rgba(52, 211, 153, .16);
-    --ds-secondary: #38BDF8;
-    --ds-secondary-ink: #0C0A09;
-    --ds-secondary-soft: rgba(56, 189, 248, .16);
+    --ds-primary: #FAFAF9;
+    --ds-primary-ink: #0C0A09;   /* 18,9:1 */
+    --ds-primary-soft: rgba(250, 250, 249, .1);
+    --ds-accent: #3A362F;
+    --ds-accent-ink: #FAFAF9;    /* 11,5:1 */
+    --ds-accent-soft: rgba(250, 250, 249, .07);
     --ds-link: #6EE7B7;
 
     --ds-s1: #34D399;
@@ -126,12 +127,12 @@
   --ds-hair: rgba(250, 250, 249, .1);
   --ds-hair-2: rgba(250, 250, 249, .18);
 
-  --ds-primary: #34D399;
-  --ds-primary-ink: #0C0A09;
-  --ds-primary-soft: rgba(52, 211, 153, .16);
-  --ds-secondary: #38BDF8;
-  --ds-secondary-ink: #0C0A09;
-  --ds-secondary-soft: rgba(56, 189, 248, .16);
+  --ds-primary: #FAFAF9;
+  --ds-primary-ink: #0C0A09;   /* 18,9:1 */
+  --ds-primary-soft: rgba(250, 250, 249, .1);
+  --ds-accent: #3A362F;
+  --ds-accent-ink: #FAFAF9;    /* 11,5:1 */
+  --ds-accent-soft: rgba(250, 250, 249, .07);
   --ds-link: #6EE7B7;
 
   --ds-s1: #34D399;
@@ -245,10 +246,11 @@ button, input, select { font: inherit; color: inherit; }
 
 .field-label {
   font-family: var(--ds-mono);
-  font-size: 10.5px;
-  letter-spacing: .16em;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: .07em;
   text-transform: uppercase;
-  color: var(--ds-ink-3);
+  color: var(--ds-ink-2);
 }
 
 .input {
@@ -334,13 +336,14 @@ button, input, select { font: inherit; color: inherit; }
   transition: color .2s var(--ds-ease), background .28s var(--ds-ease), transform .18s var(--ds-ease);
 }
 
-.segmented button:hover { color: var(--ds-ink); background: var(--ds-secondary-soft); }
+.segmented button:hover { color: var(--ds-ink); background: var(--ds-accent-soft); }
 .segmented button:active { transform: scale(.94); }
 
 .segmented button[aria-pressed="true"] {
-  background: var(--ds-secondary);
-  color: var(--ds-secondary-ink);
+  background: var(--ds-accent);
+  color: var(--ds-accent-ink);
   font-weight: 500;
+  box-shadow: inset 0 0 0 1px var(--ds-hair-2);
 }
 
 /* Calcola: l'unico elemento con il colore primario pieno */
@@ -360,12 +363,38 @@ button, input, select { font: inherit; color: inherit; }
   letter-spacing: .14em;
   text-transform: uppercase;
   cursor: pointer;
-  box-shadow: 0 10px 24px -12px color-mix(in srgb, var(--ds-primary) 82%, transparent);
+  box-shadow: 0 10px 24px -14px rgba(28, 25, 23, .55);
   transition: transform .18s var(--ds-ease), box-shadow .22s var(--ds-ease), filter .18s var(--ds-ease);
 }
 
-.btn:hover { filter: brightness(1.08); box-shadow: 0 14px 30px -12px color-mix(in srgb, var(--ds-primary) 88%, transparent); }
+.btn:hover { box-shadow: 0 14px 30px -14px rgba(28, 25, 23, .6); transform: translateY(-1px); }
 .btn:active { transform: scale(.975); }
+
+/* interruttore del tema: sta nell'header sticky, non e' un'azione di pagina */
+.swap {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 100px;
+  background: var(--ds-glass-2);
+  box-shadow: inset 0 0 0 1px var(--ds-hair);
+  color: var(--ds-ink-2);
+  cursor: pointer;
+  transition: color .2s var(--ds-ease), transform .3s var(--ds-ease), background .2s var(--ds-ease);
+}
+
+.swap:hover { color: var(--ds-ink); background: var(--ds-glass); transform: rotate(-18deg); }
+.swap svg { display: block; }
+.swap .sole { display: none; }
+:root[data-theme="dark"] .swap .sole { display: block; }
+:root[data-theme="dark"] .swap .luna { display: none; }
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .swap .sole { display: block; }
+  :root:not([data-theme="light"]) .swap .luna { display: none; }
+}
 
 /* terziario: un link, non un bottone */
 .link-3 {
