@@ -9,17 +9,29 @@
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 
 const engine = await readFile(new URL("./src/tax-engine.js", import.meta.url), "utf8");
-const page = await readFile(new URL("./src/page.html", import.meta.url), "utf8");
-const ds = await readFile(new URL("./src/design-system.css", import.meta.url), "utf8");
 
 // Le keyword `export` non servono una volta inlinato lo script.
 const inlined = engine.replace(/^export /gm, "");
+
+await mkdir(new URL("./dist/", import.meta.url), { recursive: true });
+
+// Due varianti di interfaccia sullo stesso motore.
+const varianti = [
+  { page: "page.html", ds: "design-system.css", out: "index.html", artifact: "artifact.html" },
+  { page: "page-b.html", ds: "ds-b.css", out: "index-b.html", artifact: "artifact-b.html" },
+];
+
+for (const v of varianti) await costruisci(v);
+
+async function costruisci({ page: pageFile, ds: dsFile, out, artifact }) {
+const page = await readFile(new URL(`./src/${pageFile}`, import.meta.url), "utf8");
+const ds = await readFile(new URL(`./src/${dsFile}`, import.meta.url), "utf8");
+
 const composed = page
   .replace("/* DS */", ds.trim())
   .replace("/* ENGINE */", inlined.trim());
 
-await mkdir(new URL("./dist/", import.meta.url), { recursive: true });
-await writeFile(new URL("./dist/artifact.html", import.meta.url), composed);
+await writeFile(new URL(`./dist/${artifact}`, import.meta.url), composed);
 
 const cut = composed.indexOf("</style>") + "</style>".length;
 const head = composed.slice(0, cut);
@@ -39,5 +51,6 @@ ${body}
 </html>
 `;
 
-await writeFile(new URL("./index.html", import.meta.url), standalone);
-console.log("build ok: index.html + dist/artifact.html");
+await writeFile(new URL(`./${out}`, import.meta.url), standalone);
+console.log(`build ok: ${out} + dist/${artifact}`);
+}

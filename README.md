@@ -4,8 +4,12 @@ Prototipo per il task Jet HR. Inserisci una RAL, ottieni il netto annuo e mensil
 e il dettaglio riga per riga di tutto ciò che viene trattenuto sul lordo, con la
 formula usata per ogni voce.
 
-- **Pagina live:** vedi il link nella mail di consegna
-- **Uso in locale:** apri `index.html` in un browser, non serve nessun server
+Due interfacce sullo stesso motore: `index.html` (sobria) e `index-b.html`
+(traduzione del manifesto Jet HR — nessun modulo, nessun bottone). Vedi
+`DESIGN-SYSTEM.md`.
+
+- **Pagine live:** vedi i link nella mail di consegna
+- **Uso in locale:** apri `index.html` o `index-b.html`, non serve nessun server
 - **Test:** `npm test` (Node 18+, nessuna dipendenza)
 
 ## Com'è fatto
@@ -13,10 +17,10 @@ formula usata per ogni voce.
 | File | Cosa contiene |
 |---|---|
 | `src/tax-engine.js` | il motore di calcolo e **tutti** i parametri normativi in un solo oggetto `PARAMS` |
-| `src/page.html` | interfaccia e formattazione |
-| `src/design-system.css` | il design system: token, primitive, temi (vedi `DESIGN-SYSTEM.md`) |
+| `src/page.html` + `src/design-system.css` | variante A, sobria |
+| `src/page-b.html` + `src/ds-b.css` | variante B, manifesto |
 | `test/tax-engine.test.mjs` | 13 test sul motore |
-| `build.mjs` | inlina design system e motore nella pagina, genera `index.html` e `dist/artifact.html` |
+| `build.mjs` | inlina design system e motore in ogni variante e genera le pagine standalone |
 
 I parametri di legge stanno tutti in `PARAMS`: quando cambia la legge di bilancio
 si tocca un oggetto solo, non la logica. La pagina è generata dal motore, quindi
