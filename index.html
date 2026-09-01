@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Calcolatore RAL lordo-netto per un impiegato a Milano, anno d'imposta 2026.">
+<meta name="description" content="Calcolatore RAL lordo-netto, anno d'imposta 2026: netto annuo e mensile, imposte e contributi voce per voce, con le aliquote regionali di tutte e 21 le regioni.">
 <title>Dal lordo al netto</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -192,7 +192,31 @@ button, input, select { font: inherit; color: inherit; }
 }
 
 /* ---------- tipografia ---------- */
+.h1 {
+  font-size: clamp(32px, 4.6vw, 52px);
+  line-height: 1.03;
+  letter-spacing: -.035em;
+  font-weight: 800;
+  text-wrap: balance;
+}
+
 .h2 { font-size: 19px; letter-spacing: -.015em; font-weight: 700; }
+
+.h-sec {
+  font-size: clamp(23px, 2.6vw, 30px);
+  line-height: 1.12;
+  letter-spacing: -.028em;
+  font-weight: 800;
+  text-wrap: balance;
+}
+
+.lede {
+  font-size: clamp(16px, 1.5vw, 18.5px);
+  line-height: 1.5;
+  color: var(--ds-ink-2);
+  max-width: 62ch;
+  text-wrap: pretty;
+}
 
 .eyebrow {
   font-family: var(--ds-mono);
@@ -529,6 +553,41 @@ dialog[open]::backdrop { animation: fade-in .34s var(--ds-ease) both; }
 .bar b { font-family: var(--ds-mono); font-size: 11px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; }
 .bar .dx { display: flex; align-items: center; gap: var(--ds-2); }
 
+.nav { display: none; gap: var(--ds-4); }
+.nav a { color: var(--ds-ink-2); text-decoration: none; font-size: 13px; font-weight: 600; transition: color .2s var(--ds-ease); }
+.nav a:hover { color: var(--ds-ink); }
+@media (min-width: 860px) { .nav { display: flex; } }
+
+/* ---------- intro della hero ---------- */
+.hero-intro { display: flex; flex-direction: column; align-items: flex-start; gap: var(--ds-3); padding: var(--ds-5) 0 var(--ds-5); max-width: 780px; }
+.trust { display: flex; flex-wrap: wrap; gap: var(--ds-2) var(--ds-4); font-family: var(--ds-mono); font-size: 11.5px; color: var(--ds-ink-3); }
+.trust span { display: inline-flex; align-items: center; gap: 7px; }
+.trust b { width: 5px; height: 5px; border-radius: 100px; background: var(--ds-s1); }
+
+/* ---------- sezioni ---------- */
+.sec { padding: var(--ds-6) 0 0; scroll-margin-top: 76px; }
+.sec-head { display: flex; flex-direction: column; gap: var(--ds-2); padding-bottom: var(--ds-4); max-width: 720px; }
+
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: var(--ds-3); }
+.step { display: flex; flex-direction: column; gap: var(--ds-2); padding: var(--ds-4); border-radius: var(--ds-r-md); }
+.step .n { font-family: var(--ds-mono); font-size: 10.5px; letter-spacing: .16em; color: var(--ds-ink-3); }
+.step .v { font-size: 22px; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -.025em; }
+.step p { font-size: 13px; line-height: 1.5; color: var(--ds-ink-2); }
+
+.due { display: grid; grid-template-columns: 1fr 1fr; gap: var(--ds-3); }
+@media (max-width: 760px) { .due { grid-template-columns: 1fr; } }
+
+.lista { list-style: none; margin: var(--ds-3) 0 0; padding: 0; display: flex; flex-direction: column; gap: var(--ds-2); }
+.lista li { display: grid; grid-template-columns: 16px minmax(0, 1fr); gap: var(--ds-2); font-size: 13.5px; line-height: 1.5; color: var(--ds-ink-2); }
+.lista li i { font-style: normal; color: var(--ds-ink-3); }
+
+.fonti { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 0 var(--ds-5); }
+.fonti div { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--ds-3); align-items: baseline; padding: 11px 0; box-shadow: 0 -1px 0 var(--ds-hair); font-size: 13.5px; }
+.fonti span { font-family: var(--ds-mono); font-size: 11.5px; color: var(--ds-ink-3); text-align: right; }
+
+.chiusura { display: flex; flex-direction: column; align-items: center; gap: var(--ds-3); text-align: center; padding: var(--ds-6) var(--ds-4); margin-top: var(--ds-6); border-radius: var(--ds-r-lg); }
+.chiusura .lede { max-width: 48ch; }
+
 /* ---------- hero ---------- */
 .hero { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: var(--ds-4); align-items: stretch; }
 
@@ -645,9 +704,15 @@ footer { padding: var(--ds-4) 0 var(--ds-5); box-shadow: 0 -1px 0 var(--ds-hair)
 <body>
 
 
-<div class="page">
+<div class="page" id="top">
   <header class="bar">
     <b>RAL → Netto</b>
+    <nav class="nav" aria-label="Sezioni">
+      <a href="#dettaglio">Il conto</a>
+      <a href="#catena">Come ci si arriva</a>
+      <a href="#perimetro">Cosa copre</a>
+      <a href="#fonti">Fonti</a>
+    </nav>
     <span class="dx">
       <span class="pill" id="ctx">2026</span>
       <button type="button" class="swap" id="tema" aria-label="Passa al tema scuro" title="Cambia tema">
@@ -656,6 +721,16 @@ footer { padding: var(--ds-4) 0 var(--ds-5); box-shadow: 0 -1px 0 var(--ds-hair)
       </button>
     </span>
   </header>
+
+  <div class="hero-intro">
+    <h1 class="h1">Dal lordo al netto, voce per voce</h1>
+    <p class="lede">Inserisci la tua RAL, scegli regione, contratto e agevolazione. In un secondo hai il netto annuo e mensile — e ogni euro trattenuto, con la formula che lo produce.</p>
+    <div class="trust">
+      <span><b></b>Anno d'imposta 2026</span>
+      <span><b></b>Aliquote regionali dal MEF, tutte e 21</span>
+      <span><b></b>Il calcolo gira nel tuo browser</span>
+    </div>
+  </div>
 
   <section class="hero">
     <form class="glass panel rise" id="form">
@@ -729,7 +804,12 @@ footer { padding: var(--ds-4) 0 var(--ds-5); box-shadow: 0 -1px 0 var(--ds-hair)
 
   <a class="cue" href="#dettaglio">Il conto, riga per riga <span aria-hidden="true">↓</span></a>
 
-  <section class="deep" id="dettaglio">
+  <section class="deep sec" id="dettaglio">
+    <div class="sec-head">
+      <span class="eyebrow">Il risultato, aperto</span>
+      <h2 class="h-sec">Ogni voce, con la sua formula</h2>
+    </div>
+
     <div class="tiles" id="tiles"></div>
 
     <div class="cols">
@@ -780,6 +860,74 @@ footer { padding: var(--ds-4) 0 var(--ds-5); box-shadow: 0 -1px 0 var(--ds-hair)
           </ul>
         </details>
       </aside>
+    </div>
+  </section>
+
+  <section class="sec" id="catena">
+    <div class="sec-head">
+      <span class="eyebrow">Come ci si arriva</span>
+      <h2 class="h-sec">Quattro passaggi, in quest'ordine</h2>
+      <p class="lede">L'ordine non è un dettaglio: i contributi sono deducibili, quindi l'IRPEF non si calcola sulla RAL. E le detrazioni si tolgono dall'imposta, non dal reddito.</p>
+    </div>
+    <div class="steps" id="catena-steps"></div>
+  </section>
+
+  <section class="sec" id="perimetro">
+    <div class="sec-head">
+      <span class="eyebrow">Perimetro</span>
+      <h2 class="h-sec">Cosa copre, e cosa no</h2>
+      <p class="lede">Un prototipo che non dichiara i propri limiti è solo un numero senza contesto.</p>
+    </div>
+
+    <div class="due">
+      <div class="glass pad">
+        <h3 class="h2">Copre</h3>
+        <ul class="lista">
+          <li><i>+</i>Tutte e 21 le regioni e province autonome, con scaglioni, esenzioni e detrazioni regionali</li>
+          <li><i>+</i>Cinque tipologie contrattuali, dall'apprendistato al dirigente</li>
+          <li><i>+</i>Impatriati, impatriati con figlio minore, docenti e ricercatori rientrati</li>
+          <li><i>+</i>Contributi, IRPEF, detrazioni, taglio del cuneo, trattamento integrativo, addizionali e TFR</li>
+          <li><i>+</i>Le discontinuità vere: soglie che, superate di un euro, costano centinaia</li>
+        </ul>
+      </div>
+
+      <div class="glass glass--quiet pad">
+        <h3 class="h2">Non copre</h3>
+        <ul class="lista">
+          <li><i>−</i>Il comune: servirebbe l'anagrafica di oltre 7.900 aliquote, qui è fissato lo 0,80%, il massimo ordinario</li>
+          <li><i>−</i>Familiari a carico, e con loro le detrazioni regionali che ne dipendono</li>
+          <li><i>−</i>Il CCNL vero: l'aliquota contributiva è per tipologia, non per contratto</li>
+          <li><i>−</i>Welfare, fringe benefit, premi detassati, conguagli di fine anno</li>
+          <li><i>−</i>Il costo azienda e la vista inversa, dal netto al lordo</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="fonti">
+    <div class="sec-head">
+      <span class="eyebrow">Fonti</span>
+      <h2 class="h-sec">Da dove viene ogni numero</h2>
+      <p class="lede">Nessun parametro è stimato. Le aliquote regionali sono lette una per una dall'interrogazione ufficiale del MEF: le tabelle di terze parti si contraddicevano fra loro.</p>
+    </div>
+
+    <div class="fonti">
+      <div><span class="k">Scaglioni IRPEF 23 / 33 / 43%</span><span>L. 199/2025 art. 1 c. 3</span></div>
+      <div><span class="k">Detrazioni da lavoro dipendente</span><span>art. 13 TUIR</span></div>
+      <div><span class="k">Somma integrativa e ulteriore detrazione</span><span>L. 207/2024 · circ. 4/E 2025</span></div>
+      <div><span class="k">Trattamento integrativo</span><span>D.L. 3/2020</span></div>
+      <div><span class="k">Massimale e prima fascia contributiva</span><span>INPS circ. 6/2026</span></div>
+      <div><span class="k">Addizionali regionali 2026</span><span>MEF · Dip. Finanze</span></div>
+      <div><span class="k">Addizionale comunale, aliquota massima</span><span>D.Lgs. 360/1998 art. 1 c. 3</span></div>
+      <div><span class="k">Impatriati · docenti e ricercatori</span><span>D.Lgs. 209/2023 · D.L. 78/2010</span></div>
+    </div>
+
+    <div class="glass chiusura">
+      <span class="eyebrow">Prova con i tuoi numeri</span>
+      <h2 class="h-sec">La tua RAL, in un secondo</h2>
+      <p class="lede">Torna su, cambia la cifra e guarda dove finisce ogni euro. Il motore e i 22 test che lo tengono onesto sono pubblici.</p>
+      <a class="btn" href="#top">Calcola la tua RAL</a>
+      <a class="link-3" href="https://github.com/alessiomarcone/jethr-ral-calculator">Vedi il codice e le fonti <span aria-hidden="true">→</span></a>
     </div>
   </section>
 
@@ -1705,6 +1853,8 @@ function render(r, animato) {
     .map((x) => `<li>${x}</li>`)
     .join("");
 
+  const c0 = r.contributi;
+
   costruisciDonut(r.parti);
   if (animato) {
     $("legend").innerHTML = "";
@@ -1714,6 +1864,15 @@ function render(r, animato) {
     $("c-value").textContent = eur(t.nettoMensile);
     mostraLegenda(r, false);
   }
+
+  $("catena-steps").innerHTML = [
+    ["01", "Contributi", eur(r.contributi.totale), `${pct(c0.aliquota, 2)} della RAL a carico del lavoratore. Sono deducibili: escono prima che l'IRPEF entri in scena.`],
+    ["02", "Imponibile fiscale", eur(r.imponibileFiscale), r.quotaEsente > 0 ? "RAL meno contributi, meno la quota esente dell'agevolazione scelta." : "RAL meno contributi. È su questa base, non sulla RAL, che si calcola l'imposta."],
+    ["03", "IRPEF netta", eur(r.irpef.netta), `${eur(r.irpef.lorda)} di imposta lorda meno ${eur(r.irpef.detrazioniTotali)} di detrazioni, che si tolgono dall'imposta e non sono rimborsabili.`],
+    ["04", "Addizionali", eur(r.addizionali.totale), `Regionale (${regione.nome}) più comunale allo 0,80%, entrambe sullo stesso imponibile.`],
+  ]
+    .map(([n, k, v, t]) => `<div class="glass step"><span class="n">${n} · ${k}</span><span class="v">${v}</span><p>${t}</p></div>`)
+    .join("");
 
   $("tiles").innerHTML = [
     ["Netto annuo", eur(t.nettoAnnuo)],

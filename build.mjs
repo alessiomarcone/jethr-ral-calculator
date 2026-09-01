@@ -42,7 +42,7 @@ const standalone = `<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Calcolatore RAL lordo-netto per un impiegato a Milano, anno d'imposta 2026.">
+<meta name="description" content="Calcolatore RAL lordo-netto, anno d'imposta 2026: netto annuo e mensile, imposte e contributi voce per voce, con le aliquote regionali di tutte e 21 le regioni.">
 ${head}
 </head>
 <body>

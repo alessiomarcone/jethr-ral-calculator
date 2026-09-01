@@ -5,12 +5,13 @@ fiscale**, **tipologia di contratto** e **agevolazione**, premi *Calcola*:
 ottieni il netto annuo e mensile e il dettaglio riga per riga di tutto ciò che
 viene trattenuto sul lordo, con la formula usata per ogni voce.
 
-L'hero sta in una schermata: input a sinistra, donut e legenda a destra. Premi
-*Calcola* e il grafico si traccia mentre il numero sale. Il conto riga per riga,
-le ipotesi e le fonti stanno al primo scroll; un link spiega perché ogni dato
-viene chiesto e cosa sposta. Due interfacce sullo stesso motore: `index.html`
-(minimal, vetro, colore solo dove significa) e `index-b.html` (manifesto Jet HR,
-si aggiorna mentre scegli). Vedi `DESIGN-SYSTEM.md`.
+La pagina è una landing: il calcolatore **è** la hero — headline, tre righe di
+contesto e subito il prototipo, risultato in evidenza. Sotto, nell'ordine: il
+conto riga per riga, i quattro passaggi della catena di calcolo con i numeri
+correnti, cosa il prototipo copre e cosa no, le fonti di ogni parametro.
+Due interfacce sullo stesso motore: `index.html` (landing, minimal, vetro,
+colore solo nel grafico) e `index-b.html` (manifesto Jet HR, si aggiorna mentre
+scegli). Vedi `DESIGN-SYSTEM.md`.
 
 - **Pagine live:** vedi i link nella mail di consegna
 - **Uso in locale:** apri `index.html` o `index-b.html`, non serve nessun server
