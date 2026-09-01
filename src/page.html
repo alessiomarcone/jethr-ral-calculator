@@ -401,6 +401,11 @@ function anima(r) {
     return;
   }
 
+  // Si parte da zero, sempre: senza questo il valore precedente resterebbe
+  // a schermo fino al primo frame utile.
+  tracciaFino(parti, 0);
+  $("c-value").textContent = eur(0);
+
   const t0 = performance.now();
   const passo = (ora) => {
     const t = Math.min((ora - t0) / DURATA, 1);

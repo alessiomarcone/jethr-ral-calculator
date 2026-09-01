@@ -7,7 +7,7 @@ senza colore, B è la traduzione visiva del manifesto Jet HR.
 |---|---|---|
 | File | `src/design-system.css` + `src/page.html` | `src/ds-b.css` + `src/page-b.html` |
 | Build | `index.html` | `index-b.html` |
-| Colore | nessuno: rampa di grigi caldi | palette prodotto Jet HR |
+| Colore | base monocromatica, tinte solo dove significano | palette prodotto Jet HR |
 | Postura | strumento: hero + donut, il resto sotto la piega | manifesto: nessun modulo, nessun bottone |
 
 ## Cosa condividono
@@ -19,37 +19,66 @@ distribuibile: al suo posto **Manrope** in A e **Plus Jakarta Sans** in B.
 Da lì le due varianti divergono — A butta via la palette e tiene solo la
 struttura, B tiene tutto.
 
-## Variante A — tech minimal, grigi caldi
+## Variante A — minimal, vetro, colore semantico
 
-Nessun colore: una sola rampa di grigi caldi (virata sabbia, mai neutra fredda),
-inchiostro e superficie. La gerarchia la fanno peso, spazio e passi di
-luminosita'. Mono (IBM Plex Mono) per etichette, unita' e importi; grottesca
-(Manrope) per numeri e titoli.
+**La base è monocromatica**: una rampa di pietra calda, piatta, senza tinte.
+Il colore entra solo dove significa qualcosa, e ogni tinta ha un solo lavoro:
 
-**L'hero e' una schermata sola.** A sinistra i quattro input, a destra il
-risultato. Tutto cio' che prima era un paragrafo esplicativo e' diventato un
-tooltip: la norma regionale e la data di pubblicazione, l'aliquota contributiva
-del contratto, la quota esente dell'agevolazione, le ipotesi del calcolo. Il
-testo non e' sparito, ha smesso di occupare spazio finche' non serve.
+| Ruolo | Tinta | Dove |
+|---|---|---|
+| Primario | emerald | il bottone *Calcola* e la quota che resta in mano |
+| Secondario | sky | i controlli di secondo livello: il selettore delle mensilità |
+| Serie | emerald · violet · amber | i tre segmenti del grafico |
 
-**Il conto per esteso vive al primo scroll:** sei tile con i totali, il cedolino
-riga per riga con la formula di ogni voce, e tre pieghe — semplificazioni, fonti,
-cosa il prototipo non fa.
+Il primario non si usa per due cose diverse: le mensilità non competono con
+*Calcola*, perché non sono l'azione della pagina. I passi del grafico sono
+validati con lo script della skill dataviz — in chiaro passano tutti e sei i
+check, in scuro passano separazione CVD, soglia a vista normale e contrasto.
+
+**Contrasto AAA ovunque**, non solo sul testo grande: le etichette mono da
+10,5px stanno a 7,9:1, il testo bianco sul verde del bottone a 7,7:1, quello sul
+blu delle mensilità a 7,6:1. In scuro il testo scuro sulle tinte chiare arriva a
+oltre 9:1.
+
+### Vetro, non bordi
+
+Niente reticolo di rettangoli da 1px. Ogni superficie è vetro: velo traslucido,
+`backdrop-filter` con una punta di saturazione, un filo di luce sul bordo alto
+disegnato in maschera (`mask-composite`, non un `border`) e un'ombra bassa e
+larga. Dietro tutto, tre aloni al 7-10% presi dalle tinte delle serie: senza
+qualcosa da rifrangere, il vetro è solo un rettangolo chiaro. Le hairline
+restano solo dove aiutano a leggere una colonna di numeri, e sono `box-shadow`,
+non bordi, così non spostano il layout di un pixel.
+
+### Niente tooltip
+
+I tooltip erano diventati il posto dove nascondere la prosa: un dato ogni due
+aveva la sua nuvoletta. Ora l'hero è pulito e c'è **un link terziario** —
+*Perché ti chiediamo questi dati* — che apre un dialogo: cosa non chiediamo
+(nome, codice fiscale, comune), dove gira il calcolo (nel browser), e per ogni
+campo che cosa sposta davvero, effetti indiretti compresi. Le note di legge
+scendono sotto la piega, nella piega *Le tue scelte*.
 
 ### Il donut
 
-Parte-tutto a colpo d'occhio, tre segmenti (resta in mano / imposte /
-contributi), valori lontani fra loro: e' il caso in cui il cerchio regge.
+Parte-tutto a colpo d'occhio, tre segmenti, valori lontani fra loro: è il caso
+in cui il cerchio regge. 4px di gap in superficie fra due archi, mai un bordo
+attorno al segmento. L'identità non è affidata al solo colore: ogni segmento ha
+la sua riga in legenda con importo e percentuale, e la tabella completa sta
+sotto. **Il tooltip del grafico è il centro del donut**: passando su un segmento
+il numero grande diventa quel segmento, invece di aprire un popover dove
+l'occhio non sta guardando.
 
-- rampa **sequenziale**, non categoriale: piu' scuro = la quota che conta.
-  I passi sono validati con lo script della skill dataviz — separazione CVD
-  >= 17 e contrasto >= 3:1 sulla superficie, in chiaro e in scuro;
-- **4px di gap in superficie** fra due archi, mai un bordo attorno al segmento;
-- l'identita' non e' mai affidata al solo grigio: ogni segmento ha la sua riga in
-  legenda con importo e percentuale, e la tabella completa sta sotto;
-- **il tooltip del grafico e' il centro del donut.** Passando su un segmento il
-  numero grande diventa quel segmento, invece di aprire un popover dove l'occhio
-  non sta guardando. Sul touch un tap fuori riporta al netto.
+### Micromotion
+
+Premendo *Calcola* il grafico si traccia in 900ms con un ease-out, il numero al
+centro sale da zero fino al valore, e solo quando l'arco è chiuso le tre voci
+compaiono in sequenza a 90ms l'una dall'altra. Il resto è micromovimento di
+servizio: le card entrano sfalsate, il bottone cede sotto la pressione, la
+legenda scorre di 2px al passaggio, la × del dialogo ruota. Cambiare una tendina
+non rigioca l'animazione: aggiorna i numeri e basta, perché lì l'utente sta
+confrontando, non scoprendo. Tutto è disattivato sotto `prefers-reduced-motion`,
+compreso il conteggio, che salta al valore finale.
 
 ## Variante B — manifesto
 
