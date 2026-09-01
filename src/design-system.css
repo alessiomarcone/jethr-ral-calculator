@@ -54,7 +54,7 @@
   --ds-secondary: #075985;      /* sky 800 — testo bianco a 7,6:1 */
   --ds-secondary-ink: #FFFFFF;
   --ds-secondary-soft: rgba(7, 89, 133, .1);
-  --ds-link: #065F46;
+  --ds-link: #064E3B;   /* emerald 900: AAA anche sul vetro piu' scuro */
 
   /* serie del grafico: passi validati con scripts/validate_palette.js */
   --ds-s1: #059669; /* emerald 600 — resta in mano */
