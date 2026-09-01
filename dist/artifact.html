@@ -416,14 +416,14 @@ body {
 
 .legend {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
   gap: var(--ds-2) var(--ds-4);
   font-size: 13.5px;
   color: var(--ds-ink-2);
   font-variant-numeric: tabular-nums;
 }
 
-.legend span { display: inline-flex; align-items: center; gap: var(--ds-2); }
+.legend span { display: inline-flex; align-items: center; gap: var(--ds-2); white-space: nowrap; }
 .legend i { width: 9px; height: 9px; border-radius: 2px; flex: none; }
 .legend b { color: var(--ds-ink); font-weight: 600; }
 
