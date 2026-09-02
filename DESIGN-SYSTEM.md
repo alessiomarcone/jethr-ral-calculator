@@ -33,6 +33,17 @@ del netto, violet sulle imposte, amber sui contributi. Sono gradienti al 13%
 in un angolo solo, non superfici colorate: servono a togliere la piattezza al
 vetro, il testo resta su fondo neutro.
 
+**Nessun nero puro.** Il fondo scuro è `#14110D`, un carbone virato caldo, e le
+ombre sono `rgba(10, 8, 5, …)`: il nero assoluto su schermo OLED taglia via la
+profondità e fa sembrare le card ritagliate col cutter. Stesso discorso per il
+testo del bottone in dark, che è il fondo della pagina e non `#000`.
+
+**Grana sul gradiente.** Gli aloni di sfondo, su uno schermo ampio, mostrano le
+bande. Sopra c'è un rumore frattale generato da un SVG inline (`feTurbulence`,
+tile da 140px, nessun file da caricare) al 50% in chiaro e al 34% in scuro. Il
+vetro sfoca la grana che ha dietro, quindi le card tinte se la rimettono nel
+proprio livello, più fine e in `overlay`.
+
 | Ruolo | Trattamento | Dove |
 |---|---|---|
 | Azione | inchiostro pieno, invertito col tema | *Calcola*: nero su bianco in chiaro, bianco su nero in scuro |
