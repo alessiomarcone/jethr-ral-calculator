@@ -28,17 +28,6 @@ export const PARAMS = {
     { fino: Infinity, aliquota: 0.43 },
   ],
 
-  /**
-   * Addizionale comunale: il comune non e' fra gli input richiesti, quindi
-   * il prototipo usa un'unica ipotesi dichiarata (aliquota massima ordinaria
-   * dell'art. 1 c. 3 D.Lgs. 360/1998). Il comune reale puo' essere piu' basso,
-   * esente, o avere una soglia di esenzione propria.
-   */
-  addizionaleComunale: {
-    aliquota: 0.008,
-    nota: "aliquota massima ordinaria 0,80%: ipotesi unica, il comune non e' un input",
-  },
-
   // --- Detrazione per redditi da lavoro dipendente (art. 13 c.1 TUIR) ---
   detrazioneLavoro: {
     importoBase: 1955, // reddito <= 15.000
@@ -334,6 +323,188 @@ export const REGIONI = {
 };
 
 /**
+ * Addizionale comunale all'IRPEF: i 21 capoluoghi di regione e di provincia
+ * autonoma, uno per regione. Il comune non e' un input: si deriva dalla regione
+ * scelta, cosi' il conto resta su dati reali senza chiedere un campo in piu'.
+ *
+ * Fonte: MEF - Dipartimento delle Finanze, elenco generale dei comuni,
+ * `download.php?anno=2026` e `anno=2025` (letti l'1 settembre 2026).
+ * Dove il file 2026 riporta "0*" il comune non ha ancora deliberato per l'anno:
+ * per la regola dichiarata dal MEF resta in vigore l'aliquota precedente, quindi
+ * il valore arriva dall'elenco 2025. Il campo `delibera` dice sempre quale.
+ *
+ * `esenzioneFinoA` e' una SOGLIA, non una franchigia: sotto non si paga nulla,
+ * un euro sopra si tassa tutto l'imponibile.
+ */
+export const COMUNI = {
+  piemonte: {
+    nome: "Torino",
+    provincia: "TO",
+    delibera: 2025,
+    esenzioneFinoA: 11790,
+    scaglioni: [
+      { fino: 28000, aliquota: 0.008 },
+      { fino: 50000, aliquota: 0.011 },
+      { fino: Infinity, aliquota: 0.012 },
+    ],
+  },
+  "valle-d-aosta": {
+    nome: "Aosta",
+    provincia: "AO",
+    delibera: 2025,
+    esenzioneFinoA: 9999.99,
+    scaglioni: [{ fino: Infinity, aliquota: 0.005 }],
+  },
+  lombardia: {
+    nome: "Milano",
+    provincia: "MI",
+    delibera: 2025,
+    esenzioneFinoA: 23000,
+    scaglioni: [{ fino: Infinity, aliquota: 0.008 }],
+  },
+  trento: {
+    nome: "Trento",
+    provincia: "TN",
+    delibera: null,
+    esenzioneFinoA: 0,
+    scaglioni: [{ fino: Infinity, aliquota: 0 }],
+    nota: "il comune non ha istituito l'addizionale comunale",
+  },
+  bolzano: {
+    nome: "Bolzano",
+    provincia: "BZ",
+    delibera: 2025,
+    esenzioneFinoA: 0,
+    scaglioni: [{ fino: Infinity, aliquota: 0 }],
+    nota: "il comune non ha istituito l'addizionale comunale",
+  },
+  veneto: {
+    nome: "Venezia",
+    provincia: "VE",
+    delibera: 2025,
+    esenzioneFinoA: 10000,
+    scaglioni: [{ fino: Infinity, aliquota: 0.008 }],
+  },
+  "friuli-venezia-giulia": {
+    nome: "Trieste",
+    provincia: "TS",
+    delibera: 2025,
+    esenzioneFinoA: 12500,
+    scaglioni: [{ fino: Infinity, aliquota: 0.008 }],
+  },
+  liguria: {
+    nome: "Genova",
+    provincia: "GE",
+    delibera: 2025,
+    esenzioneFinoA: 14000,
+    scaglioni: [
+      { fino: 28000, aliquota: 0.01 },
+      { fino: 50000, aliquota: 0.011 },
+      { fino: Infinity, aliquota: 0.012 },
+    ],
+  },
+  "emilia-romagna": {
+    nome: "Bologna",
+    provincia: "BO",
+    delibera: 2025,
+    esenzioneFinoA: 15000,
+    scaglioni: [{ fino: Infinity, aliquota: 0.008 }],
+  },
+  toscana: {
+    nome: "Firenze",
+    provincia: "FI",
+    delibera: 2025,
+    esenzioneFinoA: 25000,
+    scaglioni: [{ fino: Infinity, aliquota: 0.002 }],
+  },
+  umbria: {
+    nome: "Perugia",
+    provincia: "PG",
+    delibera: 2025,
+    esenzioneFinoA: 12500,
+    scaglioni: [{ fino: Infinity, aliquota: 0.008 }],
+  },
+  marche: {
+    nome: "Ancona",
+    provincia: "AN",
+    delibera: 2025,
+    esenzioneFinoA: 0,
+    scaglioni: [{ fino: Infinity, aliquota: 0.008 }],
+  },
+  lazio: {
+    nome: "Roma",
+    provincia: "RM",
+    delibera: 2025,
+    esenzioneFinoA: 14000,
+    scaglioni: [{ fino: Infinity, aliquota: 0.009 }],
+  },
+  abruzzo: {
+    nome: "L'Aquila",
+    provincia: "AQ",
+    delibera: 2025,
+    esenzioneFinoA: 15000,
+    scaglioni: [{ fino: Infinity, aliquota: 0.006 }],
+  },
+  molise: {
+    nome: "Campobasso",
+    provincia: "CB",
+    delibera: 2025,
+    esenzioneFinoA: 0,
+    scaglioni: [{ fino: Infinity, aliquota: 0.008 }],
+  },
+  campania: {
+    nome: "Napoli",
+    provincia: "NA",
+    delibera: 2025,
+    esenzioneFinoA: 12000,
+    scaglioni: [{ fino: Infinity, aliquota: 0.01 }],
+  },
+  puglia: {
+    nome: "Bari",
+    provincia: "BA",
+    delibera: 2025,
+    esenzioneFinoA: 15000,
+    scaglioni: [{ fino: Infinity, aliquota: 0.008 }],
+  },
+  basilicata: {
+    nome: "Potenza",
+    provincia: "PZ",
+    delibera: 2025,
+    esenzioneFinoA: 0,
+    scaglioni: [
+      { fino: 50000, aliquota: 0.008 },
+      { fino: Infinity, aliquota: 0.01 },
+    ],
+  },
+  calabria: {
+    nome: "Catanzaro",
+    provincia: "CZ",
+    delibera: 2025,
+    esenzioneFinoA: 0,
+    scaglioni: [{ fino: Infinity, aliquota: 0.008 }],
+  },
+  sicilia: {
+    nome: "Palermo",
+    provincia: "PA",
+    delibera: 2026,
+    esenzioneFinoA: 0,
+    scaglioni: [{ fino: Infinity, aliquota: 0.0103 }],
+  },
+  sardegna: {
+    nome: "Cagliari",
+    provincia: "CA",
+    delibera: 2025,
+    esenzioneFinoA: 10000,
+    scaglioni: [
+      { fino: 15000, aliquota: 0.0066 },
+      { fino: 28000, aliquota: 0.0072 },
+      { fino: 50000, aliquota: 0.0078 },
+      { fino: Infinity, aliquota: 0.008 },
+    ],
+  },
+};
+
+/**
  * Tipologie contrattuali coperte dal prototipo.
  * Cambiano l'aliquota contributiva a carico del lavoratore e le mensilita'
  * tipiche; non cambiano la parte fiscale.
@@ -441,14 +612,15 @@ export function imposta_a_scaglioni(imponibile, scaglioni) {
 }
 
 /**
- * Addizionale regionale: scala progressiva, oppure aliquota unica sull'intero
- * imponibile sotto la soglia agevolata, oppure esenzione piena. Le detrazioni
- * si sottraggono dall'imposta e non generano mai credito.
+ * Addizionale locale, regionale o comunale: la meccanica e' la stessa.
+ * Scala progressiva, oppure aliquota unica sull'intero imponibile sotto la
+ * soglia agevolata, oppure esenzione piena sotto soglia. Le detrazioni si
+ * sottraggono dall'imposta e non generano mai credito.
  */
-export function addizionale_regionale(imponibile, regione) {
+export function addizionale_locale(imponibile, ente) {
   const base = Math.max(0, imponibile);
 
-  if (regione.esenzioneFinoA && base <= regione.esenzioneFinoA) {
+  if (ente.esenzioneFinoA && base <= ente.esenzioneFinoA) {
     return {
       lorda: 0,
       detrazione: 0,
@@ -458,7 +630,7 @@ export function addizionale_regionale(imponibile, regione) {
     };
   }
 
-  const flat = regione.flatSottoSoglia;
+  const flat = ente.flatSottoSoglia;
   const usaFlat = flat && base <= flat.soglia;
 
   const { totale: lorda, dettaglio } = usaFlat
@@ -475,13 +647,13 @@ export function addizionale_regionale(imponibile, regione) {
           },
         ],
       }
-    : imposta_a_scaglioni(base, regione.scaglioni);
+    : imposta_a_scaglioni(base, ente.scaglioni);
 
   let detrazione = 0;
-  for (const d of regione.detrazioni ?? []) {
+  for (const d of ente.detrazioni ?? []) {
     if (base >= d.da && base <= d.a) detrazione += d.importo;
   }
-  const dc = regione.detrazioneCrescente;
+  const dc = ente.detrazioneCrescente;
   if (dc && base > dc.da) {
     detrazione += Math.min(dc.massimo, (dc.massimo * (base - dc.da)) / dc.ampiezza);
   }
@@ -489,6 +661,12 @@ export function addizionale_regionale(imponibile, regione) {
 
   return { lorda, detrazione, totale: lorda - detrazione, dettaglio, esente: false };
 }
+
+/** Addizionale regionale: alias leggibile di `addizionale_locale`. */
+export const addizionale_regionale = addizionale_locale;
+
+/** Addizionale comunale del capoluogo derivato dalla regione. */
+export const addizionale_comunale = addizionale_locale;
 
 /** Contributi previdenziali a carico del dipendente. */
 export function contributi_dipendente(ral, p = PARAMS, contratto = null) {
@@ -574,7 +752,10 @@ export function imponibile_agevolato(reddito, agevolazione) {
  */
 export function calcola(ral, opzioni = {}) {
   const p = opzioni.params ?? PARAMS;
-  const regione = REGIONI[opzioni.regione] ?? REGIONI.lombardia;
+  const chiaveRegione = REGIONI[opzioni.regione] ? opzioni.regione : "lombardia";
+  const regione = REGIONI[chiaveRegione];
+  // Il comune non e' un input: e' il capoluogo della regione scelta.
+  const comune = COMUNI[chiaveRegione];
   const contratto = CONTRATTI[opzioni.contratto] ?? CONTRATTI["indeterminato-impiegato"];
   const agevolazione = AGEVOLAZIONI[opzioni.agevolazione] ?? AGEVOLAZIONI.nessuna;
   const mensilita = opzioni.mensilita ?? contratto.mensilita;
@@ -612,8 +793,8 @@ export function calcola(ral, opzioni = {}) {
   const irpefNetta = Math.max(0, irpef.totale - detrazioniTotali);
 
   // 6. Addizionali locali, calcolate sull'imponibile IRPEF.
-  const regionale = addizionale_regionale(imponibileFiscale, regione);
-  const comunale = imponibileFiscale * p.addizionaleComunale.aliquota;
+  const regionale = addizionale_locale(imponibileFiscale, regione);
+  const comunale = addizionale_locale(imponibileFiscale, comune);
 
   // 7. Bonus in busta paga (aumentano il netto, non sono imposte).
   const ti = trattamento_integrativo(redditoRiferimento, irpef.totale, {
@@ -624,7 +805,7 @@ export function calcola(ral, opzioni = {}) {
 
   // 8. Netto.
   const trattenuteTotali =
-    contributi.totale + irpefNetta + regionale.totale + comunale;
+    contributi.totale + irpefNetta + regionale.totale + comunale.totale;
   const bonusTotali = ti + somma;
   const nettoAnnuo = lordo - trattenuteTotali + bonusTotali;
 
@@ -634,7 +815,7 @@ export function calcola(ral, opzioni = {}) {
 
   return {
     input: { ral: lordo, mensilita, anno: p.anno },
-    scelte: { regione, contratto, agevolazione },
+    scelte: { regione, comune, contratto, agevolazione },
     contributi,
     redditoNettoContributi,
     redditoRiferimento,
@@ -654,13 +835,15 @@ export function calcola(ral, opzioni = {}) {
       regionaleDetrazione: regionale.detrazione,
       regionaleEsente: regionale.esente,
       regionaleScaglioni: regionale.dettaglio,
-      comunale,
-      totale: regionale.totale + comunale,
+      comunale: comunale.totale,
+      comunaleScaglioni: comunale.dettaglio,
+      comunaleEsente: comunale.esente,
+      totale: regionale.totale + comunale.totale,
     },
     bonus: { trattamentoIntegrativo: ti, sommaIntegrativa: somma, totale: bonusTotali },
     totali: {
       trattenute: trattenuteTotali,
-      imposte: irpefNetta + regionale.totale + comunale,
+      imposte: irpefNetta + regionale.totale + comunale.totale,
       nettoAnnuo,
       nettoMensile: nettoAnnuo / mensilita,
       aliquotaEffettiva: lordo > 0 ? trattenuteTotali / lordo : 0,

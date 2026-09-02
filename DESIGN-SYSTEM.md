@@ -41,13 +41,37 @@ try/catch — in una finestra privata anche solo leggerlo lancia).
 
 **Contrasto AAA ovunque**, non solo sul testo grande: le etichette dei campi
 stanno a 9,9:1 sulla card e 8,2:1 sul vetro più scuro, il testo del bottone a
-16,8:1 in chiaro e 18,9:1 in scuro, la mensilità selezionata a 12,6:1. Le
-etichette sono in mono da 13px con crenatura larga: leggibili prima che
-decorative.
+16,8:1 in chiaro e 18,9:1 in scuro, la mensilità selezionata a 12,6:1. Il mono
+piccolo gira a 500 e 600 di peso, non a 400: sotto i 12px la IBM Plex Mono in
+regular si sfilaccia, e nessun contrasto lo compensa.
+
+### Il campo bloccato che si aggiorna
+
+La provincia non si sceglie: segue la regione, mostra il capoluogo con la sua
+aliquota fra parentesi e resta `disabled`. Un campo assente nasconde una scelta,
+un campo bloccato la dichiara, e mostrare il valore che cambia da solo racconta
+il legame fra i due dati meglio di qualsiasi nota.
+
+### Bento, non griglia uniforme
+
+Nel riepilogo la dimensione della tessera dice quanto pesa il numero: il netto
+annuo occupa quattro celle, il netto mensile due, imposte e contributi una
+ciascuna. Sotto, il cedolino completo sta in un accordion chiuso: la sezione
+entra in una schermata, e chi vuole la riga per riga la apre.
+
+### Nessuno spostamento quando il conto arriva
+
+Le tre voci della legenda esistono nel DOM prima che l'animazione parta, con
+opacità zero. Il contenitore ha già la sua altezza definitiva, quindi la pagina
+non si sposta di un pixel quando il risultato compare: si accende, non si
+allunga. L'animazione tocca solo `opacity` e `transform`, mai il layout.
 
 ### Vetro, non bordi
 
-Niente reticolo di rettangoli da 1px. Ogni superficie è vetro: velo traslucido,
+Niente reticolo di rettangoli da 1px attorno a tutto. I bordi restano dove
+servono a capire dove si scrive: i campi hanno un anello interno da 1,5px ben
+visibile, che si scurisce al passaggio e diventa inchiostro al focus. Le
+superfici invece sono vetro: velo traslucido,
 `backdrop-filter` con una punta di saturazione, un filo di luce sul bordo alto
 disegnato in maschera (`mask-composite`, non un `border`) e un'ombra bassa e
 larga. Dietro tutto, tre aloni al 7-10% presi dalle tinte delle serie: senza

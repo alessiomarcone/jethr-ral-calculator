@@ -21,13 +21,13 @@ scegli). Vedi `DESIGN-SYSTEM.md`.
 
 | File | Cosa contiene |
 |---|---|
-| `src/tax-engine.js` | il motore di calcolo e **tutti** i parametri normativi: `PARAMS`, `REGIONI` (21), `CONTRATTI` (5), `AGEVOLAZIONI` (4) |
+| `src/tax-engine.js` | il motore di calcolo e **tutti** i parametri normativi: `PARAMS`, `REGIONI` (21), `COMUNI` (21 capoluoghi), `CONTRATTI` (5), `AGEVOLAZIONI` (4) |
 | `src/page.html` + `src/design-system.css` | variante A, minimal in vetro con colore semantico |
 | `src/page-b.html` + `src/ds-b.css` | variante B, manifesto |
-| `test/tax-engine.test.mjs` | 22 test sul motore |
+| `test/tax-engine.test.mjs` | 27 test sul motore |
 | `build.mjs` | inlina design system e motore in ogni variante e genera le pagine standalone |
 
-I parametri di legge stanno tutti in quattro oggetti: quando cambia la legge di
+I parametri di legge stanno tutti in cinque oggetti: quando cambia la legge di
 bilancio, o una regione ritocca l'addizionale, si tocca un dato, non la logica.
 Le tendine sono generate dagli stessi oggetti, quindi un'opzione visibile a
 schermo esiste sempre anche nel motore.
@@ -44,7 +44,7 @@ RAL
  + detrazione da lavoro dipendente + ulteriore detrazione   (fino a capienza)
  = IRPEF netta
  − addizionale regionale                                    (regione scelta)
- − addizionale comunale 0,80%                               (ipotesi dichiarata)
+ − addizionale comunale                                     (capoluogo della regione)
  + trattamento integrativo e somma integrativa              (non sono retribuzione)
  = netto annuo → / mensilità = netto mensile
 ```
@@ -59,7 +59,7 @@ trattamento integrativo).
 
 | Input | Cosa cambia | Cosa **non** cambia |
 |---|---|---|
-| **Regione** | aliquote e scaglioni dell'addizionale regionale, più le esenzioni, le aliquote uniche sotto soglia e le detrazioni fissate dalla legge regionale | IRPEF erariale, contributi |
+| **Regione** | l'addizionale regionale (aliquote, scaglioni, esenzioni, detrazioni) **e** quella comunale, perché da qui si deriva il capoluogo | IRPEF erariale, contributi |
 | **Contratto** | aliquota contributiva a carico del lavoratore (5,84% apprendista, 9,19% standard, 9,49% con CIGS) e, di riflesso, l'imponibile fiscale | aliquote IRPEF, detrazioni |
 | **Agevolazione** | quota di reddito che concorre all'imponibile: 50%, 40% o 10% | i **contributi**, dovuti sulla retribuzione piena, e le soglie di detrazioni e bonus (vedi sotto) |
 
@@ -85,7 +85,7 @@ Tutti verificati a settembre 2026 per l'anno d'imposta 2026.
 | Aliquota aggiuntiva 1% | sulla quota oltre 56.224 € | art. 3-ter L. 438/1992; soglia 2026 da INPS circ. 6/2026 |
 | Massimale contributivo | 122.295 € | INPS circ. 6/2026 |
 | **Addizionali regionali** | **tutte e 21 le regioni e province autonome**, con scaglioni, esenzioni e detrazioni | MEF – Dipartimento delle Finanze, [ricerca aliquote applicabili](https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/addregirpef/), anno 2026, dati letti l'1.9.2026 |
-| Addizionale comunale | 0,80% su tutto l'imponibile | aliquota massima ordinaria, art. 1 c. 3 D.Lgs. 360/1998 — **ipotesi**, il comune non è un input |
+| **Addizionali comunali** | **i 21 capoluoghi di regione**, con scaglioni e soglie di esenzione | MEF – Dipartimento delle Finanze, [elenco generale dei comuni](https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_addcomirpef/download/), anni 2026 e 2025, letti l'1.9.2026 |
 | Impatriati | concorre il 50% del reddito (40% con figlio minore), entro 600.000 € | art. 5 D.Lgs. 209/2023 |
 | Docenti e ricercatori | concorre il 10% del reddito | art. 44 D.L. 78/2010 |
 | TFR | RAL / 13,5 meno 0,50% al Fondo di garanzia | art. 2120 c.c.; il TFR è mostrato a parte perché è accantonato, non pagato in busta |
@@ -104,10 +104,12 @@ mostrate in pagina sotto la tendina.
 2. **Tutta la RAL è imponibile**, sia ai fini contributivi che fiscali. Niente
    fringe benefit, welfare, premi di risultato detassati al 5%, trasferte, auto
    aziendale, straordinari.
-3. **Il comune non è un input.** L'addizionale comunale è calcolata allo 0,80%
-   su tutto l'imponibile: è il massimo ordinario di legge, quindi la stima è
-   prudenziale. Il comune reale può avere un'aliquota più bassa, una soglia di
-   esenzione o nessuna addizionale.
+3. **Il comune è derivato, non chiesto.** L'addizionale comunale usa il
+   capoluogo della regione scelta: Milano per la Lombardia, Roma per il Lazio,
+   Firenze per la Toscana. Sono 21 aliquote reali con le loro soglie di
+   esenzione, invece delle oltre 7.900 che servirebbero per coprire ogni comune.
+   Chi vive in un altro comune della stessa regione ottiene una stima, e la
+   pagina lo dichiara.
 4. **Nessun familiare a carico.** Restano fuori le detrazioni per carichi di
    famiglia, comprese quelle regionali di Campania, Marche, Piemonte, Puglia,
    Sardegna, Trento, Bolzano e Veneto, e le aliquote agevolate per disabilità.
@@ -133,16 +135,17 @@ segnala in pagina quando ci si finisce sopra.
 
 | Soglia | Effetto |
 |---|---|
-| Valle d'Aosta, 15.000 € di imponibile | sotto è esente, sopra l'addizionale è dovuta sull'intero importo: un euro in più costa 185 € |
+| Milano, 23.000 € di imponibile | sotto è esente dall'addizionale comunale, un euro sopra costa 184 € pieni |
+| Valle d'Aosta, 15.000 € di imponibile | sotto è esente, sopra l'addizionale regionale è dovuta sull'intero importo |
 | Trento, 30.000 € di imponibile | la deduzione di 30.000 € azzera l'addizionale fino alla soglia e sparisce di colpo appena sopra |
 | Lazio e Umbria, 28.000 € · Friuli-Venezia Giulia, 15.000 € | sotto soglia si applica un'aliquota unica sull'intero imponibile, sopra si passa alla scala progressiva |
 | 8.500 e 15.000 € di reddito di lavoro | cambia la percentuale della somma integrativa, applicata a tutta la base |
 | 20.000 € di reddito complessivo | finisce la somma integrativa e inizia l'ulteriore detrazione |
 | 35.000 € | decade la detrazione aggiuntiva di 65 € |
 
-In Lombardia, dove non ci sono soglie regionali, il netto è **monotono** su tutto
-l'arco 5.000–150.000 €: un test lo verifica passo passo, così ogni salto
-all'indietro che comparisse in futuro è un bug.
+Nelle Marche, dove né la regione né Ancona fissano soglie, il netto è
+**monotono** su tutto l'arco 5.000–150.000 €: un test lo verifica passo passo,
+così ogni salto all'indietro che comparisse in futuro è un bug.
 
 ## Verifica
 
@@ -150,16 +153,18 @@ all'indietro che comparisse in futuro è un bug.
 npm test
 ```
 
-I 22 test coprono: la progressività degli scaglioni, il massimale e l'aliquota
+I 27 test coprono: la progressività degli scaglioni, il massimale e l'aliquota
 aggiuntiva dell'1%, le tre aliquote contributive per contratto, la continuità
 delle detrazioni ai confini di fascia, la completezza e la coerenza della tabella
 delle 21 regioni, la scala progressiva e l'aliquota unica sotto soglia,
 le esenzioni piene di Valle d'Aosta e Trento, la detrazione di Bolzano che non
-genera mai credito, le quote imponibili delle agevolazioni e il tetto dei
+genera mai credito, la tabella dei 21 capoluoghi, la soglia comunale di Milano
+che non è una franchigia, gli scaglioni comunali di Torino, il caso di Trento
+dove l'addizionale comunale non esiste, le quote imponibili delle agevolazioni e il tetto dei
 600.000 €, il fatto che un'agevolazione non apra la porta ai bonus per redditi
 bassi, la catena completa su RAL 30.000 con i valori calcolati a mano, il caso a
-basso reddito con somma integrativa, la monotonia del netto in Lombardia e il
-salto all'indietro sopra la soglia valdostana.
+basso reddito con somma integrativa, la monotonia del netto nelle Marche e i salti
+all'indietro sopra le soglie di Milano e della Valle d'Aosta.
 
 Controprova rapida: RAL 30.000, Lombardia, impiegato a tempo indeterminato,
 nessuna agevolazione, 13 mensilità → **1.802 € netti al mese**, 23.426 € l'anno,
@@ -168,7 +173,8 @@ aliquota effettiva 21,9%. Stessa RAL in Lazio → 23.332 € l'anno; in Valle d'
 
 ## Cosa servirebbe per andare oltre il prototipo
 
-- anagrafica comunale completa (oltre 7.900 comuni, con aliquote e soglie proprie)
+- anagrafica comunale completa: oltre 7.900 comuni al posto dei 21 capoluoghi,
+  con il CSV del MEF già in formato adatto
 - tabelle CCNL per aliquota contributiva, mensilità e minimi, e i fondi dirigenti
 - familiari a carico, altri redditi, oneri deducibili e detraibili, e con essi le
   detrazioni regionali oggi non modellate

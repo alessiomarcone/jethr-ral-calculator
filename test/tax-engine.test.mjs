@@ -8,8 +8,10 @@ import {
   ulteriore_detrazione_cuneo,
   contributi_dipendente,
   imponibile_agevolato,
+  addizionale_comunale,
   PARAMS,
   REGIONI,
+  COMUNI,
   CONTRATTI,
   AGEVOLAZIONI,
 } from "../src/tax-engine.js";
@@ -191,10 +193,12 @@ test("basso reddito: la somma integrativa entra nel netto", () => {
   assert.ok(r.totali.nettoAnnuo > 12000 - r.contributi.totale);
 });
 
-test("il netto e' monotono in Lombardia su tutto l'arco 5.000-150.000", () => {
+test("il netto e' monotono dove non ci sono soglie (Marche, Ancona)", () => {
+  // Le Marche non hanno soglie regionali e Ancona non ha esenzione comunale:
+  // qui un euro di lordo in piu' deve sempre valere almeno zero euro di netto.
   let precedente = -Infinity;
   for (let ral = 5000; ral <= 150000; ral += 250) {
-    const netto = calcola(ral, { regione: "lombardia" }).totali.nettoAnnuo;
+    const netto = calcola(ral, { regione: "marche" }).totali.nettoAnnuo;
     assert.ok(
       netto >= precedente - 0.01,
       `netto in calo passando a ${ral}: ${round(netto)} < ${round(precedente)}`,
@@ -210,6 +214,42 @@ test("le soglie regionali sono discontinuita' vere, non arrotondamenti", () => {
   // Superata la soglia di 15.000 di imponibile l'addizionale torna dovuta per
   // intero: il netto scende nonostante il lordo salga.
   assert.ok(fuori < dentro, "Valle d'Aosta: atteso un salto all'indietro sopra la soglia");
+});
+
+test("un capoluogo per regione, con aliquote plausibili", () => {
+  assert.deepEqual(Object.keys(COMUNI).sort(), Object.keys(REGIONI).sort());
+  for (const [k, c] of Object.entries(COMUNI)) {
+    assert.ok(c.nome && c.provincia, `${k}: metadati mancanti`);
+    assert.equal(c.scaglioni.at(-1).fino, Infinity, `${k}: ultimo scaglione aperto`);
+    for (const s of c.scaglioni) {
+      // Il tetto ordinario e' 0,8%, superabile solo dove la legge lo consente.
+      assert.ok(s.aliquota >= 0 && s.aliquota <= 0.012, `${k}: aliquota fuori range`);
+    }
+  }
+});
+
+test("addizionale comunale: la soglia di esenzione non e' una franchigia", () => {
+  // Milano esenta fino a 23.000 di imponibile; un euro sopra si tassa tutto.
+  assert.equal(addizionale_comunale(23000, COMUNI.lombardia).totale, 0);
+  assert.equal(round(addizionale_comunale(23001, COMUNI.lombardia).totale), round(23001 * 0.008));
+});
+
+test("addizionale comunale: scaglioni progressivi (Torino)", () => {
+  assert.equal(
+    round(addizionale_comunale(40000, COMUNI.piemonte).totale),
+    round(28000 * 0.008 + 12000 * 0.011),
+  );
+});
+
+test("addizionale comunale: dove non e' istituita vale zero (Trento)", () => {
+  assert.equal(addizionale_comunale(60000, COMUNI.trento).totale, 0);
+  assert.equal(calcola(60000, { regione: "trento" }).addizionali.comunale, 0);
+});
+
+test("la soglia comunale produce un salto all'indietro nel netto", () => {
+  const dentro = calcola(25300, { regione: "lombardia" }).totali.nettoAnnuo;
+  const fuori = calcola(25400, { regione: "lombardia" }).totali.nettoAnnuo;
+  assert.ok(fuori < dentro, "Milano: atteso un salto sopra i 23.000 di imponibile");
 });
 
 test("ogni contratto produce un risultato coerente", () => {
