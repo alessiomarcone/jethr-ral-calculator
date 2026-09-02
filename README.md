@@ -15,6 +15,7 @@ scegli). Vedi `DESIGN-SYSTEM.md`.
 
 - **Pagine live:** vedi i link nella mail di consegna
 - **Uso in locale:** apri `index.html` o `index-b.html`, non serve nessun server
+- **Le iterazioni:** [`versioni/`](versioni/index.html) — le otto versioni che la pagina ha attraversato, apribili e funzionanti
 - **Test:** `npm test` (Node 18+, nessuna dipendenza)
 
 ## Com'è fatto
@@ -25,6 +26,8 @@ scegli). Vedi `DESIGN-SYSTEM.md`.
 | `src/page.html` + `src/design-system.css` | variante A, minimal in vetro con colore semantico |
 | `src/page-b.html` + `src/ds-b.css` | variante B, manifesto |
 | `test/tax-engine.test.mjs` | 27 test sul motore |
+| `src/versioni.html` | l'archivio delle iterazioni, costruito in `versioni/index.html` |
+| `versioni/v1…v7.html` | la pagina com'era a ogni passaggio, estratta dalla cronologia del repo e lasciata intatta |
 | `build.mjs` | inlina design system e motore in ogni variante e genera le pagine standalone |
 
 I parametri di legge stanno tutti in cinque oggetti: quando cambia la legge di

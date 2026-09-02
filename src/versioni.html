@@ -1,0 +1,189 @@
+<title>Le iterazioni — Dal lordo al netto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+
+<style>
+/* DS */
+
+.bar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  width: 100%;
+  background: color-mix(in srgb, var(--ds-bg) 74%, transparent);
+  backdrop-filter: blur(14px) saturate(150%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+  box-shadow: 0 1px 0 var(--ds-hair);
+}
+
+.bar-in {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: var(--ds-3) var(--ds-4);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-3);
+}
+
+.bar b { font-size: var(--fs-2); font-weight: 700; letter-spacing: -.01em; }
+.bar a { color: var(--ds-ink-2); text-decoration: none; font-size: var(--fs-2); font-weight: 600; }
+.bar a:hover { color: var(--ds-ink); }
+
+.page { max-width: 1000px; margin: 0 auto; padding: 0 var(--ds-4) var(--ds-7); }
+.intro { display: flex; flex-direction: column; gap: var(--ds-3); padding: var(--ds-6) 0 var(--ds-5); max-width: 68ch; }
+
+.linea { display: flex; flex-direction: column; gap: var(--ds-3); }
+
+.v {
+  display: grid;
+  grid-template-columns: 78px minmax(0, 1fr) auto;
+  gap: var(--ds-4);
+  align-items: start;
+  padding: var(--ds-4) var(--ds-5);
+  border-radius: var(--ds-r-lg);
+  text-decoration: none;
+  color: inherit;
+  transition: transform .2s var(--ds-ease), box-shadow .22s var(--ds-ease);
+}
+
+.v:hover { transform: translateY(-2px); }
+.v .n { font-size: var(--fs-6); font-weight: 800; letter-spacing: -.03em; font-variant-numeric: tabular-nums; color: var(--ds-ink-3); }
+.v .t { font-size: var(--fs-5); font-weight: 700; letter-spacing: -.02em; }
+.v p { margin-top: 4px; font-size: var(--fs-2); line-height: 1.55; color: var(--ds-ink-2); }
+.v .meta { display: flex; flex-wrap: wrap; gap: var(--ds-2) var(--ds-3); margin-top: var(--ds-2); }
+
+.tag {
+  font-size: var(--fs-1);
+  font-weight: 600;
+  letter-spacing: .02em;
+  color: var(--ds-ink-3);
+  padding: 3px 9px;
+  border-radius: 100px;
+  box-shadow: inset 0 0 0 1px var(--ds-hair);
+}
+
+.apri { display: inline-flex; align-items: center; gap: 6px; font-size: var(--fs-2); font-weight: 600; color: var(--ds-link); white-space: nowrap; padding-top: 4px; }
+.v:hover .apri { gap: 9px; }
+
+.viva { box-shadow: inset 0 0 0 1.5px var(--ds-field), var(--ds-shadow); }
+
+@media (max-width: 640px) {
+  .v { grid-template-columns: 1fr; gap: var(--ds-2); }
+  .v .n { font-size: var(--fs-3); }
+}
+
+footer { max-width: 1000px; margin: 0 auto; padding: var(--ds-4) var(--ds-4) var(--ds-6); box-shadow: 0 -1px 0 var(--ds-hair); font-size: var(--fs-2); color: var(--ds-ink-3); }
+</style>
+
+<header class="bar">
+  <div class="bar-in">
+    <b>RAL → Netto</b>
+    <a href="../index.html">Vai al calcolatore →</a>
+  </div>
+</header>
+
+<div class="page">
+  <div class="intro">
+    <span class="eyebrow">Archivio</span>
+    <h1 class="h1">Otto versioni della stessa pagina</h1>
+    <p class="lede">Ogni riga è la pagina come era in quel momento, presa dalla cronologia del repo e lasciata intatta: stesso HTML, stessi stili, stesso motore di calcolo di allora. Si aprono e funzionano.</p>
+  </div>
+
+  <div class="linea" id="linea"></div>
+</div>
+
+<footer>Prototipo dimostrativo per un task di selezione: non è un cedolino, non è un prodotto Jet HR, non sostituisce il consulente del lavoro.</footer>
+
+<script type="module">
+const versioni = [
+  {
+    n: "01",
+    data: "1 set · 15:57",
+    titolo: "Il caso fisso",
+    testo:
+      "Il caso del brief e basta: impiegato a tempo indeterminato, Lombardia, Milano, nessuna agevolazione. Contratto, regione e agevolazioni ci sono già, ma sono campi bloccati con una riga che spiega perché. Ripartizione su barra orizzontale, design system estratto dai token CSS del sito Jet HR.",
+    tag: ["caso singolo", "campi bloccati", "barra orizzontale"],
+    file: "v1.html",
+  },
+  {
+    n: "02",
+    data: "1 set · 16:16",
+    titolo: "Tre input veri",
+    testo:
+      "I campi bloccati diventano scelte. Tutte e 21 le regioni e province autonome con le loro irregolarità, cinque tipologie contrattuali, quattro agevolazioni. Le aliquote arrivano dall'interrogazione ufficiale del MEF: le tabelle di terze parti si contraddicevano.",
+    tag: ["21 regioni", "5 contratti", "fonte MEF"],
+    file: "v2.html",
+  },
+  {
+    n: "03",
+    data: "1 set · 21:26",
+    titolo: "Hero e donut",
+    testo:
+      "Da documento a strumento. Il risultato sale in cima su un grafico circolare, il dettaglio scende sotto la piega, le spiegazioni passano nei tooltip. Palette in grigi caldi, senza colore.",
+    tag: ["donut", "grigi caldi", "dettaglio allo scroll"],
+    file: "v3.html",
+  },
+  {
+    n: "04",
+    data: "1 set · 21:59",
+    titolo: "Vetro e colore semantico",
+    testo:
+      "Superfici in vetro al posto del reticolo di bordi. Il colore torna, ma solo dove significa: emerald, violet e amber sui tre pezzi della RAL. Micromotion sul risultato, tema commutabile, e i tooltip lasciano il posto a un link che spiega perché ogni dato viene chiesto.",
+    tag: ["liquid glass", "palette Tailwind", "micromotion"],
+    file: "v4.html",
+  },
+  {
+    n: "05",
+    data: "1 set · 22:17",
+    titolo: "La landing",
+    testo:
+      "Il calcolatore smette di essere una pagina isolata e diventa la hero di una landing: headline, i quattro passaggi della catena di calcolo con i numeri correnti, il perimetro dichiarato, le fonti di ogni parametro.",
+    tag: ["hero", "sezioni", "fonti in pagina"],
+    file: "v5.html",
+  },
+  {
+    n: "06",
+    data: "2 set · 09:24",
+    titolo: "Capoluoghi e bento",
+    testo:
+      "Cade l'ultima ipotesi inventata. L'addizionale comunale non è più uno 0,80% fisso: ogni regione porta il suo capoluogo, con aliquote e soglie vere dall'elenco MEF dei comuni. Il riepilogo diventa un bento e il cedolino si chiude in un accordion.",
+    tag: ["21 capoluoghi", "bento", "accordion"],
+    file: "v6.html",
+  },
+  {
+    n: "07",
+    data: "2 set · 09:39",
+    titolo: "Una famiglia e una scala",
+    testo:
+      "Via il monospace, resta Inter per tutto, con nove gradini di scala dichiarati nel design system. Le voci del grafico smettono di comparire: restano a schermo e i numeri transitano. E Calcola trova un lavoro, perché digitare la RAL non ricalcola più.",
+    tag: ["Inter", "scala tipografica", "numeri che transitano"],
+    file: "v7.html",
+  },
+  {
+    n: "08",
+    data: "in linea",
+    titolo: "Grana, neri caldi, header a tutto schermo",
+    testo:
+      "L'ultima passata è tutta di dettaglio: rumore frattale sopra i gradienti per rompere le bande, fondo scuro portato su un carbone caldo al posto del nero assoluto, header che attraversa lo schermo.",
+    tag: ["grana", "niente neri puri", "versione attuale"],
+    file: "../index.html",
+    viva: true,
+  },
+];
+
+document.getElementById("linea").innerHTML = versioni
+  .map(
+    (v) => `<a class="glass v${v.viva ? " viva glass--tinted" : ""}"${v.viva ? ' style="--tint:var(--ds-s1)"' : ""} href="${v.file}">
+      <span class="n">${v.n}</span>
+      <span>
+        <span class="t">${v.titolo}</span>
+        <p>${v.testo}</p>
+        <span class="meta">${v.tag.map((t) => `<span class="tag">${t}</span>`).join("")}<span class="tag">${v.data}</span></span>
+      </span>
+      <span class="apri">Apri <span aria-hidden="true">→</span></span>
+    </a>`,
+  )
+  .join("");
+</script>

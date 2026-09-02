@@ -7,33 +7,38 @@
 <title>Dal lordo al netto</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
 
 <style>
 /**
- * Design system — variante A.
+ * Design system — variante A: base monocromatica piatta, colore solo dove
+ * significa qualcosa.
  *
- * Una famiglia sola (Inter, variabile) e una scala tipografica dichiarata qui:
- * la pagina non sceglie mai un `font-size` a mano, prende un token.
+ * Il colore vive in un posto solo, il grafico: emerald / violet / amber per i
+ * tre pezzi della RAL. L'interfaccia e' tutta pietra calda —
+ *   azione (Calcola)        inchiostro pieno, invertito col tema
+ *   selezione (mensilità)   un gradino di pietra, mai una tinta
+ * cosi' l'unica cosa colorata a schermo e' il dato.
  *
- * Il colore vive nel grafico: emerald / violet / amber per i tre pezzi della
- * RAL. L'interfaccia e' pietra calda, con una velatura della tinta di serie
- * sulle card che parlano di quel pezzo. L'azione (Calcola) e' inchiostro
- * pieno e si inverte col tema; la selezione (mensilita') e' un gradino di
- * pietra, mai una tinta.
+ * Contrasto: ogni coppia testo/fondo è verificata AAA (>= 7:1), comprese le
+ * etichette piccole in mono e il testo sui fondi pieni dei bottoni.
  *
- * Contrasto: ogni coppia testo/fondo e' verificata AAA (>= 7:1), velature
- * comprese.
+ * Superfici: niente reticolo di bordi da 1px. Le card sono vetro — velo
+ * traslucido, sfocatura, un filo di luce sul bordo alto e un'ombra bassa e
+ * larga. Le righe di separazione restano solo dove servono a leggere una
+ * colonna di numeri.
  */
 
 :root {
   color-scheme: light dark;
 
-  /* pietra calda */
-  --st-950: #15120D;
+  /* pietra calda: la base monocromatica */
+  --st-950: #14120E;
   --st-900: #1C1917;
+  --st-800: #292524;
   --st-700: #44403C;
   --st-600: #4E4A44;
+  --st-400: #A8A29E;
   --st-300: #D6D3D1;
   --st-200: #E7E2DA;
   --st-100: #F0EDE7;
@@ -50,44 +55,25 @@
   --ds-glass: rgba(255, 255, 255, .66);
   --ds-glass-2: rgba(255, 255, 255, .42);
   --ds-sheen: rgba(255, 255, 255, .9);
-  --ds-shadow: 0 18px 48px -22px rgba(28, 25, 23, .3), 0 2px 8px -4px rgba(28, 25, 23, .14);
+  --ds-shadow: 0 18px 48px -22px rgba(28, 25, 23, .34), 0 2px 8px -4px rgba(28, 25, 23, .16);
   --ds-hair: rgba(28, 25, 23, .09);
   --ds-hair-2: rgba(28, 25, 23, .16);
-  --ds-field: rgba(28, 25, 23, .26);
-  --ds-field-hover: rgba(28, 25, 23, .42);
 
+  /* azione: inchiostro pieno, si inverte col tema */
   --ds-primary: #1C1917;
   --ds-primary-ink: #FBFAF8;    /* 16,8:1 */
   --ds-primary-soft: rgba(28, 25, 23, .07);
+  /* selezione: un gradino di pietra, non una tinta */
   --ds-accent: #E0DACD;
   --ds-accent-ink: #1C1917;     /* 12,6:1 */
   --ds-accent-soft: rgba(28, 25, 23, .05);
-  --ds-link: #064E3B;
+  --ds-link: #064E3B;   /* emerald 900: AAA anche sul vetro piu' scuro */
 
   /* serie del grafico: passi validati con scripts/validate_palette.js */
   --ds-s1: #059669; /* emerald 600 — resta in mano */
   --ds-s2: #7C3AED; /* violet 600  — imposte */
   --ds-s3: #D97706; /* amber 600   — contributi */
   --ds-track: rgba(28, 25, 23, .07);
-
-  /* velature: quanto della tinta di serie entra nel vetro */
-  --ds-tint: 13%;
-  --ds-tint-soft: 7%;
-
-  /* scala tipografica: sette gradini, nessun valore fuori da qui */
-  --fs-1: 11px;                       /* eyebrow, micro */
-  --fs-2: 13px;                       /* label, note */
-  --fs-3: 14px;                       /* testo di interfaccia */
-  --fs-4: 15.5px;                     /* corpo */
-  --fs-5: 18px;                       /* titolo di card, lede corto */
-  --fs-6: clamp(20px, 2vw, 23px);     /* numero medio */
-  --fs-7: clamp(23px, 2.6vw, 30px);   /* titolo di sezione */
-  --fs-8: clamp(27px, 3.2vw, 35px);   /* numero grande */
-  --fs-9: clamp(32px, 4.6vw, 52px);   /* titolo di pagina, numero hero */
-
-  --lh-tight: 1.08;
-  --lh-snug: 1.3;
-  --lh-base: 1.55;
 
   --ds-1: 4px;
   --ds-2: 8px;
@@ -101,36 +87,30 @@
   --ds-r-md: 14px;
   --ds-r-lg: 22px;
 
-  --ds-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --ds-sans: "Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --ds-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
   --ds-ease: cubic-bezier(.22, .68, .28, 1);
-
-  /* Grana: rumore frattale in un SVG inline, 140px di lato, che si ripete.
-     Nessun file da caricare e nessuna dipendenza: serve solo a rompere le
-     bande dei gradienti, che su schermi ampi si vedono. */
-  --ds-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='.42'/%3E%3C/svg%3E");
 }
 
 @media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { color-scheme: dark; }
   :root:not([data-theme="light"]) {
-    color-scheme: dark;
-    --ds-bg: #14110D;
-    --ds-solid: #201C17;
+    --ds-bg: #0C0A09;
+    --ds-solid: #1A1815;
     --ds-ink: #FAFAF9;
     --ds-ink-2: var(--st-300);
     --ds-ink-3: #BFBAB4;
 
-    --ds-glass: rgba(48, 43, 37, .58);
-    --ds-glass-2: rgba(48, 43, 37, .38);
+    --ds-glass: rgba(41, 37, 36, .58);
+    --ds-glass-2: rgba(41, 37, 36, .38);
     --ds-sheen: rgba(255, 255, 255, .12);
-    --ds-shadow: 0 22px 54px -26px rgba(10, 8, 5, .8), 0 2px 10px -5px rgba(10, 8, 5, .52);
+    --ds-shadow: 0 22px 54px -26px rgba(0, 0, 0, .78), 0 2px 10px -5px rgba(0, 0, 0, .5);
     --ds-hair: rgba(250, 250, 249, .1);
     --ds-hair-2: rgba(250, 250, 249, .18);
-    --ds-field: rgba(250, 250, 249, .28);
-    --ds-field-hover: rgba(250, 250, 249, .46);
 
     --ds-primary: #FAFAF9;
-    --ds-primary-ink: #14110D;   /* 18,9:1 */
+    --ds-primary-ink: #0C0A09;   /* 18,9:1 */
     --ds-primary-soft: rgba(250, 250, 249, .1);
     --ds-accent: #3A362F;
     --ds-accent-ink: #FAFAF9;    /* 11,5:1 */
@@ -141,34 +121,29 @@
     --ds-s2: #A78BFA;
     --ds-s3: #FBBF24;
     --ds-track: rgba(250, 250, 249, .1);
-
-    --ds-tint: 15%;
-    --ds-tint-soft: 8%;
   }
 }
 
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --ds-bg: #14110D;
-  --ds-solid: #201C17;
+  --ds-bg: #0C0A09;
+  --ds-solid: #1A1815;
   --ds-ink: #FAFAF9;
   --ds-ink-2: var(--st-300);
   --ds-ink-3: #BFBAB4;
 
-  --ds-glass: rgba(48, 43, 37, .58);
-  --ds-glass-2: rgba(48, 43, 37, .38);
+  --ds-glass: rgba(41, 37, 36, .58);
+  --ds-glass-2: rgba(41, 37, 36, .38);
   --ds-sheen: rgba(255, 255, 255, .12);
-  --ds-shadow: 0 22px 54px -26px rgba(10, 8, 5, .8), 0 2px 10px -5px rgba(10, 8, 5, .52);
+  --ds-shadow: 0 22px 54px -26px rgba(0, 0, 0, .78), 0 2px 10px -5px rgba(0, 0, 0, .5);
   --ds-hair: rgba(250, 250, 249, .1);
   --ds-hair-2: rgba(250, 250, 249, .18);
-  --ds-field: rgba(250, 250, 249, .28);
-  --ds-field-hover: rgba(250, 250, 249, .46);
 
   --ds-primary: #FAFAF9;
-  --ds-primary-ink: #14110D;
+  --ds-primary-ink: #0C0A09;   /* 18,9:1 */
   --ds-primary-soft: rgba(250, 250, 249, .1);
   --ds-accent: #3A362F;
-  --ds-accent-ink: #FAFAF9;
+  --ds-accent-ink: #FAFAF9;    /* 11,5:1 */
   --ds-accent-soft: rgba(250, 250, 249, .07);
   --ds-link: #6EE7B7;
 
@@ -176,9 +151,6 @@
   --ds-s2: #A78BFA;
   --ds-s3: #FBBF24;
   --ds-track: rgba(250, 250, 249, .1);
-
-  --ds-tint: 15%;
-  --ds-tint-soft: 8%;
 }
 
 /* ---------- reset ---------- */
@@ -190,35 +162,19 @@ body {
   background: var(--ds-bg);
   color: var(--ds-ink);
   font-family: var(--ds-sans);
-  font-size: var(--fs-4);
-  line-height: var(--lh-base);
-  font-feature-settings: "cv11", "ss01";
+  font-size: 16px;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
-/* la grana sta sopra il gradiente e sotto tutto il resto */
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  opacity: .5;
-  background-image: var(--ds-grain);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) body::after { opacity: .34; }
-}
-
-:root[data-theme="dark"] body::after { opacity: .34; }
-
+/* Il vetro ha bisogno di qualcosa dietro: tre aloni bassissimi, presi dalle
+   tre tinte delle serie, così la sfocatura ha un colore da rifrangere. */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
-  z-index: -2;
+  z-index: -1;
   pointer-events: none;
   background:
     radial-gradient(52vw 42vw at 12% -6%, color-mix(in srgb, var(--ds-s1) 10%, transparent), transparent 68%),
@@ -235,38 +191,44 @@ button, input, select { font: inherit; color: inherit; }
   border-radius: var(--ds-r-sm);
 }
 
-/* ---------- tipografia: una classe per gradino ---------- */
-.h1 { font-size: var(--fs-9); line-height: var(--lh-tight); letter-spacing: -.038em; font-weight: 800; text-wrap: balance; }
-.h-sec { font-size: var(--fs-7); line-height: 1.12; letter-spacing: -.03em; font-weight: 700; text-wrap: balance; }
-.h2 { font-size: var(--fs-5); line-height: var(--lh-snug); letter-spacing: -.02em; font-weight: 700; }
+/* ---------- tipografia ---------- */
+.h1 {
+  font-size: clamp(32px, 4.6vw, 52px);
+  line-height: 1.03;
+  letter-spacing: -.035em;
+  font-weight: 800;
+  text-wrap: balance;
+}
 
-.lede { font-size: var(--fs-5); line-height: 1.5; color: var(--ds-ink-2); max-width: 62ch; text-wrap: pretty; }
-.small { font-size: var(--fs-2); line-height: var(--lh-base); color: var(--ds-ink-2); }
+.h2 { font-size: 19px; letter-spacing: -.015em; font-weight: 700; }
+
+.h-sec {
+  font-size: clamp(23px, 2.6vw, 30px);
+  line-height: 1.12;
+  letter-spacing: -.028em;
+  font-weight: 800;
+  text-wrap: balance;
+}
+
+.lede {
+  font-size: clamp(16px, 1.5vw, 18.5px);
+  line-height: 1.5;
+  color: var(--ds-ink-2);
+  max-width: 62ch;
+  text-wrap: pretty;
+}
 
 .eyebrow {
-  font-size: var(--fs-1);
-  font-weight: 700;
-  letter-spacing: .1em;
+  font-family: var(--ds-mono);
+  font-size: 10.5px;
+  letter-spacing: .16em;
   text-transform: uppercase;
-  /* ink-2 e non ink-3: sulla velatura violet delle card ink-3 scendeva a
-     6,8:1, sotto la soglia AAA che il resto della pagina rispetta */
-  color: var(--ds-ink-2);
+  color: var(--ds-ink-3);
 }
 
-/* i numeri: tabulari e stretti, mai un font diverso */
+.small { font-size: 13.5px; line-height: 1.55; color: var(--ds-ink-2); }
+.mono { font-family: var(--ds-mono); font-variant-numeric: tabular-nums; }
 .num { font-variant-numeric: tabular-nums; letter-spacing: -.035em; font-weight: 800; }
-.tab { font-variant-numeric: tabular-nums; }
-
-/**
- * --tint registrata: una custom property dichiarata con @property e' un colore
- * vero per il browser, quindi si puo' animare. Serve alla card del grafico, che
- * cambia velatura quando passi su un segmento.
- */
-@property --tint {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: transparent;
-}
 
 /* ---------- vetro ---------- */
 .glass {
@@ -278,40 +240,11 @@ button, input, select { font: inherit; color: inherit; }
   box-shadow: var(--ds-shadow);
 }
 
-/**
- * Velatura: la card che parla di un pezzo della RAL porta quella tinta, molto
- * diluita e solo in un angolo. Serve a dare profondita' al vetro, non a
- * colorare la superficie: il testo resta su fondo neutro.
- */
-.glass::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  opacity: .9;
-  background:
-    radial-gradient(120% 90% at 8% 0%, color-mix(in srgb, var(--tint) var(--ds-tint-soft), transparent), transparent 62%);
-}
-
-/* la velatura segue il segmento sotto il puntatore, senza saltare */
-.glass--follow { transition: --tint .55s var(--ds-ease); }
-
-/* Il vetro sfoca la grana di sfondo: sulle card la si rimette, piu' fine. */
-.glass--tinted::after {
-  background:
-    var(--ds-grain),
-    radial-gradient(130% 100% at 6% -8%, color-mix(in srgb, var(--tint) var(--ds-tint), transparent), transparent 58%),
-    linear-gradient(155deg, transparent 55%, color-mix(in srgb, var(--tint) 5%, transparent));
-  background-blend-mode: overlay, normal, normal;
-}
-
 /* il filo di luce sul bordo: un bordo disegnato, non un box da 1px */
 .glass::before {
   content: "";
   position: absolute;
   inset: 0;
-  z-index: 1;
   border-radius: inherit;
   padding: 1px;
   background: linear-gradient(160deg, var(--ds-sheen), transparent 42%);
@@ -322,7 +255,6 @@ button, input, select { font: inherit; color: inherit; }
   pointer-events: none;
 }
 
-.glass > * { position: relative; z-index: 2; }
 .glass--quiet { background: var(--ds-glass-2); box-shadow: none; }
 
 @supports not (backdrop-filter: blur(1px)) {
@@ -337,9 +269,10 @@ button, input, select { font: inherit; color: inherit; }
   border-radius: 100px;
   background: var(--ds-glass-2);
   box-shadow: inset 0 0 0 1px var(--ds-hair);
-  font-size: var(--fs-1);
-  font-weight: 600;
-  letter-spacing: .04em;
+  font-family: var(--ds-mono);
+  font-size: 11px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
   color: var(--ds-ink-2);
   white-space: nowrap;
 }
@@ -348,9 +281,11 @@ button, input, select { font: inherit; color: inherit; }
 .field { display: flex; flex-direction: column; gap: var(--ds-2); }
 
 .field-label {
-  font-size: var(--fs-2);
-  font-weight: 600;
-  letter-spacing: -.005em;
+  font-family: var(--ds-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: .07em;
+  text-transform: uppercase;
   color: var(--ds-ink-2);
 }
 
@@ -362,13 +297,12 @@ button, input, select { font: inherit; color: inherit; }
   min-height: 64px;
   border-radius: var(--ds-r-md);
   background: var(--ds-glass-2);
-  box-shadow: inset 0 0 0 1.5px var(--ds-field);
+  box-shadow: inset 0 0 0 1px var(--ds-hair);
   transition: box-shadow .2s var(--ds-ease), background .2s var(--ds-ease);
 }
 
-.input:hover { box-shadow: inset 0 0 0 1.5px var(--ds-field-hover); }
-.input:focus-within { box-shadow: inset 0 0 0 2px var(--ds-ink); background: var(--ds-glass); }
-.input .unit { font-size: var(--fs-4); color: var(--ds-ink-3); }
+.input:focus-within { box-shadow: inset 0 0 0 1.5px var(--ds-ink); background: var(--ds-glass); }
+.input .unit { font-family: var(--ds-mono); font-size: 15px; color: var(--ds-ink-3); }
 
 .input input {
   flex: 1;
@@ -376,7 +310,7 @@ button, input, select { font: inherit; color: inherit; }
   border: 0;
   background: none;
   outline: none;
-  font-size: var(--fs-6);
+  font-size: 29px;
   font-weight: 700;
   letter-spacing: -.03em;
   font-variant-numeric: tabular-nums;
@@ -392,23 +326,14 @@ button, input, select { font: inherit; color: inherit; }
   border: 0;
   border-radius: var(--ds-r-md);
   background: var(--ds-glass-2);
-  box-shadow: inset 0 0 0 1.5px var(--ds-field);
-  font-size: var(--fs-3);
+  box-shadow: inset 0 0 0 1px var(--ds-hair);
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: box-shadow .2s var(--ds-ease);
+  transition: box-shadow .2s var(--ds-ease), transform .2s var(--ds-ease);
 }
 
-.select select:hover { box-shadow: inset 0 0 0 1.5px var(--ds-field-hover); }
-
-.select select:disabled {
-  cursor: not-allowed;
-  color: var(--ds-ink-2);
-  background: var(--ds-accent-soft);
-  box-shadow: inset 0 0 0 1.5px var(--ds-hair-2);
-}
-
-.select:has(select:disabled)::after { opacity: .35; }
+.select select:hover { box-shadow: inset 0 0 0 1px var(--ds-hair-2); }
 
 .select::after {
   content: "";
@@ -423,27 +348,25 @@ button, input, select { font: inherit; color: inherit; }
   pointer-events: none;
 }
 
-/* mensilita': secondaria, e larga quanto la colonna che le compete */
+/* mensilità: secondario, mai primario — non è l'azione della pagina */
 .segmented {
   display: inline-flex;
   padding: 4px;
   gap: 2px;
   border-radius: 100px;
   background: var(--ds-glass-2);
-  box-shadow: inset 0 0 0 1.5px var(--ds-field);
+  box-shadow: inset 0 0 0 1px var(--ds-hair);
 }
 
 .segmented button {
-  flex: 1;
-  min-width: 44px;
+  min-width: 48px;
   min-height: 40px;
   padding: 0 var(--ds-3);
   border: 0;
   border-radius: 100px;
   background: none;
-  font-size: var(--fs-3);
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
+  font-family: var(--ds-mono);
+  font-size: 12.5px;
   color: var(--ds-ink-3);
   cursor: pointer;
   transition: color .2s var(--ds-ease), background .28s var(--ds-ease), transform .18s var(--ds-ease);
@@ -455,9 +378,11 @@ button, input, select { font: inherit; color: inherit; }
 .segmented button[aria-pressed="true"] {
   background: var(--ds-accent);
   color: var(--ds-accent-ink);
+  font-weight: 500;
   box-shadow: inset 0 0 0 1px var(--ds-hair-2);
 }
 
+/* Calcola: l'unico elemento con il colore primario pieno */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -469,18 +394,19 @@ button, input, select { font: inherit; color: inherit; }
   border-radius: 100px;
   background: var(--ds-primary);
   color: var(--ds-primary-ink);
-  font-size: var(--fs-3);
-  font-weight: 600;
-  letter-spacing: .01em;
+  font-family: var(--ds-mono);
+  font-size: 12.5px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
   cursor: pointer;
   box-shadow: 0 10px 24px -14px rgba(28, 25, 23, .55);
-  transition: transform .18s var(--ds-ease), box-shadow .22s var(--ds-ease);
+  transition: transform .18s var(--ds-ease), box-shadow .22s var(--ds-ease), filter .18s var(--ds-ease);
 }
 
 .btn:hover { box-shadow: 0 14px 30px -14px rgba(28, 25, 23, .6); transform: translateY(-1px); }
 .btn:active { transform: scale(.975); }
 
-/* interruttore del tema */
+/* interruttore del tema: sta nell'header sticky, non e' un'azione di pagina */
 .swap {
   width: 40px;
   height: 40px;
@@ -515,7 +441,7 @@ button, input, select { font: inherit; color: inherit; }
   border: 0;
   background: none;
   color: var(--ds-link);
-  font-size: var(--fs-2);
+  font-size: 13.5px;
   font-weight: 600;
   text-decoration: underline;
   text-decoration-thickness: 1px;
@@ -526,8 +452,10 @@ button, input, select { font: inherit; color: inherit; }
 
 .link-3:hover { opacity: .78; gap: 9px; }
 
-/* ---------- dialogo ---------- */
+/* ---------- dialogo "perché questi dati" ---------- */
 dialog {
+  /* margin: auto tiene il modale centrato: azzerarlo lo incolla in alto a
+     sinistra, ed e' esattamente cio' che fa un reset distratto. */
   margin: auto;
   width: min(620px, calc(100vw - 32px));
   max-height: min(84vh, 720px);
@@ -542,7 +470,8 @@ dialog {
   overflow: auto;
 }
 
-dialog::backdrop { background: rgba(24, 20, 15, .44); backdrop-filter: blur(4px); }
+dialog::backdrop { background: rgba(20, 18, 14, .42); backdrop-filter: blur(4px); }
+
 dialog[open] { animation: dialog-in .34s var(--ds-ease) both; }
 dialog[open]::backdrop { animation: fade-in .34s var(--ds-ease) both; }
 
@@ -566,7 +495,6 @@ dialog[open]::backdrop { animation: fade-in .34s var(--ds-ease) both; }
   pointer-events: none;
 }
 
-/* le voci non spariscono mai: cambia il numero, non la loro presenza */
 .legend { display: flex; flex-direction: column; gap: var(--ds-1); width: 100%; }
 
 .legend-row {
@@ -581,18 +509,10 @@ dialog[open]::backdrop { animation: fade-in .34s var(--ds-ease) both; }
 
 .legend-row:hover, .legend-row.is-on { background: var(--ds-glass-2); transform: translateX(2px); }
 .legend-row i { width: 12px; height: 12px; border-radius: 4px; }
-.legend-row .k { font-size: var(--fs-3); font-weight: 600; }
-.legend-row .v { font-size: var(--fs-3); font-weight: 600; font-variant-numeric: tabular-nums; }
-.legend-row .p { display: block; font-size: var(--fs-1); font-weight: 500; color: var(--ds-ink-3); text-align: right; font-variant-numeric: tabular-nums; }
+.legend-row .k { font-size: 14px; font-weight: 600; }
+.legend-row .v { font-family: var(--ds-mono); font-size: 13.5px; font-variant-numeric: tabular-nums; }
+.legend-row .p { display: block; font-family: var(--ds-mono); font-size: 11px; color: var(--ds-ink-3); text-align: right; }
 .legend-row > span:last-child { text-align: right; }
-
-/* il segnale che il conto e' cambiato: una velatura che sale e svanisce */
-.ricalcolo { animation: ricalcolo .9s var(--ds-ease); }
-
-@keyframes ricalcolo {
-  0% { background: color-mix(in srgb, var(--seg, var(--ds-ink)) 16%, transparent); }
-  100% { background: transparent; }
-}
 
 /* ---------- micromotion ---------- */
 @keyframes rise { from { opacity: 0; transform: translateY(10px); } }
@@ -600,6 +520,7 @@ dialog[open]::backdrop { animation: fade-in .34s var(--ds-ease) both; }
 
 .rise { animation: rise .5s var(--ds-ease) both; }
 .rise-2 { animation: rise .5s var(--ds-ease) .07s both; }
+.legend-row.in { animation: rise-sm .38s var(--ds-ease) both; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -613,39 +534,33 @@ dialog[open]::backdrop { animation: fade-in .34s var(--ds-ease) both; }
 /* ---------- impaginato ---------- */
 .page { max-width: 1120px; margin: 0 auto; padding: 0 var(--ds-4); }
 
-/* l'header attraversa tutto lo schermo, il contenuto resta in colonna */
 .bar {
   position: sticky;
   top: 0;
   z-index: 20;
-  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-3);
+  padding: var(--ds-3) 0;
+  margin-bottom: var(--ds-3);
   background: color-mix(in srgb, var(--ds-bg) 74%, transparent);
   backdrop-filter: blur(14px) saturate(150%);
   -webkit-backdrop-filter: blur(14px) saturate(150%);
   box-shadow: 0 1px 0 var(--ds-hair);
 }
 
-.bar-in {
-  max-width: 1120px;
-  margin: 0 auto;
-  padding: var(--ds-3) var(--ds-4);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--ds-3);
-}
-
-.bar b { font-size: var(--fs-2); font-weight: 700; letter-spacing: -.01em; }
+.bar b { font-family: var(--ds-mono); font-size: 11px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; }
 .bar .dx { display: flex; align-items: center; gap: var(--ds-2); }
 
 .nav { display: none; gap: var(--ds-4); }
-.nav a { color: var(--ds-ink-2); text-decoration: none; font-size: var(--fs-2); font-weight: 600; transition: color .2s var(--ds-ease); }
+.nav a { color: var(--ds-ink-2); text-decoration: none; font-size: 13px; font-weight: 600; transition: color .2s var(--ds-ease); }
 .nav a:hover { color: var(--ds-ink); }
 @media (min-width: 860px) { .nav { display: flex; } }
 
 /* ---------- intro della hero ---------- */
-.hero-intro { display: flex; flex-direction: column; align-items: flex-start; gap: var(--ds-3); padding: var(--ds-6) 0 var(--ds-5); max-width: 780px; }
-.trust { display: flex; flex-wrap: wrap; gap: var(--ds-2) var(--ds-4); font-size: var(--fs-2); font-weight: 500; color: var(--ds-ink-3); }
+.hero-intro { display: flex; flex-direction: column; align-items: flex-start; gap: var(--ds-3); padding: var(--ds-5) 0 var(--ds-5); max-width: 780px; }
+.trust { display: flex; flex-wrap: wrap; gap: var(--ds-2) var(--ds-4); font-family: var(--ds-mono); font-size: 11.5px; color: var(--ds-ink-3); }
 .trust span { display: inline-flex; align-items: center; gap: 7px; }
 .trust b { width: 5px; height: 5px; border-radius: 100px; background: var(--ds-s1); }
 
@@ -655,20 +570,20 @@ dialog[open]::backdrop { animation: fade-in .34s var(--ds-ease) both; }
 
 .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: var(--ds-3); }
 .step { display: flex; flex-direction: column; gap: var(--ds-2); padding: var(--ds-4); border-radius: var(--ds-r-md); }
-.step .n { font-size: var(--fs-1); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ds-ink-3); }
-.step .v { font-size: var(--fs-6); font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -.03em; }
-.step p { font-size: var(--fs-2); line-height: 1.5; color: var(--ds-ink-2); }
+.step .n { font-family: var(--ds-mono); font-size: 10.5px; letter-spacing: .16em; color: var(--ds-ink-3); }
+.step .v { font-size: 22px; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -.025em; }
+.step p { font-size: 13px; line-height: 1.5; color: var(--ds-ink-2); }
 
 .due { display: grid; grid-template-columns: 1fr 1fr; gap: var(--ds-3); }
 @media (max-width: 760px) { .due { grid-template-columns: 1fr; } }
 
 .lista { list-style: none; margin: var(--ds-3) 0 0; padding: 0; display: flex; flex-direction: column; gap: var(--ds-2); }
-.lista li { display: grid; grid-template-columns: 16px minmax(0, 1fr); gap: var(--ds-2); font-size: var(--fs-2); line-height: 1.55; color: var(--ds-ink-2); }
+.lista li { display: grid; grid-template-columns: 16px minmax(0, 1fr); gap: var(--ds-2); font-size: 13.5px; line-height: 1.5; color: var(--ds-ink-2); }
 .lista li i { font-style: normal; color: var(--ds-ink-3); }
 
 .fonti { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 0 var(--ds-5); }
-.fonti div { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--ds-3); align-items: baseline; padding: 11px 0; box-shadow: 0 -1px 0 var(--ds-hair); font-size: var(--fs-2); }
-.fonti span { font-size: var(--fs-1); font-weight: 500; color: var(--ds-ink-3); text-align: right; }
+.fonti div { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--ds-3); align-items: baseline; padding: 11px 0; box-shadow: 0 -1px 0 var(--ds-hair); font-size: 13.5px; }
+.fonti span { font-family: var(--ds-mono); font-size: 11.5px; color: var(--ds-ink-3); text-align: right; }
 
 .chiusura { display: flex; flex-direction: column; align-items: center; gap: var(--ds-3); text-align: center; padding: var(--ds-6) var(--ds-4); margin-top: var(--ds-6); border-radius: var(--ds-r-lg); }
 .chiusura .lede { max-width: 48ch; }
@@ -678,19 +593,14 @@ dialog[open]::backdrop { animation: fade-in .34s var(--ds-ease) both; }
 
 .panel { display: flex; flex-direction: column; gap: var(--ds-4); padding: var(--ds-5); }
 .panel .stack { display: grid; grid-template-columns: 1fr; gap: var(--ds-4); }
-.panel .coppia { display: grid; grid-template-columns: 1fr 1fr; gap: var(--ds-3); }
-@media (max-width: 480px) { .panel .coppia { grid-template-columns: 1fr; } }
-.panel .foot { display: flex; margin-top: auto; }
-.panel .foot .btn { width: 100%; }
+.panel .foot { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--ds-3); margin-top: auto; }
 .panel .why { padding-top: var(--ds-1); }
-.panel .segmented { width: 50%; min-width: 190px; }
-@media (max-width: 480px) { .panel .segmented { width: 100%; } }
 
 .viz { display: grid; grid-template-rows: auto 1fr auto; gap: var(--ds-4); padding: var(--ds-5); }
 .viz-head { display: flex; align-items: center; justify-content: space-between; gap: var(--ds-3); }
 .viz-body { display: grid; justify-items: center; gap: var(--ds-4); }
 .viz-body .legend { max-width: 420px; }
-.num-c { font-size: var(--fs-8); line-height: 1.05; }
+.num-c { font-size: clamp(27px, 3.2vw, 35px); line-height: 1.05; }
 .viz-foot { display: flex; align-items: center; gap: var(--ds-2); padding-top: var(--ds-3); box-shadow: 0 -1px 0 var(--ds-hair); }
 
 .cue {
@@ -700,8 +610,10 @@ dialog[open]::backdrop { animation: fade-in .34s var(--ds-ease) both; }
   padding: var(--ds-4) 0 var(--ds-6);
   color: var(--ds-ink-3);
   text-decoration: none;
-  font-size: var(--fs-2);
-  font-weight: 600;
+  font-family: var(--ds-mono);
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
   transition: color .2s var(--ds-ease);
 }
 
@@ -720,8 +632,8 @@ dialog[open]::backdrop { animation: fade-in .34s var(--ds-ease) both; }
 .why-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--ds-4); }
 .why-list { display: flex; flex-direction: column; gap: var(--ds-3); margin: 0; }
 .why-list div { display: grid; gap: 2px; padding-top: var(--ds-3); box-shadow: 0 -1px 0 var(--ds-hair); }
-.why-list dt { font-size: var(--fs-3); font-weight: 700; }
-.why-list dd { margin: 0; font-size: var(--fs-2); line-height: 1.55; color: var(--ds-ink-2); }
+.why-list dt { font-size: 14.5px; font-weight: 700; }
+.why-list dd { margin: 0; font-size: 13.5px; line-height: 1.55; color: var(--ds-ink-2); }
 
 .x {
   width: 36px;
@@ -732,7 +644,7 @@ dialog[open]::backdrop { animation: fade-in .34s var(--ds-ease) both; }
   border-radius: 100px;
   background: var(--ds-glass-2);
   color: var(--ds-ink-2);
-  font-size: var(--fs-4);
+  font-size: 17px;
   line-height: 1;
   cursor: pointer;
   transition: transform .18s var(--ds-ease), color .18s var(--ds-ease);
@@ -743,47 +655,18 @@ dialog[open]::backdrop { animation: fade-in .34s var(--ds-ease) both; }
 /* ---------- sotto la piega ---------- */
 .deep { padding-bottom: var(--ds-6); scroll-margin-top: 72px; } /* l'header sticky non deve coprire le tile */
 
-/* bento: la dimensione della tessera dice quanto conta il numero */
-.bento { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--ds-3); }
-.tile { display: flex; flex-direction: column; justify-content: flex-end; gap: 4px; padding: var(--ds-4); border-radius: var(--ds-r-md); }
-.tile .v { font-size: var(--fs-6); font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -.03em; }
-.tile .k { font-size: var(--fs-2); color: var(--ds-ink-2); }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(152px, 1fr)); gap: var(--ds-3); margin-bottom: var(--ds-4); }
+.tile { display: flex; flex-direction: column; gap: 4px; padding: var(--ds-4); border-radius: var(--ds-r-md); }
+.tile .v { font-size: 21px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
 
-.t-hero { grid-column: span 2; grid-row: span 2; }
-.t-hero .v { font-size: var(--fs-9); font-weight: 800; letter-spacing: -.045em; }
-.t-wide { grid-column: span 2; }
-.t-wide .v { font-size: var(--fs-7); }
-
-@media (max-width: 720px) {
-  .bento { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .t-hero { grid-row: span 1; }
-}
-
-.scelte {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--ds-2) var(--ds-4);
-  margin-top: var(--ds-3);
-  padding: var(--ds-3) var(--ds-4);
-  border-radius: var(--ds-r-md);
-  font-size: var(--fs-2);
-  color: var(--ds-ink-2);
-}
-
-.scelte span { display: inline-flex; align-items: center; gap: 7px; }
-.scelte b { font-weight: 700; color: var(--ds-ink); }
-.scelte em { font-style: normal; font-size: var(--fs-1); font-weight: 500; color: var(--ds-ink-3); }
-
-/* accordion: il cedolino sta chiuso finche' non serve */
-.acc { margin-top: var(--ds-3); padding: 0; box-shadow: none; }
-.acc > summary { padding: var(--ds-4) var(--ds-5); border-radius: var(--ds-r-lg); font-size: var(--fs-3); }
-.acc[open] > summary { border-radius: var(--ds-r-lg) var(--ds-r-lg) 0 0; box-shadow: 0 1px 0 var(--ds-hair); }
-.acc .acc-body { padding: 0 var(--ds-5) var(--ds-5); animation: rise-sm .32s var(--ds-ease) both; }
-.acc .ct { font-size: var(--fs-1); font-weight: 500; color: var(--ds-ink-3); }
+.cols { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); gap: var(--ds-4); align-items: start; }
+@media (max-width: 900px) { .cols { grid-template-columns: 1fr; } }
 
 .pad { padding: var(--ds-5); }
+.deep-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--ds-4); padding-bottom: var(--ds-3); flex-wrap: wrap; }
+.deep-head .h2 { white-space: nowrap; }
 
-.group { font-size: var(--fs-1); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ds-ink-3); padding: var(--ds-5) 0 var(--ds-2); }
+.group { font-family: var(--ds-mono); font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--ds-ink-3); padding: var(--ds-5) 0 var(--ds-2); }
 
 .row {
   display: grid;
@@ -794,26 +677,26 @@ dialog[open]::backdrop { animation: fade-in .34s var(--ds-ease) both; }
   box-shadow: 0 -1px 0 var(--ds-hair);
 }
 
-.row .name { font-size: var(--fs-3); }
-.row .txt { display: block; font-size: var(--fs-1); font-weight: 500; line-height: 1.5; color: var(--ds-ink-3); margin-top: 3px; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
-.row .amt { font-size: var(--fs-3); font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.row .name { font-size: 14.5px; }
+.row .txt { display: block; font-family: var(--ds-mono); font-size: 11px; line-height: 1.5; color: var(--ds-ink-3); margin-top: 2px; overflow-wrap: anywhere; }
+.row .amt { font-family: var(--ds-mono); font-size: 14px; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .row.sub { padding-left: var(--ds-4); }
-.row.sub .name, .row.sub .amt { color: var(--ds-ink-2); font-size: var(--fs-2); }
+.row.sub .name, .row.sub .amt { color: var(--ds-ink-2); font-size: 13.5px; }
 .row.tot { box-shadow: 0 -1px 0 var(--ds-hair-2); }
 .row.tot .name, .row.tot .amt { font-weight: 700; }
 
-.flag { display: flex; gap: var(--ds-3); margin-top: var(--ds-4); padding: var(--ds-3) var(--ds-4); border-radius: var(--ds-r-md); background: var(--ds-primary-soft); font-size: var(--fs-2); line-height: 1.55; color: var(--ds-ink-2); }
+.flag { display: flex; gap: var(--ds-3); margin-top: var(--ds-4); padding: var(--ds-3) var(--ds-4); border-radius: var(--ds-r-md); background: var(--ds-primary-soft); font-size: 13px; line-height: 1.5; color: var(--ds-ink-2); }
 
 details { padding: var(--ds-3) 0; box-shadow: 0 -1px 0 var(--ds-hair); }
 details:first-of-type { box-shadow: none; padding-top: 0; }
-summary { cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; gap: var(--ds-3); font-size: var(--fs-3); font-weight: 600; }
+summary { cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; gap: var(--ds-3); font-size: 14px; font-weight: 600; }
 summary::-webkit-details-marker { display: none; }
 summary::after { content: ""; width: 6px; height: 6px; border-right: 1.5px solid var(--ds-ink-3); border-bottom: 1.5px solid var(--ds-ink-3); transform: translateY(-2px) rotate(45deg); transition: transform .22s var(--ds-ease); }
 details[open] summary::after { transform: translateY(1px) rotate(225deg); }
-details ul { margin: var(--ds-3) 0 var(--ds-1); padding-left: 16px; display: flex; flex-direction: column; gap: var(--ds-2); font-size: var(--fs-2); line-height: 1.55; color: var(--ds-ink-2); }
+details ul { margin: var(--ds-3) 0 var(--ds-1); padding-left: 16px; display: flex; flex-direction: column; gap: var(--ds-2); font-size: 13px; line-height: 1.5; color: var(--ds-ink-2); }
 details[open] ul { animation: rise-sm .3s var(--ds-ease) both; }
 
-footer { padding: var(--ds-4) 0 var(--ds-5); box-shadow: 0 -1px 0 var(--ds-hair); font-size: var(--fs-2); color: var(--ds-ink-3); }
+footer { padding: var(--ds-4) 0 var(--ds-5); box-shadow: 0 -1px 0 var(--ds-hair); font-size: 12.5px; color: var(--ds-ink-3); }
 
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 </style>
@@ -821,15 +704,14 @@ footer { padding: var(--ds-4) 0 var(--ds-5); box-shadow: 0 -1px 0 var(--ds-hair)
 <body>
 
 
-<header class="bar">
-  <div class="bar-in">
+<div class="page" id="top">
+  <header class="bar">
     <b>RAL → Netto</b>
     <nav class="nav" aria-label="Sezioni">
       <a href="#dettaglio">Il conto</a>
       <a href="#catena">Come ci si arriva</a>
       <a href="#perimetro">Cosa copre</a>
       <a href="#fonti">Fonti</a>
-      <a href="versioni/index.html">Iterazioni</a>
     </nav>
     <span class="dx">
       <span class="pill" id="ctx">2026</span>
@@ -838,16 +720,14 @@ footer { padding: var(--ds-4) 0 var(--ds-5); box-shadow: 0 -1px 0 var(--ds-hair)
         <svg class="sole" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"></circle><path d="M12 2.6v2.2M12 19.2v2.2M4.2 12H2M22 12h-2.2M6.4 6.4 4.9 4.9M19.1 19.1l-1.5-1.5M17.6 6.4l1.5-1.5M4.9 19.1l1.5-1.5"></path></svg>
       </button>
     </span>
-  </div>
-</header>
+  </header>
 
-<div class="page" id="top">
   <div class="hero-intro">
     <h1 class="h1">Dal lordo al netto, voce per voce</h1>
-    <p class="lede">Scrivi la RAL. Scegli regione, contratto e agevolazione. Vedi il netto annuo e mensile, e ogni euro trattenuto con la formula che lo produce.</p>
+    <p class="lede">Inserisci la tua RAL, scegli regione, contratto e agevolazione. In un secondo hai il netto annuo e mensile — e ogni euro trattenuto, con la formula che lo produce.</p>
     <div class="trust">
       <span><b></b>Anno d'imposta 2026</span>
-      <span><b></b>Aliquote regionali e comunali dal MEF</span>
+      <span><b></b>Aliquote regionali dal MEF, tutte e 21</span>
       <span><b></b>Il calcolo gira nel tuo browser</span>
     </div>
   </div>
@@ -862,28 +742,10 @@ footer { padding: var(--ds-4) 0 var(--ds-5); box-shadow: 0 -1px 0 var(--ds-hair)
         </div>
       </div>
 
-      <div class="field">
-        <span class="field-label" id="lbl-mens">Mensilità</span>
-        <div class="segmented" role="group" aria-labelledby="lbl-mens" id="mensilita">
-          <button type="button" data-m="12" aria-pressed="false">12</button>
-          <button type="button" data-m="13" aria-pressed="true">13</button>
-          <button type="button" data-m="14" aria-pressed="false">14</button>
-        </div>
-      </div>
-
       <div class="stack">
-        <div class="coppia">
-          <div class="field">
-            <label class="field-label" for="regione">Regione</label>
-            <div class="select"><select id="regione" name="regione"></select></div>
-          </div>
-
-          <div class="field">
-            <label class="field-label" for="provincia">Provincia</label>
-            <div class="select">
-              <select id="provincia" name="provincia" disabled></select>
-            </div>
-          </div>
+        <div class="field">
+          <label class="field-label" for="regione">Regione</label>
+          <div class="select"><select id="regione" name="regione"></select></div>
         </div>
 
         <div class="field">
@@ -902,11 +764,19 @@ footer { padding: var(--ds-4) 0 var(--ds-5); box-shadow: 0 -1px 0 var(--ds-hair)
       </div>
 
       <div class="foot">
-        <button class="btn" type="submit" id="calcola">Calcola</button>
+        <div class="field">
+          <span class="field-label" id="lbl-mens">Mensilità</span>
+          <div class="segmented" role="group" aria-labelledby="lbl-mens" id="mensilita">
+            <button type="button" data-m="12" aria-pressed="false">12</button>
+            <button type="button" data-m="13" aria-pressed="true">13</button>
+            <button type="button" data-m="14" aria-pressed="false">14</button>
+          </div>
+        </div>
+        <button class="btn" type="submit">Calcola</button>
       </div>
     </form>
 
-    <figure class="glass glass--tinted glass--follow viz rise-2" id="viz" style="--tint:var(--ds-s1)">
+    <figure class="glass viz rise-2">
       <figcaption class="viz-head">
         <span class="eyebrow">Dove va la RAL</span>
         <span class="pill" id="ctx-2">30.000 €</span>
@@ -932,28 +802,72 @@ footer { padding: var(--ds-4) 0 var(--ds-5); box-shadow: 0 -1px 0 var(--ds-hair)
     </figure>
   </section>
 
-  <a class="cue" href="#dettaglio">Il risultato per esteso <span aria-hidden="true">↓</span></a>
+  <a class="cue" href="#dettaglio">Il conto, riga per riga <span aria-hidden="true">↓</span></a>
 
   <section class="deep sec" id="dettaglio">
     <div class="sec-head">
-      <span class="eyebrow">Il risultato</span>
+      <span class="eyebrow">Il risultato, aperto</span>
       <h2 class="h-sec">Ogni voce, con la sua formula</h2>
     </div>
 
-    <div class="bento" id="bento"></div>
-    <div class="glass glass--quiet scelte" id="scelte"></div>
+    <div class="tiles" id="tiles"></div>
 
-    <details class="glass acc" id="acc-conto">
-      <summary>Il conto, riga per riga <span class="ct" id="ledger-ctx"></span></summary>
-      <div class="acc-body"><div id="ledger"></div></div>
-    </details>
+    <div class="cols">
+      <section class="glass pad">
+        <div class="deep-head">
+          <h2 class="h2">Il conto, riga per riga</h2>
+          <span class="eyebrow" id="ledger-ctx"></span>
+        </div>
+        <div id="ledger"></div>
+      </section>
+
+      <aside class="glass glass--quiet pad">
+        <details open>
+          <summary>Le tue scelte</summary>
+          <ul id="scelte"></ul>
+        </details>
+
+        <details>
+          <summary>Semplificazioni</summary>
+          <ul>
+            <li>Full time, anno intero: detrazioni e bonus non ragguagliati ai giorni.</li>
+            <li>Tutta la RAL è imponibile: niente welfare, fringe benefit, premi detassati.</li>
+            <li>Addizionale comunale 0,80%, massimo ordinario: il comune non è un input.</li>
+            <li>Nessun familiare a carico, quindi nessuna detrazione per figli, nemmeno regionale.</li>
+            <li>Addizionali per competenza, nessun conguaglio di fine anno.</li>
+            <li>Solo lato dipendente: il costo azienda non è calcolato.</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>Fonti</summary>
+          <ul>
+            <li>IRPEF 23/33/43% — L. 199/2025 art. 1 c. 3.</li>
+            <li>Detrazioni da lavoro dipendente — art. 13 c. 1 e 1-bis TUIR.</li>
+            <li>Somma integrativa e ulteriore detrazione — L. 207/2024, circ. 4/E 2025.</li>
+            <li>Trattamento integrativo — D.L. 3/2020.</li>
+            <li>Massimale 122.295 € e prima fascia 56.224 € — INPS circ. 6/2026.</li>
+            <li>Addizionali regionali 2026, tutte e 21 le regioni — MEF, Dipartimento delle Finanze.</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>Cosa non fa</summary>
+          <ul>
+            <li>Non conosce il comune: servirebbe l'anagrafica di oltre 7.900 aliquote.</li>
+            <li>Non legge il CCNL: aliquota contributiva per tipologia, non per contratto reale.</li>
+            <li>Non calcola il costo azienda né la vista inversa netto → lordo.</li>
+          </ul>
+        </details>
+      </aside>
+    </div>
   </section>
 
   <section class="sec" id="catena">
     <div class="sec-head">
       <span class="eyebrow">Come ci si arriva</span>
       <h2 class="h-sec">Quattro passaggi, in quest'ordine</h2>
-      <p class="lede">I contributi escono per primi, perché sono deducibili: l'IRPEF non parte dalla RAL. Le detrazioni invece lasciano stare il reddito e abbassano l'imposta.</p>
+      <p class="lede">L'ordine non è un dettaglio: i contributi sono deducibili, quindi l'IRPEF non si calcola sulla RAL. E le detrazioni si tolgono dall'imposta, non dal reddito.</p>
     </div>
     <div class="steps" id="catena-steps"></div>
   </section>
@@ -962,28 +876,27 @@ footer { padding: var(--ds-4) 0 var(--ds-5); box-shadow: 0 -1px 0 var(--ds-hair)
     <div class="sec-head">
       <span class="eyebrow">Perimetro</span>
       <h2 class="h-sec">Cosa copre, e cosa no</h2>
-      <p class="lede">Il prototipo calcola un caso standard. Qui sotto trovi dove arriva e dove si ferma.</p>
+      <p class="lede">Un prototipo che non dichiara i propri limiti è solo un numero senza contesto.</p>
     </div>
 
     <div class="due">
-      <div class="glass glass--tinted pad" style="--tint:var(--ds-s1)">
+      <div class="glass pad">
         <h3 class="h2">Copre</h3>
         <ul class="lista">
           <li><i>+</i>Tutte e 21 le regioni e province autonome, con scaglioni, esenzioni e detrazioni regionali</li>
-          <li><i>+</i>L'addizionale comunale dei 21 capoluoghi, soglie di esenzione comprese</li>
           <li><i>+</i>Cinque tipologie contrattuali, dall'apprendistato al dirigente</li>
           <li><i>+</i>Impatriati, impatriati con figlio minore, docenti e ricercatori rientrati</li>
           <li><i>+</i>Contributi, IRPEF, detrazioni, taglio del cuneo, trattamento integrativo, addizionali e TFR</li>
-          <li><i>+</i>Le soglie che, superate di un euro, costano centinaia</li>
+          <li><i>+</i>Le discontinuità vere: soglie che, superate di un euro, costano centinaia</li>
         </ul>
       </div>
 
       <div class="glass glass--quiet pad">
         <h3 class="h2">Non copre</h3>
         <ul class="lista">
-          <li><i>−</i>Il tuo comune preciso: usiamo il capoluogo della regione, non gli oltre 7.900 comuni italiani</li>
-          <li><i>−</i>Familiari a carico, e le detrazioni regionali che dipendono da loro</li>
-          <li><i>−</i>Il CCNL: l'aliquota contributiva segue la tipologia, non il contratto firmato</li>
+          <li><i>−</i>Il comune: servirebbe l'anagrafica di oltre 7.900 aliquote, qui è fissato lo 0,80%, il massimo ordinario</li>
+          <li><i>−</i>Familiari a carico, e con loro le detrazioni regionali che ne dipendono</li>
+          <li><i>−</i>Il CCNL vero: l'aliquota contributiva è per tipologia, non per contratto</li>
           <li><i>−</i>Welfare, fringe benefit, premi detassati, conguagli di fine anno</li>
           <li><i>−</i>Il costo azienda e la vista inversa, dal netto al lordo</li>
         </ul>
@@ -995,7 +908,7 @@ footer { padding: var(--ds-4) 0 var(--ds-5); box-shadow: 0 -1px 0 var(--ds-hair)
     <div class="sec-head">
       <span class="eyebrow">Fonti</span>
       <h2 class="h-sec">Da dove viene ogni numero</h2>
-      <p class="lede">Aliquote regionali e comunali arrivano dagli elenchi ufficiali del MEF, lette una per una. Le tabelle di terze parti che avevamo trovato si contraddicevano su Sicilia, Valle d'Aosta e Calabria.</p>
+      <p class="lede">Nessun parametro è stimato. Le aliquote regionali sono lette una per una dall'interrogazione ufficiale del MEF: le tabelle di terze parti si contraddicevano fra loro.</p>
     </div>
 
     <div class="fonti">
@@ -1005,20 +918,20 @@ footer { padding: var(--ds-4) 0 var(--ds-5); box-shadow: 0 -1px 0 var(--ds-hair)
       <div><span class="k">Trattamento integrativo</span><span>D.L. 3/2020</span></div>
       <div><span class="k">Massimale e prima fascia contributiva</span><span>INPS circ. 6/2026</span></div>
       <div><span class="k">Addizionali regionali 2026</span><span>MEF · Dip. Finanze</span></div>
-      <div><span class="k">Addizionali comunali dei capoluoghi</span><span>MEF · elenco generale comuni</span></div>
+      <div><span class="k">Addizionale comunale, aliquota massima</span><span>D.Lgs. 360/1998 art. 1 c. 3</span></div>
       <div><span class="k">Impatriati · docenti e ricercatori</span><span>D.Lgs. 209/2023 · D.L. 78/2010</span></div>
     </div>
 
-    <div class="glass glass--tinted chiusura" style="--tint:var(--ds-s1)">
+    <div class="glass chiusura">
       <span class="eyebrow">Prova con i tuoi numeri</span>
-      <h2 class="h-sec">Cambia la RAL e guarda dove finisce</h2>
-      <p class="lede">Motore, fonti e i 22 test che lo verificano stanno su GitHub.</p>
-      <a class="btn" href="#top">Torna al calcolatore</a>
-      <a class="link-3" href="https://github.com/alessiomarcone/jethr-ral-calculator">Guarda il codice <span aria-hidden="true">→</span></a>
+      <h2 class="h-sec">La tua RAL, in un secondo</h2>
+      <p class="lede">Torna su, cambia la cifra e guarda dove finisce ogni euro. Il motore e i 22 test che lo tengono onesto sono pubblici.</p>
+      <a class="btn" href="#top">Calcola la tua RAL</a>
+      <a class="link-3" href="https://github.com/alessiomarcone/jethr-ral-calculator">Vedi il codice e le fonti <span aria-hidden="true">→</span></a>
     </div>
   </section>
 
-  <footer>Prototipo dimostrativo per un task di selezione: non è un cedolino, non è un prodotto Jet HR, non sostituisce il consulente del lavoro. <a href="versioni/index.html" style="color:var(--ds-link)">Le otto versioni che ha attraversato</a>.</footer>
+  <footer>Prototipo dimostrativo per un task di selezione: non è un cedolino, non è un prodotto Jet HR, non sostituisce il consulente del lavoro.</footer>
 </div>
 
 <dialog id="why">
@@ -1031,7 +944,7 @@ footer { padding: var(--ds-4) 0 var(--ds-5); box-shadow: 0 -1px 0 var(--ds-hair)
       <button class="x" type="button" id="chiudi-why" aria-label="Chiudi">✕</button>
     </div>
 
-    <p class="small">Nessuno di questi campi ti identifica: non chiediamo nome, codice fiscale o datore di lavoro. Il calcolo gira nel tuo browser e non manda niente a nessun server. Li chiediamo perché ognuno sposta una parte diversa della busta paga.</p>
+    <p class="small">Nessuno di questi campi ti identifica: non chiediamo nome, codice fiscale, datore o comune. Il calcolo gira per intero nel tuo browser, niente viene inviato da nessuna parte. Servono solo perché ognuno sposta una parte diversa della busta paga.</p>
 
     <dl class="why-list">
       <div>
@@ -1043,24 +956,20 @@ footer { padding: var(--ds-4) 0 var(--ds-5); box-shadow: 0 -1px 0 var(--ds-hair)
         <dd>Cambia solo l'addizionale regionale, che però ogni regione decide da sé: aliquote, scaglioni, esenzioni e detrazioni. Su 35.000 € di RAL, fra la regione più leggera e la più pesante ballano oltre 400 € l'anno.</dd>
       </div>
       <div>
-        <dt>Provincia</dt>
-        <dd>Non la scegli tu: la deriviamo dalla regione, prendendo il capoluogo. Milano per la Lombardia, Roma per il Lazio, Firenze per la Toscana. Sono 21 aliquote comunali vere, con le loro soglie di esenzione, invece delle oltre 7.900 che servirebbero per coprire ogni comune. Se vivi a Sesto San Giovanni il conto userà Milano: sbaglia di poco, e te lo dice.</dd>
-      </div>
-      <div>
         <dt>Tipologia di contratto</dt>
-        <dd>Sposta l'aliquota contributiva a tuo carico: 5,84% da apprendista, 9,19% nel caso standard, 9,49% nell'industria che versa la CIGS. C'è un effetto indiretto: meno contributi vuol dire più reddito imponibile, quindi il netto non sale quanto il risparmio contributivo.</dd>
+        <dd>Sposta l'aliquota contributiva a tuo carico: 5,84% da apprendista, 9,19% nel caso standard, 9,49% nell'industria che versa la CIGS. Attenzione all'effetto indiretto: meno contributi significa più reddito imponibile, quindi il netto non cresce quanto il risparmio contributivo.</dd>
       </div>
       <div>
         <dt>Agevolazioni</dt>
-        <dd>Tagliano la quota di reddito tassata (50% o 40% per gli impatriati, 10% per docenti e ricercatori) ma non i contributi, dovuti sulla retribuzione piena. Detrazioni e bonus restano commisurati al reddito al lordo della quota esente.</dd>
+        <dd>Riducono la quota di reddito che viene tassata — 50% o 40% per gli impatriati, 10% per docenti e ricercatori — ma non toccano i contributi, dovuti sulla retribuzione piena. Le detrazioni e i bonus restano commisurati al reddito al lordo della quota esente.</dd>
       </div>
       <div>
         <dt>Mensilità</dt>
-        <dd>Non cambia il netto annuo, solo in quante parti lo dividi. Con 14 mensilità ogni busta è più leggera, l'anno resta identico.</dd>
+        <dd>Non cambia di un euro il netto annuo: cambia solo in quante parti viene diviso. Con 14 mensilità la singola busta è più leggera, non lo è l'anno.</dd>
       </div>
     </dl>
 
-    <p class="small">Restano fuori familiari a carico, altri redditi e oneri deducibili. Sposterebbero il conto, ma il prototipo si ferma qui.</p>
+    <p class="small">Restano fuori i dati che sposterebbero ancora il risultato e che qui non chiediamo: comune di residenza, familiari a carico, altri redditi, oneri deducibili.</p>
   </div>
 </dialog>
 
@@ -1094,6 +1003,17 @@ const PARAMS = {
     { fino: 50000, aliquota: 0.33 },
     { fino: Infinity, aliquota: 0.43 },
   ],
+
+  /**
+   * Addizionale comunale: il comune non e' fra gli input richiesti, quindi
+   * il prototipo usa un'unica ipotesi dichiarata (aliquota massima ordinaria
+   * dell'art. 1 c. 3 D.Lgs. 360/1998). Il comune reale puo' essere piu' basso,
+   * esente, o avere una soglia di esenzione propria.
+   */
+  addizionaleComunale: {
+    aliquota: 0.008,
+    nota: "aliquota massima ordinaria 0,80%: ipotesi unica, il comune non e' un input",
+  },
 
   // --- Detrazione per redditi da lavoro dipendente (art. 13 c.1 TUIR) ---
   detrazioneLavoro: {
@@ -1390,188 +1310,6 @@ const REGIONI = {
 };
 
 /**
- * Addizionale comunale all'IRPEF: i 21 capoluoghi di regione e di provincia
- * autonoma, uno per regione. Il comune non e' un input: si deriva dalla regione
- * scelta, cosi' il conto resta su dati reali senza chiedere un campo in piu'.
- *
- * Fonte: MEF - Dipartimento delle Finanze, elenco generale dei comuni,
- * `download.php?anno=2026` e `anno=2025` (letti l'1 settembre 2026).
- * Dove il file 2026 riporta "0*" il comune non ha ancora deliberato per l'anno:
- * per la regola dichiarata dal MEF resta in vigore l'aliquota precedente, quindi
- * il valore arriva dall'elenco 2025. Il campo `delibera` dice sempre quale.
- *
- * `esenzioneFinoA` e' una SOGLIA, non una franchigia: sotto non si paga nulla,
- * un euro sopra si tassa tutto l'imponibile.
- */
-const COMUNI = {
-  piemonte: {
-    nome: "Torino",
-    provincia: "TO",
-    delibera: 2025,
-    esenzioneFinoA: 11790,
-    scaglioni: [
-      { fino: 28000, aliquota: 0.008 },
-      { fino: 50000, aliquota: 0.011 },
-      { fino: Infinity, aliquota: 0.012 },
-    ],
-  },
-  "valle-d-aosta": {
-    nome: "Aosta",
-    provincia: "AO",
-    delibera: 2025,
-    esenzioneFinoA: 9999.99,
-    scaglioni: [{ fino: Infinity, aliquota: 0.005 }],
-  },
-  lombardia: {
-    nome: "Milano",
-    provincia: "MI",
-    delibera: 2025,
-    esenzioneFinoA: 23000,
-    scaglioni: [{ fino: Infinity, aliquota: 0.008 }],
-  },
-  trento: {
-    nome: "Trento",
-    provincia: "TN",
-    delibera: null,
-    esenzioneFinoA: 0,
-    scaglioni: [{ fino: Infinity, aliquota: 0 }],
-    nota: "il comune non ha istituito l'addizionale comunale",
-  },
-  bolzano: {
-    nome: "Bolzano",
-    provincia: "BZ",
-    delibera: 2025,
-    esenzioneFinoA: 0,
-    scaglioni: [{ fino: Infinity, aliquota: 0 }],
-    nota: "il comune non ha istituito l'addizionale comunale",
-  },
-  veneto: {
-    nome: "Venezia",
-    provincia: "VE",
-    delibera: 2025,
-    esenzioneFinoA: 10000,
-    scaglioni: [{ fino: Infinity, aliquota: 0.008 }],
-  },
-  "friuli-venezia-giulia": {
-    nome: "Trieste",
-    provincia: "TS",
-    delibera: 2025,
-    esenzioneFinoA: 12500,
-    scaglioni: [{ fino: Infinity, aliquota: 0.008 }],
-  },
-  liguria: {
-    nome: "Genova",
-    provincia: "GE",
-    delibera: 2025,
-    esenzioneFinoA: 14000,
-    scaglioni: [
-      { fino: 28000, aliquota: 0.01 },
-      { fino: 50000, aliquota: 0.011 },
-      { fino: Infinity, aliquota: 0.012 },
-    ],
-  },
-  "emilia-romagna": {
-    nome: "Bologna",
-    provincia: "BO",
-    delibera: 2025,
-    esenzioneFinoA: 15000,
-    scaglioni: [{ fino: Infinity, aliquota: 0.008 }],
-  },
-  toscana: {
-    nome: "Firenze",
-    provincia: "FI",
-    delibera: 2025,
-    esenzioneFinoA: 25000,
-    scaglioni: [{ fino: Infinity, aliquota: 0.002 }],
-  },
-  umbria: {
-    nome: "Perugia",
-    provincia: "PG",
-    delibera: 2025,
-    esenzioneFinoA: 12500,
-    scaglioni: [{ fino: Infinity, aliquota: 0.008 }],
-  },
-  marche: {
-    nome: "Ancona",
-    provincia: "AN",
-    delibera: 2025,
-    esenzioneFinoA: 0,
-    scaglioni: [{ fino: Infinity, aliquota: 0.008 }],
-  },
-  lazio: {
-    nome: "Roma",
-    provincia: "RM",
-    delibera: 2025,
-    esenzioneFinoA: 14000,
-    scaglioni: [{ fino: Infinity, aliquota: 0.009 }],
-  },
-  abruzzo: {
-    nome: "L'Aquila",
-    provincia: "AQ",
-    delibera: 2025,
-    esenzioneFinoA: 15000,
-    scaglioni: [{ fino: Infinity, aliquota: 0.006 }],
-  },
-  molise: {
-    nome: "Campobasso",
-    provincia: "CB",
-    delibera: 2025,
-    esenzioneFinoA: 0,
-    scaglioni: [{ fino: Infinity, aliquota: 0.008 }],
-  },
-  campania: {
-    nome: "Napoli",
-    provincia: "NA",
-    delibera: 2025,
-    esenzioneFinoA: 12000,
-    scaglioni: [{ fino: Infinity, aliquota: 0.01 }],
-  },
-  puglia: {
-    nome: "Bari",
-    provincia: "BA",
-    delibera: 2025,
-    esenzioneFinoA: 15000,
-    scaglioni: [{ fino: Infinity, aliquota: 0.008 }],
-  },
-  basilicata: {
-    nome: "Potenza",
-    provincia: "PZ",
-    delibera: 2025,
-    esenzioneFinoA: 0,
-    scaglioni: [
-      { fino: 50000, aliquota: 0.008 },
-      { fino: Infinity, aliquota: 0.01 },
-    ],
-  },
-  calabria: {
-    nome: "Catanzaro",
-    provincia: "CZ",
-    delibera: 2025,
-    esenzioneFinoA: 0,
-    scaglioni: [{ fino: Infinity, aliquota: 0.008 }],
-  },
-  sicilia: {
-    nome: "Palermo",
-    provincia: "PA",
-    delibera: 2026,
-    esenzioneFinoA: 0,
-    scaglioni: [{ fino: Infinity, aliquota: 0.0103 }],
-  },
-  sardegna: {
-    nome: "Cagliari",
-    provincia: "CA",
-    delibera: 2025,
-    esenzioneFinoA: 10000,
-    scaglioni: [
-      { fino: 15000, aliquota: 0.0066 },
-      { fino: 28000, aliquota: 0.0072 },
-      { fino: 50000, aliquota: 0.0078 },
-      { fino: Infinity, aliquota: 0.008 },
-    ],
-  },
-};
-
-/**
  * Tipologie contrattuali coperte dal prototipo.
  * Cambiano l'aliquota contributiva a carico del lavoratore e le mensilita'
  * tipiche; non cambiano la parte fiscale.
@@ -1679,15 +1417,14 @@ function imposta_a_scaglioni(imponibile, scaglioni) {
 }
 
 /**
- * Addizionale locale, regionale o comunale: la meccanica e' la stessa.
- * Scala progressiva, oppure aliquota unica sull'intero imponibile sotto la
- * soglia agevolata, oppure esenzione piena sotto soglia. Le detrazioni si
- * sottraggono dall'imposta e non generano mai credito.
+ * Addizionale regionale: scala progressiva, oppure aliquota unica sull'intero
+ * imponibile sotto la soglia agevolata, oppure esenzione piena. Le detrazioni
+ * si sottraggono dall'imposta e non generano mai credito.
  */
-function addizionale_locale(imponibile, ente) {
+function addizionale_regionale(imponibile, regione) {
   const base = Math.max(0, imponibile);
 
-  if (ente.esenzioneFinoA && base <= ente.esenzioneFinoA) {
+  if (regione.esenzioneFinoA && base <= regione.esenzioneFinoA) {
     return {
       lorda: 0,
       detrazione: 0,
@@ -1697,7 +1434,7 @@ function addizionale_locale(imponibile, ente) {
     };
   }
 
-  const flat = ente.flatSottoSoglia;
+  const flat = regione.flatSottoSoglia;
   const usaFlat = flat && base <= flat.soglia;
 
   const { totale: lorda, dettaglio } = usaFlat
@@ -1714,13 +1451,13 @@ function addizionale_locale(imponibile, ente) {
           },
         ],
       }
-    : imposta_a_scaglioni(base, ente.scaglioni);
+    : imposta_a_scaglioni(base, regione.scaglioni);
 
   let detrazione = 0;
-  for (const d of ente.detrazioni ?? []) {
+  for (const d of regione.detrazioni ?? []) {
     if (base >= d.da && base <= d.a) detrazione += d.importo;
   }
-  const dc = ente.detrazioneCrescente;
+  const dc = regione.detrazioneCrescente;
   if (dc && base > dc.da) {
     detrazione += Math.min(dc.massimo, (dc.massimo * (base - dc.da)) / dc.ampiezza);
   }
@@ -1728,12 +1465,6 @@ function addizionale_locale(imponibile, ente) {
 
   return { lorda, detrazione, totale: lorda - detrazione, dettaglio, esente: false };
 }
-
-/** Addizionale regionale: alias leggibile di `addizionale_locale`. */
-const addizionale_regionale = addizionale_locale;
-
-/** Addizionale comunale del capoluogo derivato dalla regione. */
-const addizionale_comunale = addizionale_locale;
 
 /** Contributi previdenziali a carico del dipendente. */
 function contributi_dipendente(ral, p = PARAMS, contratto = null) {
@@ -1819,10 +1550,7 @@ function imponibile_agevolato(reddito, agevolazione) {
  */
 function calcola(ral, opzioni = {}) {
   const p = opzioni.params ?? PARAMS;
-  const chiaveRegione = REGIONI[opzioni.regione] ? opzioni.regione : "lombardia";
-  const regione = REGIONI[chiaveRegione];
-  // Il comune non e' un input: e' il capoluogo della regione scelta.
-  const comune = COMUNI[chiaveRegione];
+  const regione = REGIONI[opzioni.regione] ?? REGIONI.lombardia;
   const contratto = CONTRATTI[opzioni.contratto] ?? CONTRATTI["indeterminato-impiegato"];
   const agevolazione = AGEVOLAZIONI[opzioni.agevolazione] ?? AGEVOLAZIONI.nessuna;
   const mensilita = opzioni.mensilita ?? contratto.mensilita;
@@ -1860,8 +1588,8 @@ function calcola(ral, opzioni = {}) {
   const irpefNetta = Math.max(0, irpef.totale - detrazioniTotali);
 
   // 6. Addizionali locali, calcolate sull'imponibile IRPEF.
-  const regionale = addizionale_locale(imponibileFiscale, regione);
-  const comunale = addizionale_locale(imponibileFiscale, comune);
+  const regionale = addizionale_regionale(imponibileFiscale, regione);
+  const comunale = imponibileFiscale * p.addizionaleComunale.aliquota;
 
   // 7. Bonus in busta paga (aumentano il netto, non sono imposte).
   const ti = trattamento_integrativo(redditoRiferimento, irpef.totale, {
@@ -1872,7 +1600,7 @@ function calcola(ral, opzioni = {}) {
 
   // 8. Netto.
   const trattenuteTotali =
-    contributi.totale + irpefNetta + regionale.totale + comunale.totale;
+    contributi.totale + irpefNetta + regionale.totale + comunale;
   const bonusTotali = ti + somma;
   const nettoAnnuo = lordo - trattenuteTotali + bonusTotali;
 
@@ -1882,7 +1610,7 @@ function calcola(ral, opzioni = {}) {
 
   return {
     input: { ral: lordo, mensilita, anno: p.anno },
-    scelte: { regione, comune, contratto, agevolazione },
+    scelte: { regione, contratto, agevolazione },
     contributi,
     redditoNettoContributi,
     redditoRiferimento,
@@ -1902,15 +1630,13 @@ function calcola(ral, opzioni = {}) {
       regionaleDetrazione: regionale.detrazione,
       regionaleEsente: regionale.esente,
       regionaleScaglioni: regionale.dettaglio,
-      comunale: comunale.totale,
-      comunaleScaglioni: comunale.dettaglio,
-      comunaleEsente: comunale.esente,
-      totale: regionale.totale + comunale.totale,
+      comunale,
+      totale: regionale.totale + comunale,
     },
     bonus: { trattamentoIntegrativo: ti, sommaIntegrativa: somma, totale: bonusTotali },
     totali: {
       trattenute: trattenuteTotali,
-      imposte: irpefNetta + regionale.totale + comunale.totale,
+      imposte: irpefNetta + regionale.totale + comunale,
       nettoAnnuo,
       nettoMensile: nettoAnnuo / mensilita,
       aliquotaEffettiva: lordo > 0 ? trattenuteTotali / lordo : 0,
@@ -1962,122 +1688,105 @@ opzioni($("agevolazione"), Object.entries(AGEVOLAZIONI).map(([k, v]) => [k, v.no
 
 /* ---------- donut ----------
  * Parte-tutto a colpo d'occhio: tre segmenti, valori lontani fra loro.
- * L'identita' non e' mai affidata al solo colore: ogni segmento ha la sua riga
+ * L'identita' non e' mai affidata al solo colore — ogni segmento ha la sua riga
  * in legenda con importo e percentuale, e il conto completo sta sotto la piega.
  */
 const R = 78;
 const SW = 17;
 const C = 2 * Math.PI * R;
 const GAP = 4; // separazione in superficie fra due archi, in unita' di percorso
-const DURATA = 700;
+const DURATA = 900;
 
 const easeOut = (t) => 1 - Math.pow(1 - t, 3);
 
-// Quello che c'e' a schermo adesso: il punto di partenza della prossima
-// animazione. Le voci non spariscono mai, si muove solo il numero.
-let vista = { s1: 0, s2: 0, s3: 0, mensile: 0 };
-
 function costruisciDonut(parti) {
-  $("donut").innerHTML =
-    `<circle cx="100" cy="100" r="${R}" fill="none" stroke="var(--ds-track)" stroke-width="${SW}"></circle>` +
-    parti
-      .map(
-        (p) => `<circle data-seg="${p.k}" cx="100" cy="100" r="${R}" fill="none"
-        stroke="var(--ds-${p.k})" stroke-width="${SW}" stroke-linecap="butt"
-        stroke-dasharray="0 ${C}" stroke-dashoffset="0"
-        transform="rotate(-90 100 100)"><title>${p.l}</title></circle>`,
-      )
-      .join("");
-}
-
-/** Ridisegna gli archi da una terna di valori: le proporzioni si muovono con loro. */
-function disegna(v) {
-  const parti = ultimo.parti;
-  const totale = parti.reduce((s, p) => s + v[p.k], 0) || 1;
+  const totale = parti.reduce((s, p) => s + p.v, 0) || 1;
   let offset = 0;
-  for (const p of parti) {
-    const len = (v[p.k] / totale) * C;
-    const dash = Math.max(0, len > GAP ? len - GAP : len);
-    const el = $("donut").querySelector(`circle[data-seg="${p.k}"]`);
-    el?.setAttribute("stroke-dasharray", `${dash} ${C - dash}`);
-    el?.setAttribute("stroke-dashoffset", `${-offset}`);
-    offset += len;
-  }
+
+  const archi = parti
+    .map((p) => {
+      const len = (p.v / totale) * C;
+      p.len = len;
+      p.offset = offset;
+      offset += len;
+      return `<circle data-seg="${p.k}" cx="100" cy="100" r="${R}" fill="none"
+        stroke="var(--ds-${p.k})" stroke-width="${SW}" stroke-linecap="butt"
+        stroke-dasharray="0 ${C}" stroke-dashoffset="${-p.offset}"
+        transform="rotate(-90 100 100)"><title>${p.l}: ${eur(p.v)}</title></circle>`;
+    })
+    .join("");
+
+  $("donut").innerHTML = `<circle cx="100" cy="100" r="${R}" fill="none" stroke="var(--ds-track)" stroke-width="${SW}"></circle>${archi}`;
+  $("donut-desc").textContent = parti.map((p) => `${p.l}: ${eur(p.v)}, ${num((p.v / totale) * 100, 1)}%`).join(". ");
 }
 
-function scriviNumeri(v) {
-  $("c-value").textContent = eur(v.mensile);
-  const ral = ultimo.input.ral || 1;
-  for (const p of ultimo.parti) {
-    const riga = $("legend").querySelector(`.legend-row[data-seg="${p.k}"]`);
-    if (!riga) continue;
-    riga.querySelector(".v").textContent = eur(v[p.k]);
-    riga.querySelector(".p").textContent = `${num((v[p.k] / ral) * 100, 1)}%`;
+/** Disegna gli archi fino alla frazione `p` del giro (0..1). */
+function tracciaFino(parti, p) {
+  const disegnato = p * C;
+  for (const parte of parti) {
+    const quota = Math.min(Math.max(disegnato - parte.offset, 0), parte.len);
+    const dash = Math.max(0, quota >= parte.len ? parte.len - GAP : quota);
+    $("donut").querySelector(`circle[data-seg="${parte.k}"]`)?.setAttribute("stroke-dasharray", `${dash} ${C - dash}`);
   }
 }
 
 /**
- * Porta la vista dai valori attuali a quelli nuovi.
- * Il contenitore non cambia mai altezza: le tre voci sono gia' a schermo e
- * cambia solo la cifra, con un movimento breve che dice "e' stato ricalcolato"
- * senza chiedere attenzione.
+ * Il grafico si disegna, il numero al centro sale, poi le voci compaiono una
+ * dopo l'altra. Con prefers-reduced-motion tutto arriva al valore finale subito.
  */
-function vaiA(target, animato) {
-  const da = { ...vista };
-  const chiudi = () => {
-    vista = { ...target };
-    disegna(vista);
-    scriviNumeri(vista);
+function anima(r) {
+  const parti = r.parti;
+  const finale = r.totali.nettoMensile;
+
+  const subito = () => {
+    tracciaFino(parti, 1);
+    $("c-value").textContent = eur(finale);
+    mostraLegenda(r, false);
   };
 
-  // requestAnimationFrame non gira su una tab in secondo piano.
-  if (!animato || RIDOTTO.matches || document.visibilityState !== "visible") {
-    chiudi();
+  // requestAnimationFrame non gira su una tab in secondo piano: senza questa
+  // uscita la pagina resterebbe con il grafico vuoto e un trattino al centro.
+  if (RIDOTTO.matches || document.visibilityState !== "visible") {
+    subito();
     return;
   }
 
+  tracciaFino(parti, 0);
+  $("c-value").textContent = eur(0);
+
   let chiuso = false;
-  const rete = setTimeout(() => {
+  const chiudi = (staggera) => {
     if (chiuso) return;
     chiuso = true;
-    chiudi();
-  }, DURATA + 600);
+    clearTimeout(rete);
+    tracciaFino(parti, 1);
+    $("c-value").textContent = eur(finale);
+    mostraLegenda(r, staggera);
+  };
+
+  // rete di sicurezza: se i frame non arrivano, il risultato compare comunque
+  const rete = setTimeout(() => chiudi(false), DURATA + 700);
 
   const t0 = performance.now();
   const passo = (ora) => {
     if (chiuso) return;
     const t = Math.min((ora - t0) / DURATA, 1);
     const e = easeOut(t);
-    const v = {};
-    for (const k of Object.keys(target)) v[k] = da[k] + (target[k] - da[k]) * e;
-    disegna(v);
-    scriviNumeri(v);
+    tracciaFino(parti, e);
+    $("c-value").textContent = eur(finale * e);
     if (t < 1) requestAnimationFrame(passo);
-    else {
-      chiuso = true;
-      clearTimeout(rete);
-      chiudi();
-    }
+    else chiudi(true);
   };
   requestAnimationFrame(passo);
 }
 
-/** La velatura che sale e svanisce sulle righe: il segnale del ricalcolo. */
-function segnalaRicalcolo() {
-  for (const riga of $("legend").querySelectorAll(".legend-row")) {
-    riga.classList.remove("ricalcolo");
-    void riga.offsetWidth; // forza il restart dell'animazione
-    riga.classList.add("ricalcolo");
-  }
-}
-
-function mostraLegenda(r) {
+function mostraLegenda(r, staggera) {
   $("legend").innerHTML = r.parti
     .map(
-      (p) => `<div class="legend-row" data-seg="${p.k}" style="--seg:var(--ds-${p.k})">
+      (p, i) => `<div class="legend-row${staggera ? " in" : ""}" data-seg="${p.k}" style="animation-delay:${i * 90}ms">
         <i style="background:var(--ds-${p.k})"></i>
         <span class="k">${p.l}</span>
-        <span><span class="v">—</span> <span class="p"></span></span>
+        <span><span class="v">${eur(p.v)}</span> <span class="p">${num((p.v / r.input.ral) * 100, 1)}%</span></span>
       </div>`,
     )
     .join("");
@@ -2085,9 +1794,6 @@ function mostraLegenda(r) {
 
 /* Il tooltip del grafico e' il centro del donut: l'occhio e' gia' li'. */
 function evidenzia(k) {
-  // La card prende la tinta del segmento guardato: cambia solo la velatura,
-  // il testo resta su fondo neutro e la lettura non ne risente.
-  $("viz").style.setProperty("--tint", `var(--ds-${k ?? "s1"})`);
   $("donut-wrap").dataset.hover = k ? "1" : "0";
   for (const c of $("donut").querySelectorAll("circle[data-seg]")) c.classList.toggle("is-on", c.dataset.seg === k);
   for (const r of $("legend").querySelectorAll(".legend-row")) r.classList.toggle("is-on", r.dataset.seg === k);
@@ -2104,14 +1810,6 @@ function evidenzia(k) {
     $("c-value").textContent = eur(r.totali.nettoMensile);
     $("c-sub").textContent = `su ${r.input.mensilita} mensilità`;
   }
-}
-
-/** "0,80%" oppure "0,80–1,20%" quando il comune usa una scala. */
-function fasciaAliquote(ente) {
-  const a = ente.scaglioni.map((s) => s.aliquota);
-  const min = Math.min(...a);
-  const max = Math.max(...a);
-  return min === max ? pct(min, 2) : `${pct(min, 2)}–${pct(max, 2)}`;
 }
 
 function riga({ nome, testo, importo, segno = "", classe = "" }) {
@@ -2132,7 +1830,7 @@ function formulaDetrazione(reddito, importo) {
 
 function render(r, animato) {
   const t = r.totali;
-  const { regione, comune, contratto, agevolazione } = r.scelte;
+  const { regione, contratto, agevolazione } = r.scelte;
 
   r.parti = [
     { k: "s1", l: "Resta in mano", v: t.nettoAnnuo },
@@ -2141,8 +1839,6 @@ function render(r, animato) {
   ];
   ultimo = r;
 
-  const etichettaComune = comune.scaglioni.every((x) => x.aliquota === 0) ? "non istituita" : fasciaAliquote(comune);
-  $("provincia").innerHTML = `<option>${comune.nome} (${etichettaComune})</option>`;
   $("ctx").textContent = `2026 · ${regione.nome}`;
   $("ctx-2").textContent = `${num(r.input.ral)} €`;
   $("c-label").textContent = "Netto al mese";
@@ -2150,56 +1846,43 @@ function render(r, animato) {
   $("quota").textContent = `${num((1 - t.cuneoNetto) * 100, 1)} € su 100 di RAL restano in busta`;
 
   $("scelte").innerHTML = [
-    [regione.nome, `addizionale regionale, ${regione.pubblicazione}`],
-    [comune.nome, comune.nota ? comune.nota : `addizionale comunale ${fasciaAliquote(comune)}, delibera ${comune.delibera}`],
-    [contratto.nome, `contributi al ${pct(r.contributi.aliquota, 2)}`],
-    [agevolazione.nome, r.quotaEsente > 0 ? `${eur(r.quotaEsente)} fuori dall'imponibile` : "imponibile pieno"],
+    `<strong>${regione.nome}</strong> — ${regione.norma}, aliquote pubblicate il ${regione.pubblicazione}.`,
+    `<strong>${contratto.nome}</strong> — ${contratto.nota}`,
+    `<strong>${agevolazione.nome}</strong> — ${agevolazione.nota || "tutta la retribuzione concorre al reddito imponibile."}`,
   ]
-    .map(([k, v]) => `<span><b>${k}</b> <em>${v}</em></span>`)
+    .map((x) => `<li>${x}</li>`)
     .join("");
 
   const c0 = r.contributi;
 
   costruisciDonut(r.parti);
-  mostraLegenda(r);
-  const target = {
-    s1: t.nettoAnnuo,
-    s2: t.imposte,
-    s3: r.contributi.totale,
-    mensile: t.nettoMensile,
-  };
-  vaiA(target, animato);
-  if (animato && vista.mensile > 0) segnalaRicalcolo();
+  if (animato) {
+    $("legend").innerHTML = "";
+    anima(r);
+  } else {
+    tracciaFino(r.parti, 1);
+    $("c-value").textContent = eur(t.nettoMensile);
+    mostraLegenda(r, false);
+  }
 
   $("catena-steps").innerHTML = [
-    ["01", "Contributi", eur(r.contributi.totale), `${pct(c0.aliquota, 2)} della RAL, quota a tuo carico. Sono deducibili, quindi escono prima del calcolo IRPEF.`],
-    ["02", "Imponibile fiscale", eur(r.imponibileFiscale), r.quotaEsente > 0 ? "RAL meno contributi, meno la quota esente dell'agevolazione scelta." : "RAL meno contributi. L'imposta si calcola qui, non sulla RAL."],
-    ["03", "IRPEF netta", eur(r.irpef.netta), `${eur(r.irpef.lorda)} di imposta lorda meno ${eur(r.irpef.detrazioniTotali)} di detrazioni. Le detrazioni abbassano l'imposta e non danno rimborso.`],
-    ["04", "Addizionali", eur(r.addizionali.totale), `${regione.nome} più ${comune.nome}, entrambe sullo stesso imponibile.`],
+    ["01", "Contributi", eur(r.contributi.totale), `${pct(c0.aliquota, 2)} della RAL a carico del lavoratore. Sono deducibili: escono prima che l'IRPEF entri in scena.`],
+    ["02", "Imponibile fiscale", eur(r.imponibileFiscale), r.quotaEsente > 0 ? "RAL meno contributi, meno la quota esente dell'agevolazione scelta." : "RAL meno contributi. È su questa base, non sulla RAL, che si calcola l'imposta."],
+    ["03", "IRPEF netta", eur(r.irpef.netta), `${eur(r.irpef.lorda)} di imposta lorda meno ${eur(r.irpef.detrazioniTotali)} di detrazioni, che si tolgono dall'imposta e non sono rimborsabili.`],
+    ["04", "Addizionali", eur(r.addizionali.totale), `Regionale (${regione.nome}) più comunale allo 0,80%, entrambe sullo stesso imponibile.`],
   ]
-    .map(
-      ([n, k, v, t], i) =>
-        `<div class="glass step${i === 1 ? "" : " glass--tinted"}"${i === 1 ? "" : ` style="--tint:var(--ds-${["s3", "", "s2", "s2"][i]})"`}>
-          <span class="n">${n} · ${k}</span><span class="v">${v}</span><p>${t}</p>
-        </div>`,
-    )
+    .map(([n, k, v, t]) => `<div class="glass step"><span class="n">${n} · ${k}</span><span class="v">${v}</span><p>${t}</p></div>`)
     .join("");
 
-  // La tessera grande e' il numero che conta; le altre scendono di peso.
-  $("bento").innerHTML = [
-    ["t-hero", "s1", "Netto annuo", eur(t.nettoAnnuo), `${num((1 - t.cuneoNetto) * 100, 1)}% della RAL, su ${num(r.input.ral)} €`],
-    ["t-wide", "s1", `Netto per ${r.input.mensilita} mensilità`, eur(t.nettoMensile), "quanto arriva in busta ogni mese"],
-    ["", "s2", "Imposte", eur(t.imposte), "IRPEF e addizionali"],
-    ["", "s3", "Contributi", eur(r.contributi.totale), "quota a tuo carico"],
-    ["t-wide", "", "Aliquota effettiva", pct(t.aliquotaEffettiva, 1), "quanto lascia via ogni 100 € di lordo"],
-    ["t-wide", "", "TFR maturato", eur(r.tfr.accantonato), "accantonato, non in busta"],
+  $("tiles").innerHTML = [
+    ["Netto annuo", eur(t.nettoAnnuo)],
+    ["Netto mensile", eur(t.nettoMensile)],
+    ["Imposte", eur(t.imposte)],
+    ["Contributi", eur(r.contributi.totale)],
+    ["Aliquota effettiva", pct(t.aliquotaEffettiva, 1)],
+    ["TFR maturato", eur(r.tfr.accantonato)],
   ]
-    .map(
-      ([cls, tinta, k, v, sub]) =>
-        `<div class="glass tile ${cls}${tinta ? " glass--tinted" : ""}"${tinta ? ` style="--tint:var(--ds-${tinta})"` : ""}>
-          <span class="eyebrow">${k}</span><span class="v">${v}</span><span class="k">${sub}</span>
-        </div>`,
-    )
+    .map(([k, v]) => `<div class="glass tile"><span class="eyebrow">${k}</span><span class="v">${v}</span></div>`)
     .join("");
 
   const c = r.contributi;
@@ -2272,22 +1955,7 @@ function render(r, animato) {
             .join("")
     }
     ${a.regionaleDetrazione > 0 ? riga({ nome: "Detrazione regionale", testo: "non genera credito d'imposta", importo: a.regionaleDetrazione, segno: "pos", classe: "sub" }) : ""}
-    ${
-      comune.scaglioni.every((x) => x.aliquota === 0)
-        ? riga({ nome: comune.nome, testo: "il comune non ha istituito l'addizionale", importo: 0, classe: "sub" })
-        : a.comunaleEsente
-          ? riga({ nome: comune.nome, testo: `esente: imponibile sotto ${eur(comune.esenzioneFinoA)}`, importo: 0, classe: "sub" })
-          : a.comunaleScaglioni
-              .map((x) =>
-                riga({
-                  nome: `${comune.nome} · ${pct(x.aliquota, 2)}`,
-                  testo: `${eur(x.imponibile)} × ${pct(x.aliquota, 2)}`,
-                  importo: x.imposta,
-                  classe: "sub",
-                }),
-              )
-              .join("")
-    }
+    ${riga({ nome: "Comunale 0,80%", testo: `ipotesi: ${eur(r.imponibileFiscale)} × 0,80%`, importo: a.comunale, classe: "sub" })}
     ${riga({ nome: "Totale addizionali", importo: a.totale, segno: "neg", classe: "tot" })}
 
     ${
@@ -2305,34 +1973,19 @@ function render(r, animato) {
     ${avvisoSoglia(r)}`;
 }
 
-/**
- * Le soglie sono discontinuita' vere: un euro sopra costa l'intera addizionale.
- * Quando la simulazione ci finisce appena sopra, la pagina lo dice.
- */
+/** Le soglie regionali sono discontinuita' vere: appena sopra, si dice. */
 function avvisoSoglia(r) {
-  const imp = r.imponibileFiscale;
-  const avvisi = [];
-
   const reg = r.scelte.regione;
-  const sr = reg.esenzioneFinoA ?? reg.flatSottoSoglia?.soglia;
-  if (sr && imp > sr && imp <= sr * 1.12) {
-    avvisi.push(
-      reg.esenzioneFinoA
-        ? `Sopra ${eur(sr)} di imponibile ${reg.nome} non esenta più: l'addizionale regionale torna dovuta per intero, ${eur(r.addizionali.regionale)}.`
-        : `Sopra ${eur(sr)} di imponibile ${reg.nome} lascia l'aliquota unica e passa alla scala progressiva: l'addizionale regionale sale a ${eur(r.addizionali.regionale)}.`,
-    );
-  }
+  const soglia = reg.esenzioneFinoA ?? reg.flatSottoSoglia?.soglia;
+  if (!soglia) return "";
+  const imp = r.imponibileFiscale;
+  if (imp <= soglia || imp > soglia * 1.12) return "";
 
-  const com = r.scelte.comune;
-  if (com.esenzioneFinoA && imp > com.esenzioneFinoA && imp <= com.esenzioneFinoA * 1.12) {
-    avvisi.push(
-      `${com.nome} esenta fino a ${eur(com.esenzioneFinoA)} di imponibile. È una soglia, non una franchigia: superarla costa ${eur(r.addizionali.comunale)} pieni.`,
-    );
-  }
+  const testo = reg.esenzioneFinoA
+    ? `Sopra ${eur(soglia)} di imponibile ${reg.nome} non esenta più: l'addizionale torna dovuta per intero, ${eur(r.addizionali.regionale)}.`
+    : `Sopra ${eur(soglia)} di imponibile ${reg.nome} lascia l'aliquota unica e passa alla scala progressiva: l'addizionale sale a ${eur(r.addizionali.regionale)}.`;
 
-  return avvisi
-    .map((testo) => `<div class="flag"><span aria-hidden="true">→</span><span>${testo}</span></div>`)
-    .join("");
+  return `<div class="flag"><span aria-hidden="true">→</span><span>${testo}</span></div>`;
 }
 
 function scelteCorrenti() {
@@ -2348,30 +2001,15 @@ function aggiorna(animato = false) {
   const ral = parseRal($("ral").value);
   $("ral").value = ral ? num(ral) : "";
   render(calcola(ral, scelteCorrenti()), animato);
-  $("calcola").textContent = "Calcola";
 }
 
-/**
- * Digitare non ricalcola: mentre scrivi "3", "30", "300" il conto salterebbe
- * su tre risultati che non hai chiesto. Il bottone e' il momento in cui dici
- * di aver finito, e finche' la cifra a schermo non e' quella calcolata lo
- * dichiara cambiando etichetta. Le scelte discrete invece si applicano subito:
- * li' non c'e' niente da aspettare.
- */
 $("form").addEventListener("submit", (e) => {
   e.preventDefault();
   aggiorna(true);
 });
 
-$("ral").addEventListener("input", () => {
-  const scritta = parseRal($("ral").value);
-  const calcolata = ultimo?.input.ral ?? 0;
-  $("calcola").textContent = scritta === calcolata ? "Calcola" : "Ricalcola";
-});
-
-// Le scelte discrete si applicano subito, con la transizione che fa da segnale.
 for (const id of ["regione", "contratto", "agevolazione"]) {
-  $(id).addEventListener("change", () => aggiorna(true));
+  $(id).addEventListener("change", () => aggiorna(false));
 }
 
 $("mensilita").addEventListener("click", (e) => {
@@ -2379,7 +2017,7 @@ $("mensilita").addEventListener("click", (e) => {
   if (!b) return;
   mensilita = Number(b.dataset.m);
   for (const x of $("mensilita").querySelectorAll("button")) x.setAttribute("aria-pressed", String(x === b));
-  aggiorna(true);
+  aggiorna(false);
 });
 
 for (const nodo of [$("donut"), $("legend")]) {

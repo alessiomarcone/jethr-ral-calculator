@@ -30,7 +30,7 @@
   color-scheme: light dark;
 
   /* pietra calda */
-  --st-950: #15120D;
+  --st-950: #14120E;
   --st-900: #1C1917;
   --st-700: #44403C;
   --st-600: #4E4A44;
@@ -104,33 +104,28 @@
   --ds-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 
   --ds-ease: cubic-bezier(.22, .68, .28, 1);
-
-  /* Grana: rumore frattale in un SVG inline, 140px di lato, che si ripete.
-     Nessun file da caricare e nessuna dipendenza: serve solo a rompere le
-     bande dei gradienti, che su schermi ampi si vedono. */
-  --ds-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='.42'/%3E%3C/svg%3E");
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     color-scheme: dark;
-    --ds-bg: #14110D;
-    --ds-solid: #201C17;
+    --ds-bg: #0C0A09;
+    --ds-solid: #1A1815;
     --ds-ink: #FAFAF9;
     --ds-ink-2: var(--st-300);
     --ds-ink-3: #BFBAB4;
 
-    --ds-glass: rgba(48, 43, 37, .58);
-    --ds-glass-2: rgba(48, 43, 37, .38);
+    --ds-glass: rgba(41, 37, 36, .58);
+    --ds-glass-2: rgba(41, 37, 36, .38);
     --ds-sheen: rgba(255, 255, 255, .12);
-    --ds-shadow: 0 22px 54px -26px rgba(10, 8, 5, .8), 0 2px 10px -5px rgba(10, 8, 5, .52);
+    --ds-shadow: 0 22px 54px -26px rgba(0, 0, 0, .78), 0 2px 10px -5px rgba(0, 0, 0, .5);
     --ds-hair: rgba(250, 250, 249, .1);
     --ds-hair-2: rgba(250, 250, 249, .18);
     --ds-field: rgba(250, 250, 249, .28);
     --ds-field-hover: rgba(250, 250, 249, .46);
 
     --ds-primary: #FAFAF9;
-    --ds-primary-ink: #14110D;   /* 18,9:1 */
+    --ds-primary-ink: #0C0A09;   /* 18,9:1 */
     --ds-primary-soft: rgba(250, 250, 249, .1);
     --ds-accent: #3A362F;
     --ds-accent-ink: #FAFAF9;    /* 11,5:1 */
@@ -149,23 +144,23 @@
 
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --ds-bg: #14110D;
-  --ds-solid: #201C17;
+  --ds-bg: #0C0A09;
+  --ds-solid: #1A1815;
   --ds-ink: #FAFAF9;
   --ds-ink-2: var(--st-300);
   --ds-ink-3: #BFBAB4;
 
-  --ds-glass: rgba(48, 43, 37, .58);
-  --ds-glass-2: rgba(48, 43, 37, .38);
+  --ds-glass: rgba(41, 37, 36, .58);
+  --ds-glass-2: rgba(41, 37, 36, .38);
   --ds-sheen: rgba(255, 255, 255, .12);
-  --ds-shadow: 0 22px 54px -26px rgba(10, 8, 5, .8), 0 2px 10px -5px rgba(10, 8, 5, .52);
+  --ds-shadow: 0 22px 54px -26px rgba(0, 0, 0, .78), 0 2px 10px -5px rgba(0, 0, 0, .5);
   --ds-hair: rgba(250, 250, 249, .1);
   --ds-hair-2: rgba(250, 250, 249, .18);
   --ds-field: rgba(250, 250, 249, .28);
   --ds-field-hover: rgba(250, 250, 249, .46);
 
   --ds-primary: #FAFAF9;
-  --ds-primary-ink: #14110D;
+  --ds-primary-ink: #0C0A09;
   --ds-primary-soft: rgba(250, 250, 249, .1);
   --ds-accent: #3A362F;
   --ds-accent-ink: #FAFAF9;
@@ -197,28 +192,11 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* la grana sta sopra il gradiente e sotto tutto il resto */
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  opacity: .5;
-  background-image: var(--ds-grain);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) body::after { opacity: .34; }
-}
-
-:root[data-theme="dark"] body::after { opacity: .34; }
-
 body::before {
   content: "";
   position: fixed;
   inset: 0;
-  z-index: -2;
+  z-index: -1;
   pointer-events: none;
   background:
     radial-gradient(52vw 42vw at 12% -6%, color-mix(in srgb, var(--ds-s1) 10%, transparent), transparent 68%),
@@ -257,17 +235,6 @@ button, input, select { font: inherit; color: inherit; }
 .num { font-variant-numeric: tabular-nums; letter-spacing: -.035em; font-weight: 800; }
 .tab { font-variant-numeric: tabular-nums; }
 
-/**
- * --tint registrata: una custom property dichiarata con @property e' un colore
- * vero per il browser, quindi si puo' animare. Serve alla card del grafico, che
- * cambia velatura quando passi su un segmento.
- */
-@property --tint {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: transparent;
-}
-
 /* ---------- vetro ---------- */
 .glass {
   position: relative;
@@ -289,21 +256,13 @@ button, input, select { font: inherit; color: inherit; }
   inset: 0;
   border-radius: inherit;
   pointer-events: none;
-  opacity: .9;
-  background:
-    radial-gradient(120% 90% at 8% 0%, color-mix(in srgb, var(--tint) var(--ds-tint-soft), transparent), transparent 62%);
+  background: radial-gradient(120% 90% at 8% 0%, color-mix(in srgb, var(--tint, var(--ds-ink)) var(--ds-tint-soft), transparent), transparent 62%);
 }
 
-/* la velatura segue il segmento sotto il puntatore, senza saltare */
-.glass--follow { transition: --tint .55s var(--ds-ease); }
-
-/* Il vetro sfoca la grana di sfondo: sulle card la si rimette, piu' fine. */
 .glass--tinted::after {
   background:
-    var(--ds-grain),
     radial-gradient(130% 100% at 6% -8%, color-mix(in srgb, var(--tint) var(--ds-tint), transparent), transparent 58%),
     linear-gradient(155deg, transparent 55%, color-mix(in srgb, var(--tint) 5%, transparent));
-  background-blend-mode: overlay, normal, normal;
 }
 
 /* il filo di luce sul bordo: un bordo disegnato, non un box da 1px */
@@ -542,7 +501,7 @@ dialog {
   overflow: auto;
 }
 
-dialog::backdrop { background: rgba(24, 20, 15, .44); backdrop-filter: blur(4px); }
+dialog::backdrop { background: rgba(20, 18, 14, .42); backdrop-filter: blur(4px); }
 dialog[open] { animation: dialog-in .34s var(--ds-ease) both; }
 dialog[open]::backdrop { animation: fade-in .34s var(--ds-ease) both; }
 
@@ -613,26 +572,20 @@ dialog[open]::backdrop { animation: fade-in .34s var(--ds-ease) both; }
 /* ---------- impaginato ---------- */
 .page { max-width: 1120px; margin: 0 auto; padding: 0 var(--ds-4); }
 
-/* l'header attraversa tutto lo schermo, il contenuto resta in colonna */
 .bar {
   position: sticky;
   top: 0;
   z-index: 20;
-  width: 100%;
-  background: color-mix(in srgb, var(--ds-bg) 74%, transparent);
-  backdrop-filter: blur(14px) saturate(150%);
-  -webkit-backdrop-filter: blur(14px) saturate(150%);
-  box-shadow: 0 1px 0 var(--ds-hair);
-}
-
-.bar-in {
-  max-width: 1120px;
-  margin: 0 auto;
-  padding: var(--ds-3) var(--ds-4);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--ds-3);
+  padding: var(--ds-3) 0;
+  margin-bottom: var(--ds-3);
+  background: color-mix(in srgb, var(--ds-bg) 74%, transparent);
+  backdrop-filter: blur(14px) saturate(150%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+  box-shadow: 0 1px 0 var(--ds-hair);
 }
 
 .bar b { font-size: var(--fs-2); font-weight: 700; letter-spacing: -.01em; }
@@ -644,7 +597,7 @@ dialog[open]::backdrop { animation: fade-in .34s var(--ds-ease) both; }
 @media (min-width: 860px) { .nav { display: flex; } }
 
 /* ---------- intro della hero ---------- */
-.hero-intro { display: flex; flex-direction: column; align-items: flex-start; gap: var(--ds-3); padding: var(--ds-6) 0 var(--ds-5); max-width: 780px; }
+.hero-intro { display: flex; flex-direction: column; align-items: flex-start; gap: var(--ds-3); padding: var(--ds-5) 0 var(--ds-5); max-width: 780px; }
 .trust { display: flex; flex-wrap: wrap; gap: var(--ds-2) var(--ds-4); font-size: var(--fs-2); font-weight: 500; color: var(--ds-ink-3); }
 .trust span { display: inline-flex; align-items: center; gap: 7px; }
 .trust b { width: 5px; height: 5px; border-radius: 100px; background: var(--ds-s1); }
@@ -821,15 +774,14 @@ footer { padding: var(--ds-4) 0 var(--ds-5); box-shadow: 0 -1px 0 var(--ds-hair)
 <body>
 
 
-<header class="bar">
-  <div class="bar-in">
+<div class="page" id="top">
+  <header class="bar">
     <b>RAL → Netto</b>
     <nav class="nav" aria-label="Sezioni">
       <a href="#dettaglio">Il conto</a>
       <a href="#catena">Come ci si arriva</a>
       <a href="#perimetro">Cosa copre</a>
       <a href="#fonti">Fonti</a>
-      <a href="versioni/index.html">Iterazioni</a>
     </nav>
     <span class="dx">
       <span class="pill" id="ctx">2026</span>
@@ -838,10 +790,8 @@ footer { padding: var(--ds-4) 0 var(--ds-5); box-shadow: 0 -1px 0 var(--ds-hair)
         <svg class="sole" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"></circle><path d="M12 2.6v2.2M12 19.2v2.2M4.2 12H2M22 12h-2.2M6.4 6.4 4.9 4.9M19.1 19.1l-1.5-1.5M17.6 6.4l1.5-1.5M4.9 19.1l1.5-1.5"></path></svg>
       </button>
     </span>
-  </div>
-</header>
+  </header>
 
-<div class="page" id="top">
   <div class="hero-intro">
     <h1 class="h1">Dal lordo al netto, voce per voce</h1>
     <p class="lede">Scrivi la RAL. Scegli regione, contratto e agevolazione. Vedi il netto annuo e mensile, e ogni euro trattenuto con la formula che lo produce.</p>
@@ -906,7 +856,7 @@ footer { padding: var(--ds-4) 0 var(--ds-5); box-shadow: 0 -1px 0 var(--ds-hair)
       </div>
     </form>
 
-    <figure class="glass glass--tinted glass--follow viz rise-2" id="viz" style="--tint:var(--ds-s1)">
+    <figure class="glass glass--tinted viz rise-2" style="--tint:var(--ds-s1)">
       <figcaption class="viz-head">
         <span class="eyebrow">Dove va la RAL</span>
         <span class="pill" id="ctx-2">30.000 €</span>
@@ -1018,7 +968,7 @@ footer { padding: var(--ds-4) 0 var(--ds-5); box-shadow: 0 -1px 0 var(--ds-hair)
     </div>
   </section>
 
-  <footer>Prototipo dimostrativo per un task di selezione: non è un cedolino, non è un prodotto Jet HR, non sostituisce il consulente del lavoro. <a href="versioni/index.html" style="color:var(--ds-link)">Le otto versioni che ha attraversato</a>.</footer>
+  <footer>Prototipo dimostrativo per un task di selezione: non è un cedolino, non è un prodotto Jet HR, non sostituisce il consulente del lavoro.</footer>
 </div>
 
 <dialog id="why">
@@ -2085,9 +2035,6 @@ function mostraLegenda(r) {
 
 /* Il tooltip del grafico e' il centro del donut: l'occhio e' gia' li'. */
 function evidenzia(k) {
-  // La card prende la tinta del segmento guardato: cambia solo la velatura,
-  // il testo resta su fondo neutro e la lettura non ne risente.
-  $("viz").style.setProperty("--tint", `var(--ds-${k ?? "s1"})`);
   $("donut-wrap").dataset.hover = k ? "1" : "0";
   for (const c of $("donut").querySelectorAll("circle[data-seg]")) c.classList.toggle("is-on", c.dataset.seg === k);
   for (const r of $("legend").querySelectorAll(".legend-row")) r.classList.toggle("is-on", r.dataset.seg === k);

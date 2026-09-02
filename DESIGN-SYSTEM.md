@@ -100,6 +100,15 @@ conto salterebbe su tre risultati che non hai chiesto. Il bottone è il momento
 in cui dici di aver finito, e finché la cifra a schermo non è quella calcolata
 lo dichiara: l'etichetta diventa *Ricalcola*.
 
+### La velatura segue lo sguardo
+
+La card del grafico cambia tinta con il segmento sotto il puntatore: emerald sul
+netto, violet sulle imposte, amber sui contributi. Funziona perché `--tint` è
+registrata con `@property` come `<color>`, e una custom property dichiarata si
+può animare: 550ms di transizione invece di uno scatto. Resta una velatura al
+13% in un angolo, non un cambio di superficie, altrimenti a ogni passaggio del
+mouse la pagina lampeggerebbe e la lettura ne soffrirebbe.
+
 ### Vetro, non bordi
 
 Niente reticolo di rettangoli da 1px attorno a tutto. I bordi restano dove
