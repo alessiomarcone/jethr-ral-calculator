@@ -18,7 +18,7 @@
   color-scheme: light dark;
 
   /* pietra calda */
-  --st-950: #15120D;
+  --st-950: #14120E;
   --st-900: #1C1917;
   --st-700: #44403C;
   --st-600: #4E4A44;
@@ -102,23 +102,23 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     color-scheme: dark;
-    --ds-bg: #14110D;
-    --ds-solid: #201C17;
+    --ds-bg: #0C0A09;
+    --ds-solid: #1A1815;
     --ds-ink: #FAFAF9;
     --ds-ink-2: var(--st-300);
     --ds-ink-3: #BFBAB4;
 
-    --ds-glass: rgba(48, 43, 37, .58);
-    --ds-glass-2: rgba(48, 43, 37, .38);
+    --ds-glass: rgba(41, 37, 36, .58);
+    --ds-glass-2: rgba(41, 37, 36, .38);
     --ds-sheen: rgba(255, 255, 255, .12);
-    --ds-shadow: 0 22px 54px -26px rgba(10, 8, 5, .8), 0 2px 10px -5px rgba(10, 8, 5, .52);
+    --ds-shadow: 0 22px 54px -26px rgba(0, 0, 0, .78), 0 2px 10px -5px rgba(0, 0, 0, .5);
     --ds-hair: rgba(250, 250, 249, .1);
     --ds-hair-2: rgba(250, 250, 249, .18);
     --ds-field: rgba(250, 250, 249, .28);
     --ds-field-hover: rgba(250, 250, 249, .46);
 
     --ds-primary: #FAFAF9;
-    --ds-primary-ink: #14110D;   /* 18,9:1 */
+    --ds-primary-ink: #0C0A09;   /* 18,9:1 */
     --ds-primary-soft: rgba(250, 250, 249, .1);
     --ds-accent: #3A362F;
     --ds-accent-ink: #FAFAF9;    /* 11,5:1 */
@@ -137,23 +137,23 @@
 
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --ds-bg: #14110D;
-  --ds-solid: #201C17;
+  --ds-bg: #0C0A09;
+  --ds-solid: #1A1815;
   --ds-ink: #FAFAF9;
   --ds-ink-2: var(--st-300);
   --ds-ink-3: #BFBAB4;
 
-  --ds-glass: rgba(48, 43, 37, .58);
-  --ds-glass-2: rgba(48, 43, 37, .38);
+  --ds-glass: rgba(41, 37, 36, .58);
+  --ds-glass-2: rgba(41, 37, 36, .38);
   --ds-sheen: rgba(255, 255, 255, .12);
-  --ds-shadow: 0 22px 54px -26px rgba(10, 8, 5, .8), 0 2px 10px -5px rgba(10, 8, 5, .52);
+  --ds-shadow: 0 22px 54px -26px rgba(0, 0, 0, .78), 0 2px 10px -5px rgba(0, 0, 0, .5);
   --ds-hair: rgba(250, 250, 249, .1);
   --ds-hair-2: rgba(250, 250, 249, .18);
   --ds-field: rgba(250, 250, 249, .28);
   --ds-field-hover: rgba(250, 250, 249, .46);
 
   --ds-primary: #FAFAF9;
-  --ds-primary-ink: #14110D;
+  --ds-primary-ink: #0C0A09;
   --ds-primary-soft: rgba(250, 250, 249, .1);
   --ds-accent: #3A362F;
   --ds-accent-ink: #FAFAF9;
@@ -530,7 +530,7 @@ dialog {
   overflow: auto;
 }
 
-dialog::backdrop { background: rgba(24, 20, 15, .44); backdrop-filter: blur(4px); }
+dialog::backdrop { background: rgba(20, 18, 14, .42); backdrop-filter: blur(4px); }
 dialog[open] { animation: dialog-in .34s var(--ds-ease) both; }
 dialog[open]::backdrop { animation: fade-in .34s var(--ds-ease) both; }
 
