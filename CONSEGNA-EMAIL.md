@@ -18,19 +18,25 @@ per riga con la formula di ogni voce.
 
 ## Le scelte principali
 
-Il brief permetteva di fissare il caso semplice — impiegato a tempo
+Il brief permetteva di fissare il caso semplice: impiegato a tempo
 indeterminato, Milano, nessuna agevolazione. L'ho preso come punto di partenza e
 ne ho fatto tre input veri, perché sono le variabili che un utente reale si
-aspetta di poter cambiare: **regione** (tutte e 21, comprese le irregolarità —
+aspetta di poter cambiare: **regione** (tutte e 21, comprese le irregolarità:
 aliquota unica sotto soglia in Lazio, Umbria e Friuli, esenzione piena in Valle
 d'Aosta e Trento), **contratto** (l'aliquota a carico del lavoratore va da 5,84%
-a 9,49%) e **agevolazioni** (impatriati e rientro dei ricercatori: riducono la
-base imponibile, non i contributi).
+a 9,49%) e **agevolazioni** (impatriati e rientro dei ricercatori, che riducono
+la base imponibile ma non i contributi).
 
-Il comune è invece rimasto fuori — servirebbe l'anagrafica di oltre 7.900
-aliquote — quindi uso lo 0,80%, il massimo ordinario di legge. Questa e le altre
-semplificazioni (full time per l'anno intero, nessun familiare a carico, solo
-lato dipendente) sono dichiarate in pagina e nel README, non nascoste.
+Sul comune ho fatto una scelta che vale la pena spiegare. Coprire i 7.900 comuni
+italiani è fuori portata per un prototipo, ma fissare Milano allo 0,80% era
+l'ipotesi più debole del conto. Ho quindi **derivato il comune dalla regione,
+prendendo il capoluogo**: Milano per la Lombardia, Roma per il Lazio, Firenze per
+la Toscana. Sono 21 aliquote comunali vere, dallo stesso elenco MEF che già
+usavo, senza un campo in più da compilare. Il caso del brief resta coperto alla
+lettera, e il prototipo funziona anche per chi non vive a Milano.
+
+Le altre semplificazioni (full time per l'anno intero, nessun familiare a carico,
+solo lato dipendente) sono dichiarate in pagina e nel README, non nascoste.
 
 ## Come l'ho costruito
 
@@ -48,17 +54,18 @@ vedi e il dettaglio arriva allo scroll.
 Il punto sollevato nel brief mi sembra il più importante, quindi lo affronto
 direttamente:
 
-- **Motore separato dall'interfaccia** (`src/tax-engine.js`), coperto da **22
-  test** senza dipendenze — fra questi la monotonia del netto su tutto l'arco
+- **Motore separato dall'interfaccia** (`src/tax-engine.js`), coperto da **27
+  test** senza dipendenze: fra questi la monotonia del netto su tutto l'arco
   5.000–150.000 € e i punti in cui invece il netto *deve* scendere, perché la
   legge contiene vere discontinuità.
-- **Tutti i parametri normativi in quattro oggetti**: quando cambia la legge di
+- **Tutti i parametri normativi in cinque oggetti**: quando cambia la legge di
   bilancio si tocca un dato, non la logica. Le tendine nascono dagli stessi
   oggetti, quindi un'opzione a schermo esiste sempre anche nel motore.
-- **Aliquote regionali lette una per una dall'interrogazione ufficiale del MEF**,
-  non da tabelle di terzi: le fonti secondarie si contraddicevano su Sicilia,
-  Valle d'Aosta e Calabria. Ogni regione porta con sé norma e data di
-  pubblicazione.
+- **Aliquote lette dagli elenchi ufficiali del MEF**, regione per regione e
+  comune per comune, non da tabelle di terzi: le fonti secondarie si
+  contraddicevano su Sicilia, Valle d'Aosta e Calabria. Dove l'elenco 2026 non
+  riporta ancora una delibera comunale, il motore applica la regola dichiarata
+  dal MEF e usa l'aliquota dell'anno prima, segnalando quale.
 
 Controprova: RAL 30.000 in Lombardia, 13 mensilità → 1.802 € netti al mese,
 23.426 € l'anno, aliquota effettiva 21,9%.
@@ -72,9 +79,10 @@ Ci sono un paio di scelte che valgono più di una call che di un paragrafo:
   commisurati al reddito *al lordo* della quota esente, altrimenti un impatriato
   con 30.000 € di RAL scivolava sotto le soglie dei bonus per redditi bassi e
   cumulava agevolazione e sostegno.
-- **Dove fermare un prototipo** e cosa servirebbe davvero per il passo dopo:
-  anagrafica comunale, tabelle CCNL, familiari a carico, costo azienda e vista
-  inversa netto → lordo.
+- **Dove fermare un prototipo.** I 21 capoluoghi sono un compromesso: coprono i
+  casi più frequenti con dati veri, ma il passo successivo (l'anagrafica
+  completa dei comuni) è un problema di dati, non di logica. Stesso discorso per
+  tabelle CCNL, familiari a carico, costo azienda e vista inversa netto → lordo.
 - **La collocazione nella hero**, e se sia la lettura giusta di questo strumento
   dentro un prodotto come il vostro.
 
