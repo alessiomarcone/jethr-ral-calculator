@@ -88,7 +88,7 @@ Tutti verificati a settembre 2026 per l'anno d'imposta 2026.
 | Aliquota aggiuntiva 1% | sulla quota oltre 56.224 € | art. 3-ter L. 438/1992; soglia 2026 da INPS circ. 6/2026 |
 | Massimale contributivo | 122.295 € | INPS circ. 6/2026 |
 | **Addizionali regionali** | **tutte e 21 le regioni e province autonome**, con scaglioni, esenzioni e detrazioni | MEF – Dipartimento delle Finanze, [ricerca aliquote applicabili](https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/addregirpef/), anno 2026, dati letti l'1.9.2026 |
-| **Addizionali comunali** | **i 21 capoluoghi di regione**, con scaglioni e soglie di esenzione | MEF – Dipartimento delle Finanze, [elenco generale dei comuni](https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_addcomirpef/download/), anni 2026 e 2025, letti l'1.9.2026 |
+| **Addizionali comunali** | **i 21 capoluoghi di regione**: dallo 0,20% di Firenze all'1,03% di Palermo, con scaglioni (Torino, Genova, Cagliari, Potenza), soglie di esenzione e i due capoluoghi che non l'hanno istituita (Trento, Bolzano) | MEF – Dipartimento delle Finanze, [elenco generale dei comuni](https://www1.finanze.gov.it/finanze2/dipartimentopolitichefiscali/fiscalitalocale/nuova_addcomirpef/download/), anni 2026 e 2025, letti l'1.9.2026 |
 | Impatriati | concorre il 50% del reddito (40% con figlio minore), entro 600.000 € | art. 5 D.Lgs. 209/2023 |
 | Docenti e ricercatori | concorre il 10% del reddito | art. 44 D.L. 78/2010 |
 | TFR | RAL / 13,5 meno 0,50% al Fondo di garanzia | art. 2120 c.c.; il TFR è mostrato a parte perché è accantonato, non pagato in busta |

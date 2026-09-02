@@ -970,7 +970,7 @@ footer { padding: var(--ds-4) 0 var(--ds-5); box-shadow: 0 -1px 0 var(--ds-hair)
         <h3 class="h2">Copre</h3>
         <ul class="lista">
           <li><i>+</i>Tutte e 21 le regioni e province autonome, con scaglioni, esenzioni e detrazioni regionali</li>
-          <li><i>+</i>L'addizionale comunale dei 21 capoluoghi, soglie di esenzione comprese</li>
+          <li><i>+</i>L'addizionale comunale dei 21 capoluoghi, dallo 0,20% di Firenze all'1,03% di Palermo, con le loro soglie di esenzione</li>
           <li><i>+</i>Cinque tipologie contrattuali, dall'apprendistato al dirigente</li>
           <li><i>+</i>Impatriati, impatriati con figlio minore, docenti e ricercatori rientrati</li>
           <li><i>+</i>Contributi, IRPEF, detrazioni, taglio del cuneo, trattamento integrativo, addizionali e TFR</li>
@@ -1044,7 +1044,7 @@ footer { padding: var(--ds-4) 0 var(--ds-5); box-shadow: 0 -1px 0 var(--ds-hair)
       </div>
       <div>
         <dt>Provincia</dt>
-        <dd>Non la scegli tu: la deriviamo dalla regione, prendendo il capoluogo. Milano per la Lombardia, Roma per il Lazio, Firenze per la Toscana. Sono 21 aliquote comunali vere, con le loro soglie di esenzione, invece delle oltre 7.900 che servirebbero per coprire ogni comune. Se vivi a Sesto San Giovanni il conto userà Milano: sbaglia di poco, e te lo dice.</dd>
+        <dd>Non la scegli tu: la deriviamo dalla regione, prendendo il capoluogo. Sono 21 aliquote comunali vere e diverse fra loro, dallo 0,20% di Firenze all'1,03% di Palermo, con le loro soglie di esenzione e, dove esistono, i loro scaglioni: Torino va dallo 0,80% all'1,20% al crescere del reddito, Trento e Bolzano non hanno istituito l'addizionale. Restano fuori gli altri 7.900 comuni: se vivi a Sesto San Giovanni il conto usa Milano.</dd>
       </div>
       <div>
         <dt>Tipologia di contratto</dt>
@@ -2106,7 +2106,7 @@ function evidenzia(k) {
   }
 }
 
-/** "0,80%" oppure "0,80–1,20%" quando il comune usa una scala. */
+/** "0,90%" per Roma, "0,80%–1,20%" per Torino che usa una scala. */
 function fasciaAliquote(ente) {
   const a = ente.scaglioni.map((s) => s.aliquota);
   const min = Math.min(...a);

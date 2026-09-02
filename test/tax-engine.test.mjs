@@ -228,6 +228,17 @@ test("un capoluogo per regione, con aliquote plausibili", () => {
   }
 });
 
+test("le aliquote comunali non sono tutte uguali", () => {
+  // Guardia contro la tentazione di appiattire la tabella su un valore solo:
+  // dei 21 capoluoghi, 12 hanno un'aliquota diversa dallo 0,80%.
+  const chiavi = Object.values(COMUNI).map((c) => c.scaglioni.map((s) => s.aliquota).join("|"));
+  assert.ok(new Set(chiavi).size >= 8, "attese almeno 8 configurazioni distinte");
+
+  const tutte = Object.values(COMUNI).flatMap((c) => c.scaglioni.map((s) => s.aliquota));
+  assert.equal(Math.min(...tutte.filter((a) => a > 0)), 0.002, "la piu' bassa e' Firenze allo 0,20%");
+  assert.equal(Math.max(...tutte), 0.012, "la piu' alta e' l'ultimo scaglione di Torino all'1,20%");
+});
+
 test("addizionale comunale: la soglia di esenzione non e' una franchigia", () => {
   // Milano esenta fino a 23.000 di imponibile; un euro sopra si tassa tutto.
   assert.equal(addizionale_comunale(23000, COMUNI.lombardia).totale, 0);
