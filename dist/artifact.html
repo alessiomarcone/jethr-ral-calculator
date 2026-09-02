@@ -1,38 +1,33 @@
 <title>Dal lordo al netto</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 
 <style>
 /**
- * Design system — variante A: base monocromatica piatta, colore solo dove
- * significa qualcosa.
+ * Design system — variante A.
  *
- * Il colore vive in un posto solo, il grafico: emerald / violet / amber per i
- * tre pezzi della RAL. L'interfaccia e' tutta pietra calda —
- *   azione (Calcola)        inchiostro pieno, invertito col tema
- *   selezione (mensilità)   un gradino di pietra, mai una tinta
- * cosi' l'unica cosa colorata a schermo e' il dato.
+ * Una famiglia sola (Inter, variabile) e una scala tipografica dichiarata qui:
+ * la pagina non sceglie mai un `font-size` a mano, prende un token.
  *
- * Contrasto: ogni coppia testo/fondo è verificata AAA (>= 7:1), comprese le
- * etichette piccole in mono e il testo sui fondi pieni dei bottoni.
+ * Il colore vive nel grafico: emerald / violet / amber per i tre pezzi della
+ * RAL. L'interfaccia e' pietra calda, con una velatura della tinta di serie
+ * sulle card che parlano di quel pezzo. L'azione (Calcola) e' inchiostro
+ * pieno e si inverte col tema; la selezione (mensilita') e' un gradino di
+ * pietra, mai una tinta.
  *
- * Superfici: niente reticolo di bordi da 1px. Le card sono vetro — velo
- * traslucido, sfocatura, un filo di luce sul bordo alto e un'ombra bassa e
- * larga. Le righe di separazione restano solo dove servono a leggere una
- * colonna di numeri.
+ * Contrasto: ogni coppia testo/fondo e' verificata AAA (>= 7:1), velature
+ * comprese.
  */
 
 :root {
   color-scheme: light dark;
 
-  /* pietra calda: la base monocromatica */
+  /* pietra calda */
   --st-950: #14120E;
   --st-900: #1C1917;
-  --st-800: #292524;
   --st-700: #44403C;
   --st-600: #4E4A44;
-  --st-400: #A8A29E;
   --st-300: #D6D3D1;
   --st-200: #E7E2DA;
   --st-100: #F0EDE7;
@@ -49,27 +44,44 @@
   --ds-glass: rgba(255, 255, 255, .66);
   --ds-glass-2: rgba(255, 255, 255, .42);
   --ds-sheen: rgba(255, 255, 255, .9);
-  --ds-shadow: 0 18px 48px -22px rgba(28, 25, 23, .34), 0 2px 8px -4px rgba(28, 25, 23, .16);
+  --ds-shadow: 0 18px 48px -22px rgba(28, 25, 23, .3), 0 2px 8px -4px rgba(28, 25, 23, .14);
   --ds-hair: rgba(28, 25, 23, .09);
   --ds-hair-2: rgba(28, 25, 23, .16);
-  --ds-field: rgba(28, 25, 23, .26);      /* il bordo di un campo si deve vedere */
+  --ds-field: rgba(28, 25, 23, .26);
   --ds-field-hover: rgba(28, 25, 23, .42);
 
-  /* azione: inchiostro pieno, si inverte col tema */
   --ds-primary: #1C1917;
   --ds-primary-ink: #FBFAF8;    /* 16,8:1 */
   --ds-primary-soft: rgba(28, 25, 23, .07);
-  /* selezione: un gradino di pietra, non una tinta */
   --ds-accent: #E0DACD;
   --ds-accent-ink: #1C1917;     /* 12,6:1 */
   --ds-accent-soft: rgba(28, 25, 23, .05);
-  --ds-link: #064E3B;   /* emerald 900: AAA anche sul vetro piu' scuro */
+  --ds-link: #064E3B;
 
   /* serie del grafico: passi validati con scripts/validate_palette.js */
   --ds-s1: #059669; /* emerald 600 — resta in mano */
   --ds-s2: #7C3AED; /* violet 600  — imposte */
   --ds-s3: #D97706; /* amber 600   — contributi */
   --ds-track: rgba(28, 25, 23, .07);
+
+  /* velature: quanto della tinta di serie entra nel vetro */
+  --ds-tint: 13%;
+  --ds-tint-soft: 7%;
+
+  /* scala tipografica: sette gradini, nessun valore fuori da qui */
+  --fs-1: 11px;                       /* eyebrow, micro */
+  --fs-2: 13px;                       /* label, note */
+  --fs-3: 14px;                       /* testo di interfaccia */
+  --fs-4: 15.5px;                     /* corpo */
+  --fs-5: 18px;                       /* titolo di card, lede corto */
+  --fs-6: clamp(20px, 2vw, 23px);     /* numero medio */
+  --fs-7: clamp(23px, 2.6vw, 30px);   /* titolo di sezione */
+  --fs-8: clamp(27px, 3.2vw, 35px);   /* numero grande */
+  --fs-9: clamp(32px, 4.6vw, 52px);   /* titolo di pagina, numero hero */
+
+  --lh-tight: 1.08;
+  --lh-snug: 1.3;
+  --lh-base: 1.55;
 
   --ds-1: 4px;
   --ds-2: 8px;
@@ -83,15 +95,14 @@
   --ds-r-md: 14px;
   --ds-r-lg: 22px;
 
-  --ds-sans: "Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --ds-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --ds-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 
   --ds-ease: cubic-bezier(.22, .68, .28, 1);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) { color-scheme: dark; }
   :root:not([data-theme="light"]) {
+    color-scheme: dark;
     --ds-bg: #0C0A09;
     --ds-solid: #1A1815;
     --ds-ink: #FAFAF9;
@@ -119,6 +130,9 @@
     --ds-s2: #A78BFA;
     --ds-s3: #FBBF24;
     --ds-track: rgba(250, 250, 249, .1);
+
+    --ds-tint: 15%;
+    --ds-tint-soft: 8%;
   }
 }
 
@@ -140,10 +154,10 @@
   --ds-field-hover: rgba(250, 250, 249, .46);
 
   --ds-primary: #FAFAF9;
-  --ds-primary-ink: #0C0A09;   /* 18,9:1 */
+  --ds-primary-ink: #0C0A09;
   --ds-primary-soft: rgba(250, 250, 249, .1);
   --ds-accent: #3A362F;
-  --ds-accent-ink: #FAFAF9;    /* 11,5:1 */
+  --ds-accent-ink: #FAFAF9;
   --ds-accent-soft: rgba(250, 250, 249, .07);
   --ds-link: #6EE7B7;
 
@@ -151,6 +165,9 @@
   --ds-s2: #A78BFA;
   --ds-s3: #FBBF24;
   --ds-track: rgba(250, 250, 249, .1);
+
+  --ds-tint: 15%;
+  --ds-tint-soft: 8%;
 }
 
 /* ---------- reset ---------- */
@@ -162,14 +179,13 @@ body {
   background: var(--ds-bg);
   color: var(--ds-ink);
   font-family: var(--ds-sans);
-  font-size: 16px;
-  line-height: 1.55;
+  font-size: var(--fs-4);
+  line-height: var(--lh-base);
+  font-feature-settings: "cv11", "ss01";
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
-/* Il vetro ha bisogno di qualcosa dietro: tre aloni bassissimi, presi dalle
-   tre tinte delle serie, così la sfocatura ha un colore da rifrangere. */
 body::before {
   content: "";
   position: fixed;
@@ -191,45 +207,27 @@ button, input, select { font: inherit; color: inherit; }
   border-radius: var(--ds-r-sm);
 }
 
-/* ---------- tipografia ---------- */
-.h1 {
-  font-size: clamp(32px, 4.6vw, 52px);
-  line-height: 1.03;
-  letter-spacing: -.035em;
-  font-weight: 800;
-  text-wrap: balance;
-}
+/* ---------- tipografia: una classe per gradino ---------- */
+.h1 { font-size: var(--fs-9); line-height: var(--lh-tight); letter-spacing: -.038em; font-weight: 800; text-wrap: balance; }
+.h-sec { font-size: var(--fs-7); line-height: 1.12; letter-spacing: -.03em; font-weight: 700; text-wrap: balance; }
+.h2 { font-size: var(--fs-5); line-height: var(--lh-snug); letter-spacing: -.02em; font-weight: 700; }
 
-.h2 { font-size: 19px; letter-spacing: -.015em; font-weight: 700; }
-
-.h-sec {
-  font-size: clamp(23px, 2.6vw, 30px);
-  line-height: 1.12;
-  letter-spacing: -.028em;
-  font-weight: 800;
-  text-wrap: balance;
-}
-
-.lede {
-  font-size: clamp(16px, 1.5vw, 18.5px);
-  line-height: 1.5;
-  color: var(--ds-ink-2);
-  max-width: 62ch;
-  text-wrap: pretty;
-}
+.lede { font-size: var(--fs-5); line-height: 1.5; color: var(--ds-ink-2); max-width: 62ch; text-wrap: pretty; }
+.small { font-size: var(--fs-2); line-height: var(--lh-base); color: var(--ds-ink-2); }
 
 .eyebrow {
-  font-family: var(--ds-mono);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: .12em;
+  font-size: var(--fs-1);
+  font-weight: 700;
+  letter-spacing: .1em;
   text-transform: uppercase;
-  color: var(--ds-ink-3);
+  /* ink-2 e non ink-3: sulla velatura violet delle card ink-3 scendeva a
+     6,8:1, sotto la soglia AAA che il resto della pagina rispetta */
+  color: var(--ds-ink-2);
 }
 
-.small { font-size: 13.5px; line-height: 1.55; color: var(--ds-ink-2); }
-.mono { font-family: var(--ds-mono); font-variant-numeric: tabular-nums; }
+/* i numeri: tabulari e stretti, mai un font diverso */
 .num { font-variant-numeric: tabular-nums; letter-spacing: -.035em; font-weight: 800; }
+.tab { font-variant-numeric: tabular-nums; }
 
 /* ---------- vetro ---------- */
 .glass {
@@ -241,11 +239,32 @@ button, input, select { font: inherit; color: inherit; }
   box-shadow: var(--ds-shadow);
 }
 
+/**
+ * Velatura: la card che parla di un pezzo della RAL porta quella tinta, molto
+ * diluita e solo in un angolo. Serve a dare profondita' al vetro, non a
+ * colorare la superficie: il testo resta su fondo neutro.
+ */
+.glass::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(120% 90% at 8% 0%, color-mix(in srgb, var(--tint, var(--ds-ink)) var(--ds-tint-soft), transparent), transparent 62%);
+}
+
+.glass--tinted::after {
+  background:
+    radial-gradient(130% 100% at 6% -8%, color-mix(in srgb, var(--tint) var(--ds-tint), transparent), transparent 58%),
+    linear-gradient(155deg, transparent 55%, color-mix(in srgb, var(--tint) 5%, transparent));
+}
+
 /* il filo di luce sul bordo: un bordo disegnato, non un box da 1px */
 .glass::before {
   content: "";
   position: absolute;
   inset: 0;
+  z-index: 1;
   border-radius: inherit;
   padding: 1px;
   background: linear-gradient(160deg, var(--ds-sheen), transparent 42%);
@@ -256,6 +275,7 @@ button, input, select { font: inherit; color: inherit; }
   pointer-events: none;
 }
 
+.glass > * { position: relative; z-index: 2; }
 .glass--quiet { background: var(--ds-glass-2); box-shadow: none; }
 
 @supports not (backdrop-filter: blur(1px)) {
@@ -270,11 +290,9 @@ button, input, select { font: inherit; color: inherit; }
   border-radius: 100px;
   background: var(--ds-glass-2);
   box-shadow: inset 0 0 0 1px var(--ds-hair);
-  font-family: var(--ds-mono);
-  font-size: 11.5px;
-  font-weight: 500;
-  letter-spacing: .06em;
-  text-transform: uppercase;
+  font-size: var(--fs-1);
+  font-weight: 600;
+  letter-spacing: .04em;
   color: var(--ds-ink-2);
   white-space: nowrap;
 }
@@ -283,11 +301,9 @@ button, input, select { font: inherit; color: inherit; }
 .field { display: flex; flex-direction: column; gap: var(--ds-2); }
 
 .field-label {
-  font-family: var(--ds-mono);
-  font-size: 13px;
+  font-size: var(--fs-2);
   font-weight: 600;
-  letter-spacing: .07em;
-  text-transform: uppercase;
+  letter-spacing: -.005em;
   color: var(--ds-ink-2);
 }
 
@@ -305,7 +321,7 @@ button, input, select { font: inherit; color: inherit; }
 
 .input:hover { box-shadow: inset 0 0 0 1.5px var(--ds-field-hover); }
 .input:focus-within { box-shadow: inset 0 0 0 2px var(--ds-ink); background: var(--ds-glass); }
-.input .unit { font-family: var(--ds-mono); font-size: 15px; color: var(--ds-ink-3); }
+.input .unit { font-size: var(--fs-4); color: var(--ds-ink-3); }
 
 .input input {
   flex: 1;
@@ -313,7 +329,7 @@ button, input, select { font: inherit; color: inherit; }
   border: 0;
   background: none;
   outline: none;
-  font-size: 29px;
+  font-size: var(--fs-6);
   font-weight: 700;
   letter-spacing: -.03em;
   font-variant-numeric: tabular-nums;
@@ -330,15 +346,14 @@ button, input, select { font: inherit; color: inherit; }
   border-radius: var(--ds-r-md);
   background: var(--ds-glass-2);
   box-shadow: inset 0 0 0 1.5px var(--ds-field);
-  font-size: 14px;
+  font-size: var(--fs-3);
   font-weight: 600;
   cursor: pointer;
-  transition: box-shadow .2s var(--ds-ease), transform .2s var(--ds-ease);
+  transition: box-shadow .2s var(--ds-ease);
 }
 
 .select select:hover { box-shadow: inset 0 0 0 1.5px var(--ds-field-hover); }
 
-/* campo bloccato: si legge, si capisce che non si tocca, non si finge attivo */
 .select select:disabled {
   cursor: not-allowed;
   color: var(--ds-ink-2);
@@ -361,7 +376,7 @@ button, input, select { font: inherit; color: inherit; }
   pointer-events: none;
 }
 
-/* mensilità: secondario, mai primario — non è l'azione della pagina */
+/* mensilita': secondaria, e larga quanto la colonna che le compete */
 .segmented {
   display: inline-flex;
   padding: 4px;
@@ -372,14 +387,16 @@ button, input, select { font: inherit; color: inherit; }
 }
 
 .segmented button {
-  min-width: 48px;
+  flex: 1;
+  min-width: 44px;
   min-height: 40px;
   padding: 0 var(--ds-3);
   border: 0;
   border-radius: 100px;
   background: none;
-  font-family: var(--ds-mono);
-  font-size: 12.5px;
+  font-size: var(--fs-3);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
   color: var(--ds-ink-3);
   cursor: pointer;
   transition: color .2s var(--ds-ease), background .28s var(--ds-ease), transform .18s var(--ds-ease);
@@ -391,11 +408,9 @@ button, input, select { font: inherit; color: inherit; }
 .segmented button[aria-pressed="true"] {
   background: var(--ds-accent);
   color: var(--ds-accent-ink);
-  font-weight: 500;
   box-shadow: inset 0 0 0 1px var(--ds-hair-2);
 }
 
-/* Calcola: l'unico elemento con il colore primario pieno */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -407,19 +422,18 @@ button, input, select { font: inherit; color: inherit; }
   border-radius: 100px;
   background: var(--ds-primary);
   color: var(--ds-primary-ink);
-  font-family: var(--ds-mono);
-  font-size: 12.5px;
-  letter-spacing: .14em;
-  text-transform: uppercase;
+  font-size: var(--fs-3);
+  font-weight: 600;
+  letter-spacing: .01em;
   cursor: pointer;
   box-shadow: 0 10px 24px -14px rgba(28, 25, 23, .55);
-  transition: transform .18s var(--ds-ease), box-shadow .22s var(--ds-ease), filter .18s var(--ds-ease);
+  transition: transform .18s var(--ds-ease), box-shadow .22s var(--ds-ease);
 }
 
 .btn:hover { box-shadow: 0 14px 30px -14px rgba(28, 25, 23, .6); transform: translateY(-1px); }
 .btn:active { transform: scale(.975); }
 
-/* interruttore del tema: sta nell'header sticky, non e' un'azione di pagina */
+/* interruttore del tema */
 .swap {
   width: 40px;
   height: 40px;
@@ -454,7 +468,7 @@ button, input, select { font: inherit; color: inherit; }
   border: 0;
   background: none;
   color: var(--ds-link);
-  font-size: 13.5px;
+  font-size: var(--fs-2);
   font-weight: 600;
   text-decoration: underline;
   text-decoration-thickness: 1px;
@@ -465,10 +479,8 @@ button, input, select { font: inherit; color: inherit; }
 
 .link-3:hover { opacity: .78; gap: 9px; }
 
-/* ---------- dialogo "perché questi dati" ---------- */
+/* ---------- dialogo ---------- */
 dialog {
-  /* margin: auto tiene il modale centrato: azzerarlo lo incolla in alto a
-     sinistra, ed e' esattamente cio' che fa un reset distratto. */
   margin: auto;
   width: min(620px, calc(100vw - 32px));
   max-height: min(84vh, 720px);
@@ -484,7 +496,6 @@ dialog {
 }
 
 dialog::backdrop { background: rgba(20, 18, 14, .42); backdrop-filter: blur(4px); }
-
 dialog[open] { animation: dialog-in .34s var(--ds-ease) both; }
 dialog[open]::backdrop { animation: fade-in .34s var(--ds-ease) both; }
 
@@ -508,6 +519,7 @@ dialog[open]::backdrop { animation: fade-in .34s var(--ds-ease) both; }
   pointer-events: none;
 }
 
+/* le voci non spariscono mai: cambia il numero, non la loro presenza */
 .legend { display: flex; flex-direction: column; gap: var(--ds-1); width: 100%; }
 
 .legend-row {
@@ -521,14 +533,19 @@ dialog[open]::backdrop { animation: fade-in .34s var(--ds-ease) both; }
 }
 
 .legend-row:hover, .legend-row.is-on { background: var(--ds-glass-2); transform: translateX(2px); }
-.legend-row.pre { opacity: 0; }
-.legend-row.in { animation: entra .42s var(--ds-ease) both; }
-@keyframes entra { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 .legend-row i { width: 12px; height: 12px; border-radius: 4px; }
-.legend-row .k { font-size: 14px; font-weight: 600; }
-.legend-row .v { font-family: var(--ds-mono); font-size: 13.5px; font-weight: 500; font-variant-numeric: tabular-nums; }
-.legend-row .p { display: block; font-family: var(--ds-mono); font-size: 11.5px; font-weight: 500; color: var(--ds-ink-3); text-align: right; }
+.legend-row .k { font-size: var(--fs-3); font-weight: 600; }
+.legend-row .v { font-size: var(--fs-3); font-weight: 600; font-variant-numeric: tabular-nums; }
+.legend-row .p { display: block; font-size: var(--fs-1); font-weight: 500; color: var(--ds-ink-3); text-align: right; font-variant-numeric: tabular-nums; }
 .legend-row > span:last-child { text-align: right; }
+
+/* il segnale che il conto e' cambiato: una velatura che sale e svanisce */
+.ricalcolo { animation: ricalcolo .9s var(--ds-ease); }
+
+@keyframes ricalcolo {
+  0% { background: color-mix(in srgb, var(--seg, var(--ds-ink)) 16%, transparent); }
+  100% { background: transparent; }
+}
 
 /* ---------- micromotion ---------- */
 @keyframes rise { from { opacity: 0; transform: translateY(10px); } }
@@ -565,17 +582,17 @@ dialog[open]::backdrop { animation: fade-in .34s var(--ds-ease) both; }
   box-shadow: 0 1px 0 var(--ds-hair);
 }
 
-.bar b { font-family: var(--ds-mono); font-size: 11px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; }
+.bar b { font-size: var(--fs-2); font-weight: 700; letter-spacing: -.01em; }
 .bar .dx { display: flex; align-items: center; gap: var(--ds-2); }
 
 .nav { display: none; gap: var(--ds-4); }
-.nav a { color: var(--ds-ink-2); text-decoration: none; font-size: 13px; font-weight: 600; transition: color .2s var(--ds-ease); }
+.nav a { color: var(--ds-ink-2); text-decoration: none; font-size: var(--fs-2); font-weight: 600; transition: color .2s var(--ds-ease); }
 .nav a:hover { color: var(--ds-ink); }
 @media (min-width: 860px) { .nav { display: flex; } }
 
 /* ---------- intro della hero ---------- */
 .hero-intro { display: flex; flex-direction: column; align-items: flex-start; gap: var(--ds-3); padding: var(--ds-5) 0 var(--ds-5); max-width: 780px; }
-.trust { display: flex; flex-wrap: wrap; gap: var(--ds-2) var(--ds-4); font-family: var(--ds-mono); font-size: 12px; font-weight: 500; color: var(--ds-ink-3); }
+.trust { display: flex; flex-wrap: wrap; gap: var(--ds-2) var(--ds-4); font-size: var(--fs-2); font-weight: 500; color: var(--ds-ink-3); }
 .trust span { display: inline-flex; align-items: center; gap: 7px; }
 .trust b { width: 5px; height: 5px; border-radius: 100px; background: var(--ds-s1); }
 
@@ -585,20 +602,20 @@ dialog[open]::backdrop { animation: fade-in .34s var(--ds-ease) both; }
 
 .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: var(--ds-3); }
 .step { display: flex; flex-direction: column; gap: var(--ds-2); padding: var(--ds-4); border-radius: var(--ds-r-md); }
-.step .n { font-family: var(--ds-mono); font-size: 11px; font-weight: 600; letter-spacing: .12em; color: var(--ds-ink-3); }
-.step .v { font-size: 22px; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -.025em; }
-.step p { font-size: 13px; line-height: 1.5; color: var(--ds-ink-2); }
+.step .n { font-size: var(--fs-1); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ds-ink-3); }
+.step .v { font-size: var(--fs-6); font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -.03em; }
+.step p { font-size: var(--fs-2); line-height: 1.5; color: var(--ds-ink-2); }
 
 .due { display: grid; grid-template-columns: 1fr 1fr; gap: var(--ds-3); }
 @media (max-width: 760px) { .due { grid-template-columns: 1fr; } }
 
 .lista { list-style: none; margin: var(--ds-3) 0 0; padding: 0; display: flex; flex-direction: column; gap: var(--ds-2); }
-.lista li { display: grid; grid-template-columns: 16px minmax(0, 1fr); gap: var(--ds-2); font-size: 13.5px; line-height: 1.5; color: var(--ds-ink-2); }
+.lista li { display: grid; grid-template-columns: 16px minmax(0, 1fr); gap: var(--ds-2); font-size: var(--fs-2); line-height: 1.55; color: var(--ds-ink-2); }
 .lista li i { font-style: normal; color: var(--ds-ink-3); }
 
 .fonti { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 0 var(--ds-5); }
-.fonti div { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--ds-3); align-items: baseline; padding: 11px 0; box-shadow: 0 -1px 0 var(--ds-hair); font-size: 13.5px; }
-.fonti span { font-family: var(--ds-mono); font-size: 11.5px; font-weight: 500; color: var(--ds-ink-3); text-align: right; }
+.fonti div { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--ds-3); align-items: baseline; padding: 11px 0; box-shadow: 0 -1px 0 var(--ds-hair); font-size: var(--fs-2); }
+.fonti span { font-size: var(--fs-1); font-weight: 500; color: var(--ds-ink-3); text-align: right; }
 
 .chiusura { display: flex; flex-direction: column; align-items: center; gap: var(--ds-3); text-align: center; padding: var(--ds-6) var(--ds-4); margin-top: var(--ds-6); border-radius: var(--ds-r-lg); }
 .chiusura .lede { max-width: 48ch; }
@@ -608,17 +625,19 @@ dialog[open]::backdrop { animation: fade-in .34s var(--ds-ease) both; }
 
 .panel { display: flex; flex-direction: column; gap: var(--ds-4); padding: var(--ds-5); }
 .panel .stack { display: grid; grid-template-columns: 1fr; gap: var(--ds-4); }
-.panel .coppia { display: grid; grid-template-columns: 1.15fr .85fr; gap: var(--ds-3); }
+.panel .coppia { display: grid; grid-template-columns: 1fr 1fr; gap: var(--ds-3); }
 @media (max-width: 480px) { .panel .coppia { grid-template-columns: 1fr; } }
 .panel .foot { display: flex; margin-top: auto; }
 .panel .foot .btn { width: 100%; }
 .panel .why { padding-top: var(--ds-1); }
+.panel .segmented { width: 50%; min-width: 190px; }
+@media (max-width: 480px) { .panel .segmented { width: 100%; } }
 
 .viz { display: grid; grid-template-rows: auto 1fr auto; gap: var(--ds-4); padding: var(--ds-5); }
 .viz-head { display: flex; align-items: center; justify-content: space-between; gap: var(--ds-3); }
 .viz-body { display: grid; justify-items: center; gap: var(--ds-4); }
 .viz-body .legend { max-width: 420px; }
-.num-c { font-size: clamp(27px, 3.2vw, 35px); line-height: 1.05; }
+.num-c { font-size: var(--fs-8); line-height: 1.05; }
 .viz-foot { display: flex; align-items: center; gap: var(--ds-2); padding-top: var(--ds-3); box-shadow: 0 -1px 0 var(--ds-hair); }
 
 .cue {
@@ -628,11 +647,8 @@ dialog[open]::backdrop { animation: fade-in .34s var(--ds-ease) both; }
   padding: var(--ds-4) 0 var(--ds-6);
   color: var(--ds-ink-3);
   text-decoration: none;
-  font-family: var(--ds-mono);
-  font-size: 11.5px;
+  font-size: var(--fs-2);
   font-weight: 600;
-  letter-spacing: .1em;
-  text-transform: uppercase;
   transition: color .2s var(--ds-ease);
 }
 
@@ -651,8 +667,8 @@ dialog[open]::backdrop { animation: fade-in .34s var(--ds-ease) both; }
 .why-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--ds-4); }
 .why-list { display: flex; flex-direction: column; gap: var(--ds-3); margin: 0; }
 .why-list div { display: grid; gap: 2px; padding-top: var(--ds-3); box-shadow: 0 -1px 0 var(--ds-hair); }
-.why-list dt { font-size: 14.5px; font-weight: 700; }
-.why-list dd { margin: 0; font-size: 13.5px; line-height: 1.55; color: var(--ds-ink-2); }
+.why-list dt { font-size: var(--fs-3); font-weight: 700; }
+.why-list dd { margin: 0; font-size: var(--fs-2); line-height: 1.55; color: var(--ds-ink-2); }
 
 .x {
   width: 36px;
@@ -663,7 +679,7 @@ dialog[open]::backdrop { animation: fade-in .34s var(--ds-ease) both; }
   border-radius: 100px;
   background: var(--ds-glass-2);
   color: var(--ds-ink-2);
-  font-size: 17px;
+  font-size: var(--fs-4);
   line-height: 1;
   cursor: pointer;
   transition: transform .18s var(--ds-ease), color .18s var(--ds-ease);
@@ -677,13 +693,13 @@ dialog[open]::backdrop { animation: fade-in .34s var(--ds-ease) both; }
 /* bento: la dimensione della tessera dice quanto conta il numero */
 .bento { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--ds-3); }
 .tile { display: flex; flex-direction: column; justify-content: flex-end; gap: 4px; padding: var(--ds-4); border-radius: var(--ds-r-md); }
-.tile .v { font-size: 21px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -.025em; }
-.tile .k { font-size: 12.5px; color: var(--ds-ink-2); }
+.tile .v { font-size: var(--fs-6); font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -.03em; }
+.tile .k { font-size: var(--fs-2); color: var(--ds-ink-2); }
 
 .t-hero { grid-column: span 2; grid-row: span 2; }
-.t-hero .v { font-size: clamp(36px, 4.4vw, 54px); font-weight: 800; letter-spacing: -.04em; }
+.t-hero .v { font-size: var(--fs-9); font-weight: 800; letter-spacing: -.045em; }
 .t-wide { grid-column: span 2; }
-.t-wide .v { font-size: clamp(24px, 2.6vw, 30px); }
+.t-wide .v { font-size: var(--fs-7); }
 
 @media (max-width: 720px) {
   .bento { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -697,24 +713,24 @@ dialog[open]::backdrop { animation: fade-in .34s var(--ds-ease) both; }
   margin-top: var(--ds-3);
   padding: var(--ds-3) var(--ds-4);
   border-radius: var(--ds-r-md);
-  font-size: 13px;
+  font-size: var(--fs-2);
   color: var(--ds-ink-2);
 }
 
 .scelte span { display: inline-flex; align-items: center; gap: 7px; }
 .scelte b { font-weight: 700; color: var(--ds-ink); }
-.scelte em { font-style: normal; font-family: var(--ds-mono); font-size: 11.5px; font-weight: 500; color: var(--ds-ink-3); }
+.scelte em { font-style: normal; font-size: var(--fs-1); font-weight: 500; color: var(--ds-ink-3); }
 
 /* accordion: il cedolino sta chiuso finche' non serve */
 .acc { margin-top: var(--ds-3); padding: 0; box-shadow: none; }
-.acc > summary { padding: var(--ds-4) var(--ds-5); border-radius: var(--ds-r-lg); font-size: 15px; }
+.acc > summary { padding: var(--ds-4) var(--ds-5); border-radius: var(--ds-r-lg); font-size: var(--fs-3); }
 .acc[open] > summary { border-radius: var(--ds-r-lg) var(--ds-r-lg) 0 0; box-shadow: 0 1px 0 var(--ds-hair); }
 .acc .acc-body { padding: 0 var(--ds-5) var(--ds-5); animation: rise-sm .32s var(--ds-ease) both; }
-.acc .ct { font-family: var(--ds-mono); font-size: 11.5px; font-weight: 500; color: var(--ds-ink-3); }
+.acc .ct { font-size: var(--fs-1); font-weight: 500; color: var(--ds-ink-3); }
 
 .pad { padding: var(--ds-5); }
 
-.group { font-family: var(--ds-mono); font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--ds-ink-3); padding: var(--ds-5) 0 var(--ds-2); }
+.group { font-size: var(--fs-1); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ds-ink-3); padding: var(--ds-5) 0 var(--ds-2); }
 
 .row {
   display: grid;
@@ -725,26 +741,26 @@ dialog[open]::backdrop { animation: fade-in .34s var(--ds-ease) both; }
   box-shadow: 0 -1px 0 var(--ds-hair);
 }
 
-.row .name { font-size: 14.5px; }
-.row .txt { display: block; font-family: var(--ds-mono); font-size: 11.5px; font-weight: 500; line-height: 1.5; color: var(--ds-ink-3); margin-top: 3px; overflow-wrap: anywhere; }
-.row .amt { font-family: var(--ds-mono); font-size: 14px; font-weight: 500; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.row .name { font-size: var(--fs-3); }
+.row .txt { display: block; font-size: var(--fs-1); font-weight: 500; line-height: 1.5; color: var(--ds-ink-3); margin-top: 3px; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.row .amt { font-size: var(--fs-3); font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .row.sub { padding-left: var(--ds-4); }
-.row.sub .name, .row.sub .amt { color: var(--ds-ink-2); font-size: 13.5px; }
+.row.sub .name, .row.sub .amt { color: var(--ds-ink-2); font-size: var(--fs-2); }
 .row.tot { box-shadow: 0 -1px 0 var(--ds-hair-2); }
 .row.tot .name, .row.tot .amt { font-weight: 700; }
 
-.flag { display: flex; gap: var(--ds-3); margin-top: var(--ds-4); padding: var(--ds-3) var(--ds-4); border-radius: var(--ds-r-md); background: var(--ds-primary-soft); font-size: 13px; line-height: 1.5; color: var(--ds-ink-2); }
+.flag { display: flex; gap: var(--ds-3); margin-top: var(--ds-4); padding: var(--ds-3) var(--ds-4); border-radius: var(--ds-r-md); background: var(--ds-primary-soft); font-size: var(--fs-2); line-height: 1.55; color: var(--ds-ink-2); }
 
 details { padding: var(--ds-3) 0; box-shadow: 0 -1px 0 var(--ds-hair); }
 details:first-of-type { box-shadow: none; padding-top: 0; }
-summary { cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; gap: var(--ds-3); font-size: 14px; font-weight: 600; }
+summary { cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; gap: var(--ds-3); font-size: var(--fs-3); font-weight: 600; }
 summary::-webkit-details-marker { display: none; }
 summary::after { content: ""; width: 6px; height: 6px; border-right: 1.5px solid var(--ds-ink-3); border-bottom: 1.5px solid var(--ds-ink-3); transform: translateY(-2px) rotate(45deg); transition: transform .22s var(--ds-ease); }
 details[open] summary::after { transform: translateY(1px) rotate(225deg); }
-details ul { margin: var(--ds-3) 0 var(--ds-1); padding-left: 16px; display: flex; flex-direction: column; gap: var(--ds-2); font-size: 13px; line-height: 1.5; color: var(--ds-ink-2); }
+details ul { margin: var(--ds-3) 0 var(--ds-1); padding-left: 16px; display: flex; flex-direction: column; gap: var(--ds-2); font-size: var(--fs-2); line-height: 1.55; color: var(--ds-ink-2); }
 details[open] ul { animation: rise-sm .3s var(--ds-ease) both; }
 
-footer { padding: var(--ds-4) 0 var(--ds-5); box-shadow: 0 -1px 0 var(--ds-hair); font-size: 12.5px; color: var(--ds-ink-3); }
+footer { padding: var(--ds-4) 0 var(--ds-5); box-shadow: 0 -1px 0 var(--ds-hair); font-size: var(--fs-2); color: var(--ds-ink-3); }
 
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 </style>
@@ -827,11 +843,11 @@ footer { padding: var(--ds-4) 0 var(--ds-5); box-shadow: 0 -1px 0 var(--ds-hair)
       </div>
 
       <div class="foot">
-        <button class="btn" type="submit">Calcola</button>
+        <button class="btn" type="submit" id="calcola">Calcola</button>
       </div>
     </form>
 
-    <figure class="glass viz rise-2">
+    <figure class="glass glass--tinted viz rise-2" style="--tint:var(--ds-s1)">
       <figcaption class="viz-head">
         <span class="eyebrow">Dove va la RAL</span>
         <span class="pill" id="ctx-2">30.000 €</span>
@@ -891,7 +907,7 @@ footer { padding: var(--ds-4) 0 var(--ds-5); box-shadow: 0 -1px 0 var(--ds-hair)
     </div>
 
     <div class="due">
-      <div class="glass pad">
+      <div class="glass glass--tinted pad" style="--tint:var(--ds-s1)">
         <h3 class="h2">Copre</h3>
         <ul class="lista">
           <li><i>+</i>Tutte e 21 le regioni e province autonome, con scaglioni, esenzioni e detrazioni regionali</li>
@@ -934,7 +950,7 @@ footer { padding: var(--ds-4) 0 var(--ds-5); box-shadow: 0 -1px 0 var(--ds-hair)
       <div><span class="k">Impatriati · docenti e ricercatori</span><span>D.Lgs. 209/2023 · D.L. 78/2010</span></div>
     </div>
 
-    <div class="glass chiusura">
+    <div class="glass glass--tinted chiusura" style="--tint:var(--ds-s1)">
       <span class="eyebrow">Prova con i tuoi numeri</span>
       <h2 class="h-sec">Cambia la RAL e guarda dove finisce</h2>
       <p class="lede">Motore, fonti e i 22 test che lo verificano stanno su GitHub.</p>
@@ -1887,109 +1903,122 @@ opzioni($("agevolazione"), Object.entries(AGEVOLAZIONI).map(([k, v]) => [k, v.no
 
 /* ---------- donut ----------
  * Parte-tutto a colpo d'occhio: tre segmenti, valori lontani fra loro.
- * L'identita' non e' mai affidata al solo colore — ogni segmento ha la sua riga
+ * L'identita' non e' mai affidata al solo colore: ogni segmento ha la sua riga
  * in legenda con importo e percentuale, e il conto completo sta sotto la piega.
  */
 const R = 78;
 const SW = 17;
 const C = 2 * Math.PI * R;
 const GAP = 4; // separazione in superficie fra due archi, in unita' di percorso
-const DURATA = 900;
+const DURATA = 700;
 
 const easeOut = (t) => 1 - Math.pow(1 - t, 3);
 
+// Quello che c'e' a schermo adesso: il punto di partenza della prossima
+// animazione. Le voci non spariscono mai, si muove solo il numero.
+let vista = { s1: 0, s2: 0, s3: 0, mensile: 0 };
+
 function costruisciDonut(parti) {
-  const totale = parti.reduce((s, p) => s + p.v, 0) || 1;
-  let offset = 0;
-
-  const archi = parti
-    .map((p) => {
-      const len = (p.v / totale) * C;
-      p.len = len;
-      p.offset = offset;
-      offset += len;
-      return `<circle data-seg="${p.k}" cx="100" cy="100" r="${R}" fill="none"
+  $("donut").innerHTML =
+    `<circle cx="100" cy="100" r="${R}" fill="none" stroke="var(--ds-track)" stroke-width="${SW}"></circle>` +
+    parti
+      .map(
+        (p) => `<circle data-seg="${p.k}" cx="100" cy="100" r="${R}" fill="none"
         stroke="var(--ds-${p.k})" stroke-width="${SW}" stroke-linecap="butt"
-        stroke-dasharray="0 ${C}" stroke-dashoffset="${-p.offset}"
-        transform="rotate(-90 100 100)"><title>${p.l}: ${eur(p.v)}</title></circle>`;
-    })
-    .join("");
-
-  $("donut").innerHTML = `<circle cx="100" cy="100" r="${R}" fill="none" stroke="var(--ds-track)" stroke-width="${SW}"></circle>${archi}`;
-  $("donut-desc").textContent = parti.map((p) => `${p.l}: ${eur(p.v)}, ${num((p.v / totale) * 100, 1)}%`).join(". ");
+        stroke-dasharray="0 ${C}" stroke-dashoffset="0"
+        transform="rotate(-90 100 100)"><title>${p.l}</title></circle>`,
+      )
+      .join("");
 }
 
-/** Disegna gli archi fino alla frazione `p` del giro (0..1). */
-function tracciaFino(parti, p) {
-  const disegnato = p * C;
-  for (const parte of parti) {
-    const quota = Math.min(Math.max(disegnato - parte.offset, 0), parte.len);
-    const dash = Math.max(0, quota >= parte.len ? parte.len - GAP : quota);
-    $("donut").querySelector(`circle[data-seg="${parte.k}"]`)?.setAttribute("stroke-dasharray", `${dash} ${C - dash}`);
+/** Ridisegna gli archi da una terna di valori: le proporzioni si muovono con loro. */
+function disegna(v) {
+  const parti = ultimo.parti;
+  const totale = parti.reduce((s, p) => s + v[p.k], 0) || 1;
+  let offset = 0;
+  for (const p of parti) {
+    const len = (v[p.k] / totale) * C;
+    const dash = Math.max(0, len > GAP ? len - GAP : len);
+    const el = $("donut").querySelector(`circle[data-seg="${p.k}"]`);
+    el?.setAttribute("stroke-dasharray", `${dash} ${C - dash}`);
+    el?.setAttribute("stroke-dashoffset", `${-offset}`);
+    offset += len;
+  }
+}
+
+function scriviNumeri(v) {
+  $("c-value").textContent = eur(v.mensile);
+  const ral = ultimo.input.ral || 1;
+  for (const p of ultimo.parti) {
+    const riga = $("legend").querySelector(`.legend-row[data-seg="${p.k}"]`);
+    if (!riga) continue;
+    riga.querySelector(".v").textContent = eur(v[p.k]);
+    riga.querySelector(".p").textContent = `${num((v[p.k] / ral) * 100, 1)}%`;
   }
 }
 
 /**
- * Il grafico si disegna, il numero al centro sale, poi le voci compaiono una
- * dopo l'altra. Con prefers-reduced-motion tutto arriva al valore finale subito.
+ * Porta la vista dai valori attuali a quelli nuovi.
+ * Il contenitore non cambia mai altezza: le tre voci sono gia' a schermo e
+ * cambia solo la cifra, con un movimento breve che dice "e' stato ricalcolato"
+ * senza chiedere attenzione.
  */
-function anima(r) {
-  const parti = r.parti;
-  const finale = r.totali.nettoMensile;
-
-  const subito = () => {
-    tracciaFino(parti, 1);
-    $("c-value").textContent = eur(finale);
-    mostraLegenda(r, "");
+function vaiA(target, animato) {
+  const da = { ...vista };
+  const chiudi = () => {
+    vista = { ...target };
+    disegna(vista);
+    scriviNumeri(vista);
   };
 
-  // requestAnimationFrame non gira su una tab in secondo piano: senza questa
-  // uscita la pagina resterebbe con il grafico vuoto e un trattino al centro.
-  if (RIDOTTO.matches || document.visibilityState !== "visible") {
-    subito();
+  // requestAnimationFrame non gira su una tab in secondo piano.
+  if (!animato || RIDOTTO.matches || document.visibilityState !== "visible") {
+    chiudi();
     return;
   }
 
-  tracciaFino(parti, 0);
-  $("c-value").textContent = eur(0);
-  mostraLegenda(r, "pre");
-
   let chiuso = false;
-  const chiudi = (staggera) => {
+  const rete = setTimeout(() => {
     if (chiuso) return;
     chiuso = true;
-    clearTimeout(rete);
-    tracciaFino(parti, 1);
-    $("c-value").textContent = eur(finale);
-    mostraLegenda(r, staggera ? "in" : "");
-  };
-
-  // rete di sicurezza: se i frame non arrivano, il risultato compare comunque
-  const rete = setTimeout(() => chiudi(false), DURATA + 700);
+    chiudi();
+  }, DURATA + 600);
 
   const t0 = performance.now();
   const passo = (ora) => {
     if (chiuso) return;
     const t = Math.min((ora - t0) / DURATA, 1);
     const e = easeOut(t);
-    tracciaFino(parti, e);
-    $("c-value").textContent = eur(finale * e);
+    const v = {};
+    for (const k of Object.keys(target)) v[k] = da[k] + (target[k] - da[k]) * e;
+    disegna(v);
+    scriviNumeri(v);
     if (t < 1) requestAnimationFrame(passo);
-    else chiudi(true);
+    else {
+      chiuso = true;
+      clearTimeout(rete);
+      chiudi();
+    }
   };
   requestAnimationFrame(passo);
 }
 
-function mostraLegenda(r, stato) {
-  // Le righe esistono da subito, anche quando sono invisibili: il contenitore
-  // ha la sua altezza definitiva prima che l'animazione cominci, quindi la
-  // pagina non si sposta di un pixel quando il risultato compare.
+/** La velatura che sale e svanisce sulle righe: il segnale del ricalcolo. */
+function segnalaRicalcolo() {
+  for (const riga of $("legend").querySelectorAll(".legend-row")) {
+    riga.classList.remove("ricalcolo");
+    void riga.offsetWidth; // forza il restart dell'animazione
+    riga.classList.add("ricalcolo");
+  }
+}
+
+function mostraLegenda(r) {
   $("legend").innerHTML = r.parti
     .map(
-      (p, i) => `<div class="legend-row${stato ? " " + stato : ""}" data-seg="${p.k}" style="animation-delay:${i * 90}ms">
+      (p) => `<div class="legend-row" data-seg="${p.k}" style="--seg:var(--ds-${p.k})">
         <i style="background:var(--ds-${p.k})"></i>
         <span class="k">${p.l}</span>
-        <span><span class="v">${eur(p.v)}</span> <span class="p">${num((p.v / r.input.ral) * 100, 1)}%</span></span>
+        <span><span class="v">—</span> <span class="p"></span></span>
       </div>`,
     )
     .join("");
@@ -2070,13 +2099,15 @@ function render(r, animato) {
   const c0 = r.contributi;
 
   costruisciDonut(r.parti);
-  if (animato) {
-    anima(r);
-  } else {
-    tracciaFino(r.parti, 1);
-    $("c-value").textContent = eur(t.nettoMensile);
-    mostraLegenda(r, "");
-  }
+  mostraLegenda(r);
+  const target = {
+    s1: t.nettoAnnuo,
+    s2: t.imposte,
+    s3: r.contributi.totale,
+    mensile: t.nettoMensile,
+  };
+  vaiA(target, animato);
+  if (animato && vista.mensile > 0) segnalaRicalcolo();
 
   $("catena-steps").innerHTML = [
     ["01", "Contributi", eur(r.contributi.totale), `${pct(c0.aliquota, 2)} della RAL, quota a tuo carico. Sono deducibili, quindi escono prima del calcolo IRPEF.`],
@@ -2084,19 +2115,29 @@ function render(r, animato) {
     ["03", "IRPEF netta", eur(r.irpef.netta), `${eur(r.irpef.lorda)} di imposta lorda meno ${eur(r.irpef.detrazioniTotali)} di detrazioni. Le detrazioni abbassano l'imposta e non danno rimborso.`],
     ["04", "Addizionali", eur(r.addizionali.totale), `${regione.nome} più ${comune.nome}, entrambe sullo stesso imponibile.`],
   ]
-    .map(([n, k, v, t]) => `<div class="glass step"><span class="n">${n} · ${k}</span><span class="v">${v}</span><p>${t}</p></div>`)
+    .map(
+      ([n, k, v, t], i) =>
+        `<div class="glass step${i === 1 ? "" : " glass--tinted"}"${i === 1 ? "" : ` style="--tint:var(--ds-${["s3", "", "s2", "s2"][i]})"`}>
+          <span class="n">${n} · ${k}</span><span class="v">${v}</span><p>${t}</p>
+        </div>`,
+    )
     .join("");
 
   // La tessera grande e' il numero che conta; le altre scendono di peso.
   $("bento").innerHTML = [
-    ["t-hero", "Netto annuo", eur(t.nettoAnnuo), `${num((1 - t.cuneoNetto) * 100, 1)}% della RAL, su ${num(r.input.ral)} €`],
-    ["t-wide", `Netto per ${r.input.mensilita} mensilità`, eur(t.nettoMensile), "quanto arriva in busta ogni mese"],
-    ["", "Imposte", eur(t.imposte), "IRPEF e addizionali"],
-    ["", "Contributi", eur(r.contributi.totale), "quota a tuo carico"],
-    ["t-wide", "Aliquota effettiva", pct(t.aliquotaEffettiva, 1), "quanto lascia via ogni 100 € di lordo"],
-    ["t-wide", "TFR maturato", eur(r.tfr.accantonato), "accantonato, non in busta"],
+    ["t-hero", "s1", "Netto annuo", eur(t.nettoAnnuo), `${num((1 - t.cuneoNetto) * 100, 1)}% della RAL, su ${num(r.input.ral)} €`],
+    ["t-wide", "s1", `Netto per ${r.input.mensilita} mensilità`, eur(t.nettoMensile), "quanto arriva in busta ogni mese"],
+    ["", "s2", "Imposte", eur(t.imposte), "IRPEF e addizionali"],
+    ["", "s3", "Contributi", eur(r.contributi.totale), "quota a tuo carico"],
+    ["t-wide", "", "Aliquota effettiva", pct(t.aliquotaEffettiva, 1), "quanto lascia via ogni 100 € di lordo"],
+    ["t-wide", "", "TFR maturato", eur(r.tfr.accantonato), "accantonato, non in busta"],
   ]
-    .map(([cls, k, v, sub]) => `<div class="glass tile ${cls}"><span class="eyebrow">${k}</span><span class="v">${v}</span><span class="k">${sub}</span></div>`)
+    .map(
+      ([cls, tinta, k, v, sub]) =>
+        `<div class="glass tile ${cls}${tinta ? " glass--tinted" : ""}"${tinta ? ` style="--tint:var(--ds-${tinta})"` : ""}>
+          <span class="eyebrow">${k}</span><span class="v">${v}</span><span class="k">${sub}</span>
+        </div>`,
+    )
     .join("");
 
   const c = r.contributi;
@@ -2245,15 +2286,30 @@ function aggiorna(animato = false) {
   const ral = parseRal($("ral").value);
   $("ral").value = ral ? num(ral) : "";
   render(calcola(ral, scelteCorrenti()), animato);
+  $("calcola").textContent = "Calcola";
 }
 
+/**
+ * Digitare non ricalcola: mentre scrivi "3", "30", "300" il conto salterebbe
+ * su tre risultati che non hai chiesto. Il bottone e' il momento in cui dici
+ * di aver finito, e finche' la cifra a schermo non e' quella calcolata lo
+ * dichiara cambiando etichetta. Le scelte discrete invece si applicano subito:
+ * li' non c'e' niente da aspettare.
+ */
 $("form").addEventListener("submit", (e) => {
   e.preventDefault();
   aggiorna(true);
 });
 
+$("ral").addEventListener("input", () => {
+  const scritta = parseRal($("ral").value);
+  const calcolata = ultimo?.input.ral ?? 0;
+  $("calcola").textContent = scritta === calcolata ? "Calcola" : "Ricalcola";
+});
+
+// Le scelte discrete si applicano subito, con la transizione che fa da segnale.
 for (const id of ["regione", "contratto", "agevolazione"]) {
-  $(id).addEventListener("change", () => aggiorna(false));
+  $(id).addEventListener("change", () => aggiorna(true));
 }
 
 $("mensilita").addEventListener("click", (e) => {
@@ -2261,7 +2317,7 @@ $("mensilita").addEventListener("click", (e) => {
   if (!b) return;
   mensilita = Number(b.dataset.m);
   for (const x of $("mensilita").querySelectorAll("button")) x.setAttribute("aria-pressed", String(x === b));
-  aggiorna(false);
+  aggiorna(true);
 });
 
 for (const nodo of [$("donut"), $("legend")]) {

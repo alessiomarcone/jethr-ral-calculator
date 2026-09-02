@@ -21,8 +21,17 @@ struttura, B tiene tutto.
 
 ## Variante A — minimal, vetro, colore semantico
 
-**La base è monocromatica**: una rampa di pietra calda, piatta. Il colore vive
-in un posto solo — il grafico — così l'unica cosa colorata a schermo è il dato.
+**Una famiglia sola** (Inter variabile) e **una scala tipografica dichiarata nel
+DS**: nove gradini, dal micro-testo al numero hero. La pagina non sceglie mai un
+`font-size` a mano, prende un token, e titoli e paragrafi hanno una classe
+ciascuno. Il mono è sparito: sulle etichette di un modulo suonava tecnico senza
+essere più leggibile, e i numeri tabulari li dà anche Inter.
+
+**La base cromatica è pietra calda.** Il colore vive nel grafico, e da lì
+scende in velatura sulle card che parlano di quel pezzo: emerald dove si parla
+del netto, violet sulle imposte, amber sui contributi. Sono gradienti al 13%
+in un angolo solo, non superfici colorate: servono a togliere la piattezza al
+vetro, il testo resta su fondo neutro.
 
 | Ruolo | Trattamento | Dove |
 |---|---|---|
@@ -59,12 +68,26 @@ annuo occupa quattro celle, il netto mensile due, imposte e contributi una
 ciascuna. Sotto, il cedolino completo sta in un accordion chiuso: la sezione
 entra in una schermata, e chi vuole la riga per riga la apre.
 
-### Nessuno spostamento quando il conto arriva
+### Le voci non compaiono, cambiano
 
-Le tre voci della legenda esistono nel DOM prima che l'animazione parta, con
-opacità zero. Il contenitore ha già la sua altezza definitiva, quindi la pagina
-non si sposta di un pixel quando il risultato compare: si accende, non si
-allunga. L'animazione tocca solo `opacity` e `transform`, mai il layout.
+Prima le tre voci entravano in scena dopo il grafico. Anche senza spostare il
+layout era la cosa sbagliata: comparire dice "ecco una novità", mentre qui il
+contenuto è sempre lo stesso e cambia solo la cifra. Ora le righe stanno
+sempre a schermo e i numeri **transitano** dal valore vecchio a quello nuovo in
+700ms, mentre gli archi del donut si muovono con loro. Una velatura della tinta
+di serie sale e svanisce sulle righe: dice che il conto è stato rifatto senza
+chiedere attenzione. Sotto `prefers-reduced-motion`, o su una scheda in secondo
+piano, i valori arrivano al risultato finale senza transizione.
+
+### Il bottone che ha un lavoro
+
+Se ogni cosa si ricalcola da sola, *Calcola* diventa un ornamento. Qui la
+divisione è netta: **le scelte discrete** (regione, contratto, agevolazione,
+mensilità) si applicano subito, perché non c'è niente da aspettare;
+**digitare la RAL non ricalcola**, perché mentre scrivi "3", "30", "300" il
+conto salterebbe su tre risultati che non hai chiesto. Il bottone è il momento
+in cui dici di aver finito, e finché la cifra a schermo non è quella calcolata
+lo dichiara: l'etichetta diventa *Ricalcola*.
 
 ### Vetro, non bordi
 
