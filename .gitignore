@@ -1,0 +1,4 @@
+# output di build: si rigenerano con npm run build
+dist/
+node_modules/
+.DS_Store
